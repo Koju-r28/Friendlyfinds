@@ -1,0 +1,42 @@
+/* Cute pastel background */
+body {
+  background: #fff7fb;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Hero container */
+.hero-container {
+  width: 100%;
+  padding: 80px 10%;
+  text-align: center;
+}
+
+/* Title */
+.hero-title {
+  font-size: 2.8rem;
+  color: #ff6faa;
+  margin-bottom: 15px;
+  animation: fadeIn 1s ease;
+}
+
+/* Description */
+.hero-desc {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: auto;
+  color: #555;
+  line-height: 1.7;
+  animation: fadeIn 1.3s ease;
+}
+
+/* Fade animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,29 @@
+/* index.css */
+
+/* Global reset + box-sizing */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Base styles */
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #fff7fb; /* Soft pastel background */
+  font-family: "Poppins", sans-serif;
+  color: #333;
+}
+
+/* Common anchor styles (optional) */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Optional: smooth scroll, better font rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
