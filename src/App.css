@@ -1,42 +1,45 @@
-/* Cute pastel background */
-body {
-  background: #fff7fb;
-  font-family: "Poppins", sans-serif;
-}
-
-/* Hero container */
-.hero-container {
-  width: 100%;
-  padding: 80px 10%;
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
   text-align: center;
 }
 
-/* Title */
-.hero-title {
-  font-size: 2.8rem;
-  color: #ff6faa;
-  margin-bottom: 15px;
-  animation: fadeIn 1s ease;
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-/* Description */
-.hero-desc {
-  font-size: 1.2rem;
-  max-width: 600px;
-  margin: auto;
-  color: #555;
-  line-height: 1.7;
-  animation: fadeIn 1.3s ease;
-}
-
-/* Fade animation */
-@keyframes fadeIn {
+@keyframes logo-spin {
   from {
-    opacity: 0;
-    transform: translateY(10px);
+    transform: rotate(0deg);
   }
   to {
-    opacity: 1;
-    transform: translateY(0);
+    transform: rotate(360deg);
   }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+h1{
+  color:white;
 }
