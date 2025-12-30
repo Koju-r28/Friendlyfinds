@@ -29,18 +29,21 @@
   font-weight: 700;
   margin-bottom: 16px;
   letter-spacing: -0.5px;
+  color: white;
 }
 
 .hero-content p {
   font-size: 1.1rem;
   margin-bottom: 8px;
   opacity: 0.95;
+  color: white;
 }
 
 .hero-subtitle {
   font-size: 1rem;
   margin-bottom: 32px;
   opacity: 0.85;
+  color: white;
 }
 
 .hero-image {

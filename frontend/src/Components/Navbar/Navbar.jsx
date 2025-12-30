@@ -1,17 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
-
 import logo from "../Assets/logo.png";
-import cart_icon from "../Assets/cart_icon.png";
 
 const Navbar = () => {
+  const [search, setSearch] = useState("");
+
   return (
     <nav className="navbar">
       {/* Logo */}
       <div className="nav-logo">
         <NavLink to="/">
-          <img src={logo} alt="logo" />
+         <img src={logo} alt="logo" />
         </NavLink>
       </div>
 
@@ -28,14 +28,9 @@ const Navbar = () => {
         <li>
           <NavLink to="/contact">Contact</NavLink>
         </li>
-
-        <li>
-          <NavLink to="/collections">
-            <img src={cart_icon} alt="cart" className="cart-icon" />
-          </NavLink>
-        </li>
       </ul>
-       {/* Search */}
+
+      {/* Search */}
       <div className="nav-search">
         <input
           type="text"
@@ -43,15 +38,19 @@ const Navbar = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <button>
-          <img src={search_icon} alt="search" />
-        </button>
+        <button>🔍</button>
       </div>
 
-      {/* Login Button */}
-      <NavLink to="/login">
-        <button className="login-btn">Login</button>
-      </NavLink>
+      {/* Cart and Login */}
+      <div className="nav-actions">
+        <NavLink to="/cart" className="cart-link">
+          🛒
+        </NavLink>
+        
+        <NavLink to="/login">
+          <button className="login-btn">Login</button>
+        </NavLink>
+      </div>
     </nav>
   );
 };
