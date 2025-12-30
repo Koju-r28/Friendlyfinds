@@ -1,14 +1,24 @@
-import React from 'react';
-import LoginSignup from './pages/LoginSignup/LoginSignup.jsx'; // adjust path if needed
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import Navbar from "./Components/Navbar/Navbar";
+import Home from "./pages/home/home";
+import LoginSignup from "./pages/LoginSignup/LoginSignup";
+
+import "./App.css";
 
 function App() {
   return (
-    <div>
-      <h1>Welcome to Friendly-Finds</h1>
-      
-      <LoginSignup />
-    </div>
+    <Router>
+      {/* Navbar visible on all pages */}
+      <Navbar />
+
+      {/* Page routing */}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<LoginSignup />} />
+      </Routes>
+    </Router>
   );
 }
 

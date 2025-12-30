@@ -1,29 +1,59 @@
-  import React from "react";
-  import "./Navbar.css";
-  import logo from "../Assets/logo.png";
-  import cart_icon from "../Assets/cart_icon.png";
+import React from "react";
+import { NavLink } from "react-router-dom";
+import "./Navbar.css";
 
-  const Navbar = () => {
-    return (
-      <nav className="navbar">
-        <div className="nav-logo">
+import logo from "../Assets/logo.png";
+import cart_icon from "../Assets/cart_icon.png";
+
+const Navbar = () => {
+  return (
+    <nav className="navbar">
+      {/* Logo */}
+      <div className="nav-logo">
+        <NavLink to="/">
           <img src={logo} alt="logo" />
-        </div>
+        </NavLink>
+      </div>
 
-        <ul className="nav-menu">
-          <li>Home</li>
-          <li>About</li>
-          <li>Contact</li>
-          <li>
+      {/* Menu */}
+      <ul className="nav-menu">
+        <li>
+          <NavLink to="/">Home</NavLink>
+        </li>
+
+        <li>
+          <NavLink to="/collections">Collections</NavLink>
+        </li>
+
+        <li>
+          <NavLink to="/contact">Contact</NavLink>
+        </li>
+
+        <li>
+          <NavLink to="/collections">
             <img src={cart_icon} alt="cart" className="cart-icon" />
-            
+          </NavLink>
+        </li>
+      </ul>
+       {/* Search */}
+      <div className="nav-search">
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <button>
+          <img src={search_icon} alt="search" />
+        </button>
+      </div>
 
-          </li>
-        </ul>
-
+      {/* Login Button */}
+      <NavLink to="/login">
         <button className="login-btn">Login</button>
-      </nav>
-    );
-  };
+      </NavLink>
+    </nav>
+  );
+};
 
-  export default Navbar;
+export default Navbar;
