@@ -19,7 +19,7 @@
     margin-top:30px;
 }
 .text {
-    color: #3c009d;
+    color: #29c981;
     font-size: clamp(32px, 6vw, 48px); /* scales with screen width */
     font-weight: 700;
 }
@@ -27,7 +27,7 @@
 .underline {
     width: 100px;       /* longer underline */
     height: 10px;       /* thickness */
-    background: #3c009d;
+    background: #f4f4f5;
     border-radius: 5px; /* rounded edges */
     margin-top: 5px;    /* optional spacing from text */
 }
@@ -70,7 +70,7 @@ color:#797979;
 font-size:18px;
 }
 .forgot-password span{
-    color:#4c00b4;
+    color:#1a7e45;
     cursor:pointer;
 }
 .submit-container{
@@ -85,7 +85,7 @@ font-size:18px;
     width:220px;
     height: 59px;
     color:#fff;
-    background:#4c00b4;
+    background:#127953;
     border-radius:50px;
     font-size:19px;
     font-weight:700;
