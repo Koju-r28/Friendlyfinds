@@ -10,13 +10,13 @@ const Home = () => {
         <div className="hero-content">
           <div className="hero-text">
             <h1>Student Gear for Less</h1>
-            <p>Buy, Sell, & Swap stationery and furniture securely on campus.</p>
+            <p>Buy, Sell, & Swap stationery and furniture securely on University.</p>
             <p className="hero-subtitle">Turn your clutter into next semester's coffee budget.</p>
             
             <div className="search-bar">
               <input 
                 type="text" 
-                placeholder="Search for collusos, notebooks, desks, pens..."
+                placeholder="Search for drafter,Stationary..."
                 className="search-input"
               />
               <button className="search-button">Search</button>
@@ -36,7 +36,7 @@ const Home = () => {
             </div>
             <div className="category-info">
               <h3>Stationery</h3>
-              <p>Notebooks, pens, calculators & more</p>
+              <p>Books,Drafters & more</p>
             </div>
           </div>
           
