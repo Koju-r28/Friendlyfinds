@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
 
 import logo from "../Assets/logo.png";
 import cart_icon from "../Assets/cart_icon.png";
+import search_icon from "../Assets/Search_Icon.png";
 
 const Navbar = () => {
+  const [search,setSearch]=useState("");
   return (
     <nav className="navbar">
       {/* Logo */}
