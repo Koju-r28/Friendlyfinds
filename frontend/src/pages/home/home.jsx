@@ -1,10 +1,39 @@
 import React from "react";
+import { useAuth } from '../../context/AuthContext'; 
 import "./home.css";
 import hero from "../../Components/Assets/hero.png";
 
+
 const Home = () => {
+  const { logout, user } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    window.location.reload(); 
+  };
   return (
     <div className="home-container">
+      {/* Logout Button - Temporary for testing */}
+      <div style={{ 
+        position: 'fixed', 
+        top: '20px', 
+        right: '20px', 
+        zIndex: 1000,
+        background: '#dc2626',
+        color: 'white',
+        padding: '12px 24px',
+        borderRadius: '8px',
+        cursor: 'pointer',
+        fontWeight: '600',
+        boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px'
+      }} onClick={handleLogout}>
+        <span>👋</span>
+        Logout ({user?.username})
+      </div>
+      
       {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-content">

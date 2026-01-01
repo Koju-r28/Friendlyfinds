@@ -1,12 +1,13 @@
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './context/protectedroutes';
-import Dashboard from './pages/dashboard/Dashboard';
+import Home from './pages/home/home'; 
+import './App.css';
 
 function App() {
   return (
     <AuthProvider>
       <ProtectedRoute>
-        <Dashboard />
+        <Home />
       </ProtectedRoute>
     </AuthProvider>
   );
