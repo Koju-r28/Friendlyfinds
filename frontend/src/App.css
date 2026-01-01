@@ -1,32 +1,24 @@
-/* App.css */
-
-/* Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Root container */
-#root {
-  width: 100%;
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.loading-container {
   min-height: 100vh;
-  font-family: "Poppins", sans-serif;
-  background: #fff7fb; /* soft pastel background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Remove default link styling globally */
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-/* Utility (optional) */
-.page {
-  padding: 40px 60px;
-}
-
-/* Headings */
-h1, h2, h3 {
-  color: #333;
+.loading-text {
+  font-size: 1.125rem;
 }
