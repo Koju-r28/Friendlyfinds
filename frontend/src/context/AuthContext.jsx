@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }) => {
         return { success: false, message: data.message || 'Registration failed' };
       }
     } catch (error) {
-      console.error('Signup error:', error);
+      console.error('Registration error:', error);
       return { success: false, message: 'Network error. Please try again.' };
     }
   };

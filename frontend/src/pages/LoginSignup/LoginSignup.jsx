@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import './LoginSignup.css';
+import logo from '../../Components/Assets/logo.png';
+import hero from "../../Components/Assets/hero.png";
 
 const LoginSignup = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -53,7 +55,7 @@ const LoginSignup = () => {
         const result = await signup(formData.username, formData.email, formData.password);
         
         if (result.success) {
-          console.log('Signup successful');
+          console.log('Registration successful');
           // User will be redirected automatically by ProtectedRoute
         } else {
           setError(result.message);
@@ -81,33 +83,27 @@ const LoginSignup = () => {
       <div className="auth-hero">
         <div className="hero-content">
           <div className="logo-section">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-              <polyline points="9 22 9 12 15 12 15 22"></polyline>
-            </svg>
-            <span className="logo-text">Friendly Finds</span>
+            <img src={logo} alt="Friendly Finds Logo" className="logo-image" />
           </div>
 
           <h1 className="hero-title">
             Turn your old items into <span className="highlight-green">new possibilities.</span>
           </h1>
-
+          
           <p className="hero-description">
             Join the most trusted student-to-student marketplace. Buy and sell items safely within your campus community.
           </p>
 
           <div className="hero-image">
-            <img 
-              src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=400&fit=crop" 
-              alt="Students collaborating"
-            />
+            
+               <img src={hero} className="hero-image" alt="Hero" />
+        
+            
             <div className="verified-badge">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-              <span>Student Community</span>
+            
+              
             </div>
-            <p className="image-caption">Safe meetups on campus grounds.</p>
+           
           </div>
         </div>
       </div>
