@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
   // Signup function
   const signup = async (username, email, password) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/signup', {
+      const response = await fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('token', data.token);
         return { success: true };
       } else {
-        return { success: false, message: data.message || 'Signup failed' };
+        return { success: false, message: data.message || 'Registration failed' };
       }
     } catch (error) {
       console.error('Signup error:', error);
