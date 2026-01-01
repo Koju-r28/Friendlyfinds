@@ -17,28 +17,59 @@ const Navbar = () => {
         {/* Logo */}
         <div className="navbar-logo">
           <img src={logo} alt="Friendly Finds" />
-          <span>Friendly Finds</span>
+        </div>
+
+        {/* Search Bar */}
+        <div className="navbar-search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+          <input 
+            type="text" 
+            placeholder="Search for items, categories..."
+            className="search-input"
+          />
         </div>
 
         {/* Nav Links */}
         <div className="navbar-links">
-          <a href="/" className="nav-link active">Home</a>
-          <a href="/browse" className="nav-link">Browse</a>
-          <a href="/sell" className="nav-link">Sell</a>
-          <a href="/about" className="nav-link">About Us</a>
-        </div>
-
-        {/* Right Side - User Menu */}
-        <div className="navbar-right">
-          <button className="btn-sell">
+          <a href="/" className="nav-link">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="12" y1="5" x2="12" y2="19"></line>
-              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
             </svg>
-            Post Item
-          </button>
+            Home
+          </a>
+
+          <a href="/collections" className="nav-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+            Collections
+          </a>
           
-          <div className="user-menu">
+          <a href="/contact" className="nav-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            Contact
+          </a>
+
+          <a href="/cart" className="nav-link cart-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            Cart
+            <span className="cart-badge">3</span>
+          </a>
+        </div>
+<div className="user-menu">
             <button className="user-avatar">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -64,12 +95,6 @@ const Navbar = () => {
                 </svg>
                 My Items
               </a>
-              <a href="/messages" className="dropdown-item">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                </svg>
-                Messages
-              </a>
               <div className="dropdown-divider"></div>
               <button onClick={handleLogout} className="dropdown-item logout">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -81,7 +106,6 @@ const Navbar = () => {
               </button>
             </div>
           </div>
-        </div>
       </div>
     </nav>
   );
