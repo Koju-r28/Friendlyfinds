@@ -1,24 +1,34 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Navbar from "./Components/Navbar/Navbar";
-import Home from "./pages/home/home";
+import Home from "./pages/home/Home";
 import LoginSignup from "./pages/LoginSignup/LoginSignup";
 
-import "./App.css";
-
 function App() {
-  return (
-    <Router>
-      {/* Navbar visible on all pages */}
-      <Navbar />
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-      {/* Page routing */}
+  return (
+    <BrowserRouter>
+      {/* ✅ Navbar visible only after login */}
+      {isAuthenticated && <Navbar />}
+
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<LoginSignup />} />
+        {/* Login Page */}
+        <Route
+          path="/login"
+          element={<LoginSignup setIsAuthenticated={setIsAuthenticated} />}
+        />
+
+        {/* Home Page (Protected) */}
+        <Route
+          path="/"
+          element={
+            isAuthenticated ? <Home /> : <Navigate to="/login" replace />
+          }
+        />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 
