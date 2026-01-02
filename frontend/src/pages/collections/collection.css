@@ -1,0 +1,137 @@
+/* Page layout */
+.collection-page {
+  display: grid;
+  grid-template-columns: 260px 1fr; /* sidebar + main content */
+  gap: 20px;
+  padding: 20px;
+  min-height: 100vh;
+  background-color: #f6f6f6;
+  font-family: Arial, sans-serif;
+}
+
+/* Sidebar Filters */
+.filters {
+  background-color: #fff;
+  border-radius: 18px;
+  padding: 18px;
+  border: 1px solid #ddd;
+}
+
+.filters h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.filter-title {
+  margin-top: 15px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.filters label {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+}
+
+.filters input[type="range"] {
+  width: 100%;
+  margin-top: 6px;
+}
+
+.apply-btn {
+  margin-top: 15px;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 15px;
+  background-color: #3a8bff;
+  color: white;
+  cursor: pointer;
+}
+
+/* Items Area */
+.items-area h2 {
+  margin-bottom: 3px;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+/* Grid layout */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+/* Card style */
+.card {
+  background-color: #fff;
+  border-radius: 18px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Card image */
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* Badge */
+.badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #3a8bff;
+  color: white;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+/* Card text */
+.card h4 {
+  margin: 10px 0 5px 0;
+  font-size: 14px;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+/* Contact button */
+.contact-btn {
+  width: 100%;
+  padding: 6px;
+  font-size: 12px;
+  border-radius: 12px;
+  border: 1px solid #3a8bff;
+  background-color: white;
+  color: #3a8bff;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.contact-btn:hover {
+  background-color: #3a8bff;
+  color: white;
+}
