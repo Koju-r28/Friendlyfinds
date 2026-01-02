@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './context/protectedroutes';
 import Home from './pages/home/home'; 
 import Furniture from './pages/furniture/furniture';
+import Collections from './pages/collections/collection';
 
 import './App.css';
 
@@ -21,6 +22,11 @@ function App() {
               <Furniture />
             </ProtectedRoute>
           } />
+          <Route path="/collections" element={
+            <ProtectedRoute>
+              <Collections />
+            </ProtectedRoute>
+             } />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
