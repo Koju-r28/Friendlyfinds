@@ -14,6 +14,13 @@ const LoginSignup = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login, signup } = useAuth();
+  const [termsChecked, setTermsChecked] = useState(false); 
+
+  const isValidEmail = (email) => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+};
+
 
   const handleChange = (e) => {
     setFormData({
@@ -36,6 +43,12 @@ const LoginSignup = () => {
           return;
         }
 
+        if(!isValidEmail(formData.email)){
+          setError('Please enter the valid email address');
+          setLoading(false);
+          return;
+        }
+
         const result = await login(formData.email, formData.password);
         
         if (result.success) {
@@ -48,6 +61,16 @@ const LoginSignup = () => {
         // Signup
         if (!formData.username || !formData.email || !formData.password) {
           setError('Please fill in all fields');
+          setLoading(false);
+          return;
+        }
+        if (!isValidEmail(formData.email)) {
+           setError('Please enter a valid email address');
+           setLoading(false);
+           return;}
+
+        if(!termsChecked){
+          setError('You must agree to the terms and conditions');
           setLoading(false);
           return;
         }
@@ -101,7 +124,6 @@ const LoginSignup = () => {
             
             <div className="verified-badge">
             
-              
             </div>
            
           </div>
@@ -199,7 +221,7 @@ const LoginSignup = () => {
 
             {!isLogin && (
               <div className="terms-checkbox">
-                <input type="checkbox" id="terms" required disabled={loading} />
+                <input type="checkbox" id="terms" checked ={termsChecked} onChange={(e)=>setTermsChecked(e.target.checked)} disabled={loading} />
                 <label htmlFor="terms">
                   I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
                 </label>
