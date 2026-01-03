@@ -1,5 +1,6 @@
 import React from "react";
 import { useAuth } from '../../context/AuthContext';
+import { Link } from 'react-router-dom';
 import Navbar from '../../Components/Navbar/Navbar'; // Import Navbar
 import "./home.css";
 import hero from "../../Components/Assets/hero.png";
@@ -49,7 +50,7 @@ const Home = () => {
               </div>
             </div>
             
-            <div className="category-card">
+            <Link to="/furniture" className="category-card">
               <div className="category-icon furniture-icon">
                 <span>🪑</span>
               </div>
@@ -57,7 +58,7 @@ const Home = () => {
                 <h3>Furniture</h3>
                 <p>Desks, chairs, lamps & lighting</p>
               </div>
-            </div>
+            </Link>
           </div>
         </section>
 
