@@ -17,11 +17,13 @@ function App() {
         <Home />
       </ProtectedRoute>
         } />
+
           <Route path="/furniture" element={
             <ProtectedRoute>
               <Furniture />
             </ProtectedRoute>
           } />
+          
           <Route path="/collections" element={
             <ProtectedRoute>
               <Collections />
