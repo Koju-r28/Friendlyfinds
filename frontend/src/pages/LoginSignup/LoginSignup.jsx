@@ -102,35 +102,21 @@ const LoginSignup = () => {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-hero">
-        <div className="hero-content">
-          <div className="logo-section">
-            <img src={logo} alt="Friendly Finds Logo" className="logo-image" />
-          </div>
-
-          <h1 className="hero-title">
-            Turn your old items into <span className="highlight-green">new possibilities.</span>
+    
+     <div className="login-page">
+      {/* Green Hero Section at TOP */}
+      <div className="login-hero">
+        <div className="hero-content-center">
+          <img src={logo} alt="Friendly Finds Logo" className="hero-logo" />
+          <h1 className="hero-title-main">
+            Turn your old items into <span className="highlight-white">new possibilities.</span>
           </h1>
-          
-          <p className="hero-description">
-            Join the most trusted student-to-student marketplace. Buy and sell items safely within your campus community.
-          </p>
-
-          <div className="hero-image">
-            
-               <img src={hero} className="hero-image" alt="Hero" />
-        
-            
-            <div className="verified-badge">
-            
-            </div>
-           
-          </div>
+          <p className="hero-subtitle-main">Join the most trusted student-to-student marketplace</p>
         </div>
       </div>
 
-      <div className="auth-form-container">
+      {/* Login Form Section */}
+      <div className="login-container">
         <div className="auth-form-wrapper">
           <div className="form-header">
             <h2>Get Started</h2>
@@ -174,7 +160,7 @@ const LoginSignup = () => {
             )}
 
             <div className="form-group">
-              <label>{isLogin ? 'Email' : 'Email'}</label>
+              <label>Email</label>
               <div className="input-wrapper">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
@@ -185,7 +171,7 @@ const LoginSignup = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder={isLogin ? "your@email.com" : "abc@gmail.com"}
+                  placeholder="your@email.com"
                   disabled={loading}
                 />
               </div>
@@ -221,7 +207,7 @@ const LoginSignup = () => {
 
             {!isLogin && (
               <div className="terms-checkbox">
-                <input type="checkbox" id="terms" checked ={termsChecked} onChange={(e)=>setTermsChecked(e.target.checked)} disabled={loading} />
+                <input type="checkbox" id="terms" required disabled={loading} />
                 <label htmlFor="terms">
                   I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
                 </label>
@@ -258,6 +244,42 @@ const LoginSignup = () => {
               </button>
             </p>
           </div>
+        </div>
+
+        {/* Info Section at Bottom */}
+        <div className="info-section-bottom">
+          <div className="info-header">
+            <h2 className="info-main-title">Why Choose Friendly Finds?</h2>
+            <p className="info-subtitle">Your trusted campus marketplace for student essentials</p>
+          </div>
+          
+          <div className="info-cards">
+            <div className="info-card">
+              <div className="info-card-icon">🎓</div>
+              <h4>Student-Verified</h4>
+              <p>Exclusive community of verified university students only</p>
+            </div>
+            
+            <div className="info-card">
+              <div className="info-card-icon">💰</div>
+              <h4>Zero Fees</h4>
+              <p>No hidden charges. Keep 100% of your earnings</p>
+            </div>
+            
+            <div className="info-card">
+              <div className="info-card-icon">🤝</div>
+              <h4>Safe Meetups</h4>
+              <p>Meet sellers on campus in secure, public locations</p>
+            </div>
+            
+            <div className="info-card">
+              <div className="info-card-icon">♻️</div>
+              <h4>Eco-Friendly</h4>
+              <p>Reduce waste by giving items a second life</p>
+            </div>
+          </div>
+          
+        
         </div>
       </div>
     </div>
