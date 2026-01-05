@@ -246,7 +246,7 @@ const LoginSignup = () => {
           </div>
         </div>
 
-        {/* Info Section at Bottom */}
+        
         <div className="info-section-bottom">
           <div className="info-header">
             <h2 className="info-main-title">Why Choose Friendly Finds?</h2>
