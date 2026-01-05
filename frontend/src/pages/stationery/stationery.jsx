@@ -1,131 +1,74 @@
 import React, { useState } from 'react';
 import Navbar from '../../Components/Navbar/Navbar';
-import './Furniture.css';
+import './stationery.css';
 
-const Furniture = () => {
+const Stationery = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [priceRange, setPriceRange] = useState('all');
 
-  // Sample furniture data - replace with API call later
-  const furnitureItems = [
-  {
-    id: 1,
-    name: 'Study Desk',
-    price: 800,
-    category: 'desk',
-    condition: 'Like New',
-    seller: 'Bijita Manandhar',
-    image: 'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=400&h=300&fit=crop',
-    location: '28 kilo,Dhulikhel'
-  },
-  {
-    id: 2,
-    name: 'Office Chair',
-    price: 3500,
-    category: 'chair',
-    condition: 'Good',
-    seller: 'Ritu Koju',
-    image: 'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=400&h=300&fit=crop',
-    location: 'Buddha Park,28 kilo'
-  },
-  {
-    id: 3,
-    name: 'Bookshelf',
-    price: 5000,
-    category: 'storage',
-    condition: 'Excellent',
-    seller: 'Meejala Lama',
-    image: 'https://images.unsplash.com/photo-1594620302200-9a762244a156?w=400&h=300&fit=crop',
-    location: 'Ku gate,Dhulikhel'
-  },
-  {
-    id: 4,
-    name: 'Table Lamp',
-    price: 399,
-    category: 'Electronics',
-    condition: 'Like New',
-    seller: 'Sudha Karki',
-    image: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400&h=300&fit=crop',
-    location: 'Khadpu,Dhulikel'
-  },
-  {
-    id: 5,
-    name: 'Low Bed',
-    price: 9999,
-    category: 'bed',
-    condition: 'Good',
-    seller: 'Swostika Manandhar',
-    image: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=400&h=300&fit=crop',
-    location: 'Banepa, Kavre'
-  },
-  {
-    id: 6,
-    name: 'Study Table',
-    price: 800,
-    category: 'Desk',
-    condition: 'Good',
-    seller: 'Kenij Manandhar',
-    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop',
-    location: 'Campus A, Room 108'
-  },
-  {
-    id: 7,
-    name: 'Induction',
-    price: 999,
-    category: 'Electronics',
-    condition: 'Excellent',
-    seller: 'Riyaz Koju',
-    image: 'https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=400&h=300&fit=crop',
-    location: 'Campus C, Room 304'
-  },
-  {
-    id: 8,
-    name: 'Poartable Fan',
-    price: 700,
-    category: 'Electronics',
-    condition: 'Like New',
-    seller: 'Yurika Manandhar',
-    image: 'https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=400&h=300&fit=crop',
-    location: 'Campus B, Room 201'
-  }
-];
+  // Sample stationery data
+  const stationeryItems = [
+    {
+      id: 1,
+      name: 'Engineering Drafter',
+      price: 200,
+      category: 'drafting',
+      condition: 'Like New',
+      seller: 'Ritu Koju',
+      image: 'https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=400&h=300&fit=crop',
+      location: 'Buddha park,28 kilo'
+    },
+    {
+      id: 2,
+      name: 'Scientific Calculator',
+      price: 450,
+      category: 'calculator',
+      condition: 'Excellent',
+      seller: 'Bijita Manandhar',
+      image: 'https://images.unsplash.com/photo-1611224885990-ab7363d1f2f8?w=400&h=300&fit=crop',
+      location: '28 kilo,dhulikhel'
+    },
+  
+  ];
 
   const categories = [
-    { id: 'all', name: 'All Furniture', icon: '🏠' },
-    { id: 'desk', name: 'Desks', icon: '🪑' },
-    { id: 'chair', name: 'Chairs', icon: '💺' },
-    { id: 'storage', name: 'Storage', icon: '📦' },
-    { id: 'lighting', name: 'Lighting', icon: '💡' },
-    { id: 'bed', name: 'Beds', icon: '🛏️' }
+    { id: 'all', name: 'All Stationery', icon: '📦' },
+    { id: 'writing', name: 'Writing', icon: '✏️' },
+    { id: 'notebooks', name: 'Notebooks', icon: '📓' },
+    { id: 'drafting', name: 'Drafting Tools', icon: '📐' },
+    { id: 'calculator', name: 'Calculators', icon: '🔢' },
+    { id: 'paper', name: 'Paper Products', icon: '📄' },
+    { id: 'supplies', name: 'Office Supplies', icon: '📎' }
   ];
 
   // Filter items
-  const filteredItems = furnitureItems.filter(item => {
+  const filteredItems = stationeryItems.filter(item => {
     const categoryMatch = selectedCategory === 'all' || item.category === selectedCategory;
     
     let priceMatch = true;
-if (priceRange === 'under50') priceMatch = item.price < 300;
-else if (priceRange === '50-100') priceMatch = item.price >= 300 && item.price <= 700;
-else if (priceRange === '100-200') priceMatch = item.price >= 700 && item.price <= 1000;
-else if (priceRange === 'over200') priceMatch = item.price > 1000;
+    if (priceRange === 'under50') priceMatch = item.price < 300;
+    else if (priceRange === '50-100') priceMatch = item.price >= 300 && item.price <= 700;
+    else if (priceRange === '100-200') priceMatch = item.price >= 700 && item.price <= 1000;
+    else if (priceRange === 'over200') priceMatch = item.price > 1000;
     return categoryMatch && priceMatch;
   });
+  
 
   return (
     <>
       <Navbar />
-      <div className="furniture-page">
+      <div className="stationery-page">
         {/* Header */}
-        <div className="furniture-header">
+        <div className="stationery-header">
           <div className="header-content">
-            <h1>🪑 Furniture</h1>
-            <p>Find quality pre-owned furniture from fellow students</p>
+            <h1>✏️ Stationery Marketplace</h1>
+            <p>Find quality books, drafters, and stationery from fellow students</p>
           </div>
         </div>
 
-        <div className="furniture-container">
+        <div className="stationery-container">
           {/* Sidebar Filters */}
-          <aside className="furniture-sidebar">
+          <aside className="stationery-sidebar">
             <div className="filter-section">
               <h3>Categories</h3>
               <div className="category-filters">
@@ -156,7 +99,7 @@ else if (priceRange === 'over200') priceMatch = item.price > 1000;
                   <span>All Prices</span>
                 </label>
                 <label className="radio-label">
-  <input
+                  <input
     type="radio"
     name="price"
     value="under50"
@@ -200,7 +143,7 @@ else if (priceRange === 'over200') priceMatch = item.price > 1000;
           </aside>
 
           {/* Main Content */}
-          <main className="furniture-main">
+          <main className="stationery-main">
             <div className="results-header">
               <h2>
                 {selectedCategory === 'all' ? 'All Items' : categories.find(c => c.id === selectedCategory)?.name}
@@ -208,16 +151,16 @@ else if (priceRange === 'over200') priceMatch = item.price > 1000;
               </h2>
             </div>
 
-            <div className="furniture-grid">
+            <div className="stationery-grid">
               {filteredItems.map(item => (
-                <div key={item.id} className="furniture-card">
+                <div key={item.id} className="stationery-card">
                   <div className="card-image">
                     <img src={item.image} alt={item.name} />
                     <span className="condition-badge">{item.condition}</span>
                   </div>
                   <div className="card-content">
                     <h3 className="item-name">{item.name}</h3>
-                    <p className="item-price">Rs.{item.price}</p>
+                    <p className="item-price">₹{item.price}</p>
                     <div className="item-meta">
                       <span className="seller">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -235,7 +178,7 @@ else if (priceRange === 'over200') priceMatch = item.price > 1000;
                       </span>
                     </div>
                     <div className="card-actions">
-  <button className="btn-buy">
+                      <button className="btn-buy">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <circle cx="9" cy="21" r="1"></circle>
       <circle cx="20" cy="21" r="1"></circle>
@@ -250,7 +193,7 @@ else if (priceRange === 'over200') priceMatch = item.price > 1000;
       <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
     </svg>
   </button>
-</div>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -273,4 +216,4 @@ else if (priceRange === 'over200') priceMatch = item.price > 1000;
   );
 };
 
-export default Furniture;
+export default Stationery;

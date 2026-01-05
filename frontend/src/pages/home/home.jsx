@@ -25,7 +25,7 @@ const Home = () => {
               <div className="search-bar">
                 <input 
                   type="text" 
-                  placeholder="Search for drafter,Stationary..."
+                  placeholder="Search for drafter,Stationery..."
                   className="search-input"
                 />
                 <button className="search-button">Search</button>
@@ -40,7 +40,7 @@ const Home = () => {
           <h2>Browse by Category</h2>
           <div className="categories-grid">
             {/* Stationery Card */}
-            <Link to="/stationary" className="category-card">
+            <Link to="/stationery" className="category-card">
               <div className="category-icon stationary-icon">
                 <span>✏️</span>
               </div>
