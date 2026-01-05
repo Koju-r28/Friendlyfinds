@@ -1,11 +1,11 @@
-.furniture-page {
+.stationery-page {
   min-height: 100vh;
   background: #f9fafb;
 }
 
 /* Header */
-.furniture-header {
-  background: linear-gradient(135deg, #1a4d3a 0%, #2d5f4a  100%);
+.stationery-header {
+  background: linear-gradient(135deg,  #1a4d3a 0%, #2d5f4a  100%);
   color: white;
   padding: 3rem 2rem;
   text-align: center;
@@ -23,7 +23,7 @@
 }
 
 /* Container */
-.furniture-container {
+.stationery-container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 2rem;
@@ -33,7 +33,7 @@
 }
 
 /* Sidebar */
-.furniture-sidebar {
+.stationery-sidebar {
   background: white;
   border-radius: 1rem;
   padding: 1.5rem;
@@ -83,12 +83,12 @@
 
 .category-btn:hover {
   border-color: #10b981;
-  background: #f0fdf4;
+  background: #fffbeb;
   color: #10b981;
 }
 
 .category-btn.active {
-  border-color: #10b981;
+  border-color:  #10b98b;
   background: #10b981;
   color: white;
 }
@@ -121,7 +121,7 @@
 }
 
 /* Main Content */
-.furniture-main {
+.stationery-main {
   min-height: 600px;
 }
 
@@ -144,15 +144,15 @@
   color: #6b7280;
 }
 
-/* Furniture Grid */
-.furniture-grid {
+/* Stationery Grid */
+.stationery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
 }
 
-/* Furniture Card */
-.furniture-card {
+/* Stationery Card */
+.stationery-card {
   background: white;
   border-radius: 1rem;
   overflow: hidden;
@@ -160,7 +160,7 @@
   transition: all 0.3s;
 }
 
-.furniture-card:hover {
+.stationery-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
 }
@@ -179,7 +179,7 @@
   transition: transform 0.3s;
 }
 
-.furniture-card:hover .card-image img {
+.stationery-card:hover .card-image img {
   transform: scale(1.05);
 }
 
@@ -259,7 +259,7 @@
 }
 
 .btn-contact:hover {
-  background: #059669;
+  background: #10b981;
 }
 
 .btn-favorite {
@@ -274,7 +274,7 @@
 
 .btn-favorite:hover {
   background: #fee2e2;
-  color: #dc2626;
+  color: #10b981;
 }
 
 /* No Results */
@@ -298,11 +298,11 @@
 
 /* Responsive */
 @media (max-width: 1024px) {
-  .furniture-container {
+  .stationery-container {
     grid-template-columns: 1fr;
   }
 
-  .furniture-sidebar {
+  .stationery-sidebar {
     position: static;
   }
 
@@ -313,7 +313,7 @@
 }
 
 @media (max-width: 640px) {
-  .furniture-header {
+  .stationery-header {
     padding: 2rem 1rem;
   }
 
@@ -321,11 +321,11 @@
     font-size: 1.75rem;
   }
 
-  .furniture-container {
+  .stationery-container {
     padding: 1rem;
   }
 
-  .furniture-grid {
+  .stationery-grid {
     grid-template-columns: 1fr;
   }
 }

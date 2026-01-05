@@ -52,11 +52,11 @@ const Navbar = () => {
             Collections
           </a>
           
-          <a href="/contact" className="nav-link">
+          <a href="/Become a Seller" className="nav-link">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
             </svg>
-            Contact
+            Become a Seller
           </a>
 
           <a href="/cart" className="nav-link cart-link">
@@ -66,7 +66,7 @@ const Navbar = () => {
               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
             </svg>
             Cart
-            <span className="cart-badge">3</span>
+            <span className="cart-badge"></span>
           </a>
         </div>
 <div className="user-menu">

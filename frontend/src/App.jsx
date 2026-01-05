@@ -4,6 +4,7 @@ import ProtectedRoute from './context/protectedroutes';
 import Home from './pages/home/home'; 
 import Furniture from './pages/furniture/furniture';
 import Collections from './pages/collections/collection';
+import Stationery from './pages/stationery/stationery';
 
 import './App.css';
 
@@ -27,6 +28,11 @@ function App() {
           <Route path="/collections" element={
             <ProtectedRoute>
               <Collections />
+            </ProtectedRoute>
+             } />
+             <Route path="/stationery" element={
+            <ProtectedRoute>
+              <Stationery />
             </ProtectedRoute>
              } />
         </Routes>
