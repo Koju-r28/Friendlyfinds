@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import './LoginSignup.css';
 import logo from '../../Components/Assets/logo.png';
-import hero from "../../Components/Assets/hero.png";
+import hero from '../../Components/Assets/hero.png';
 
 const LoginSignup = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -207,7 +207,7 @@ const LoginSignup = () => {
 
             {!isLogin && (
               <div className="terms-checkbox">
-                <input type="checkbox" id="terms" required disabled={loading} />
+                <input type="checkbox" id="terms" checked={termsChecked} onChange={(e)=> setTermsChecked(e.target.checked)} required disabled={loading} />
                 <label htmlFor="terms">
                   I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
                 </label>
