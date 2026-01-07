@@ -6,6 +6,16 @@ const Furniture = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [priceRange, setPriceRange] = useState('all');
 
+  // Modal & buy form state
+  const [showBuyModal, setShowBuyModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [buyForm, setBuyForm] = useState({
+    name: '',
+    email: '',
+    location:'',
+    message: ''
+  });
+
   // Sample furniture data - replace with API call later
   const furnitureItems = [
   {
@@ -110,6 +120,58 @@ else if (priceRange === '100-200') priceMatch = item.price >= 700 && item.price 
 else if (priceRange === 'over200') priceMatch = item.price > 1000;
     return categoryMatch && priceMatch;
   });
+
+   const handleBuyClick = (item) => {
+    setSelectedItem(item);
+    setShowBuyModal(true);
+  };
+
+  const handleBuyFormChange = (e) => {
+    setBuyForm({
+      ...buyForm,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleBuySubmit = async (e) => {
+  e.preventDefault();
+  if (!buyForm.name || !buyForm.email || !buyForm.location) {
+    alert("Please fill in all required fields");
+    return;
+  }
+
+  try {
+    const res = await fetch('http://localhost:5000/api/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: buyForm.name,
+        email: buyForm.email,
+        location: buyForm.location,
+        message: buyForm.message,
+        productId: selectedItem.id // make sure this matches your backend Product._id
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      alert('Order placed successfully!');
+      setBuyForm({ name: '', email: '', location: '', message: '' });
+      setShowBuyModal(false);
+      setSelectedItem(null);
+    } else {
+      alert('Error: ' + data.message);
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert('Something went wrong while placing the order');
+  }
+};
+
 
   return (
     <>
@@ -235,7 +297,7 @@ else if (priceRange === 'over200') priceMatch = item.price > 1000;
                       </span>
                     </div>
                     <div className="card-actions">
-  <button className="btn-buy">
+  <button className="btn-buy" onClick={()=>handleBuyClick(item)}>
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <circle cx="9" cy="21" r="1"></circle>
       <circle cx="20" cy="21" r="1"></circle>
@@ -269,6 +331,58 @@ else if (priceRange === 'over200') priceMatch = item.price > 1000;
           </main>
         </div>
       </div>
+        {/* Buy Modal */}
+      {showBuyModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Buy {selectedItem.name}</h2>
+            <form onSubmit={handleBuySubmit}>
+              <label>
+                Your Name:
+                <input
+                  type="text"
+                  name="name"
+                  value={buyForm.name}
+                  onChange={handleBuyFormChange}
+                  required
+                />
+              </label>
+              <label>
+                Email Address:
+                <input
+                  type="email"
+                  name="email"
+                  value={buyForm.email}
+                  onChange={handleBuyFormChange}
+                  required
+                />
+              </label>
+              <label>
+                Location:
+                <input
+                  type="text"
+                  name="location"
+                  value={buyForm.location}
+                  onChange={handleBuyFormChange}
+                  required
+                />
+              </label>
+              <label>
+                Message (optional):
+                <textarea
+                  name="message"
+                  value={buyForm.message}
+                  onChange={handleBuyFormChange}
+                />
+              </label>
+              <div className="modal-actions">
+                <button type="submit" className="btn-confirm">Submit</button>
+                <button type="button" className="btn-cancel" onClick={() => setShowBuyModal(false)}>Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </>
   );
 };

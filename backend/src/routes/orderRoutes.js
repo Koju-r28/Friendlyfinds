@@ -1,13 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const { createOrder, getOrders } = require('../controllers/orderControllers');
 
-// Order routes
-router.get('/', (req, res) => {
-  res.json({ message: 'Get all orders' });
-});
-
-router.post('/', (req, res) => {
-  res.json({ message: 'Create order' });
-});
+// POST /api/orders -> place a new order
+router.post('/', createOrder);
 
 module.exports = router;
