@@ -1,3 +1,7 @@
+#FRIENDLYFINDS
+Friendlyfinds is  built with a **Node.js/Express + MongoDB** backend and a **React + Vite ** frontend. 
+This project is designed so that anyone can **clone, install, run, and contribute** to it.
+Semester project of 3rd sem
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
