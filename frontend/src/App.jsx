@@ -7,6 +7,7 @@ import Furniture from './pages/furniture/furniture';
 import Collections from './pages/collections/collection';
 import Stationery from './pages/stationery/stationery';
 import Cart from './pages/cart/cart';
+import Seller from './pages/seller/seller';
 
 import './App.css';
 
@@ -43,6 +44,11 @@ function App() {
             <Route path="/cart" element={
               <ProtectedRoute>
                 <Cart />
+              </ProtectedRoute>
+            } />
+            <Route path="/seller" element={
+              <ProtectedRoute>
+                <Seller />
               </ProtectedRoute>
             } />
         </Routes>
