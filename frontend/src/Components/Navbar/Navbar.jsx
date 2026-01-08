@@ -1,9 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import './Navbar.css';
 import logo from '../Assets/logo.png';
 
 const Navbar = () => {
+  const { getCartCount } = useCart(); // Get cart count
+  const cartCount = getCartCount()
   const { user, logout } = useAuth();
 
   const handleLogout = () => {
