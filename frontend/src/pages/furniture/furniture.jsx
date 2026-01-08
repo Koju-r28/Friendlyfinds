@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useCart } from '../../context/CartContext';
+import { Link } from 'react-router-dom'; 
 import Navbar from '../../Components/Navbar/Navbar';
 import './Furniture.css';
 
 const Furniture = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [priceRange, setPriceRange] = useState('all');
+  const { addToCart } = useCart();
 
   // Modal & buy form state
   const [showBuyModal, setShowBuyModal] = useState(false);
@@ -19,7 +22,7 @@ const Furniture = () => {
   // Sample furniture data - replace with API call later
   const furnitureItems = [
   {
-    id: 1,
+    id: 'furn-1',
     name: 'Study Desk',
     price: 800,
     category: 'desk',
@@ -29,7 +32,7 @@ const Furniture = () => {
     location: '28 kilo,Dhulikhel'
   },
   {
-    id: 2,
+    id: 'furn-2',
     name: 'Office Chair',
     price: 3500,
     category: 'chair',
@@ -39,7 +42,7 @@ const Furniture = () => {
     location: 'Buddha Park,28 kilo'
   },
   {
-    id: 3,
+    id:'furn-3',
     name: 'Bookshelf',
     price: 5000,
     category: 'storage',
@@ -49,7 +52,7 @@ const Furniture = () => {
     location: 'Ku gate,Dhulikhel'
   },
   {
-    id: 4,
+    id: 'furn-4',
     name: 'Table Lamp',
     price: 399,
     category: 'Electronics',
@@ -59,7 +62,7 @@ const Furniture = () => {
     location: 'Khadpu,Dhulikel'
   },
   {
-    id: 5,
+    id:'furn-5',
     name: 'Low Bed',
     price: 9999,
     category: 'bed',
@@ -69,7 +72,7 @@ const Furniture = () => {
     location: 'Banepa, Kavre'
   },
   {
-    id: 6,
+    id:'furn-6',
     name: 'Study Table',
     price: 800,
     category: 'Desk',
@@ -79,7 +82,7 @@ const Furniture = () => {
     location: 'Campus A, Room 108'
   },
   {
-    id: 7,
+    id: 'furn-7',
     name: 'Induction',
     price: 999,
     category: 'Electronics',
@@ -89,7 +92,7 @@ const Furniture = () => {
     location: 'Campus C, Room 304'
   },
   {
-    id: 8,
+    id: 'furn-8',
     name: 'Poartable Fan',
     price: 700,
     category: 'Electronics',
@@ -105,7 +108,7 @@ const Furniture = () => {
     { id: 'desk', name: 'Desks', icon: '🪑' },
     { id: 'chair', name: 'Chairs', icon: '💺' },
     { id: 'storage', name: 'Storage', icon: '📦' },
-    { id: 'lighting', name: 'Lighting', icon: '💡' },
+    { id: 'electrical', name: 'Electrical', icon: '💡' },
     { id: 'bed', name: 'Beds', icon: '🛏️' }
   ];
 
@@ -114,10 +117,10 @@ const Furniture = () => {
     const categoryMatch = selectedCategory === 'all' || item.category === selectedCategory;
     
     let priceMatch = true;
-if (priceRange === 'under50') priceMatch = item.price < 300;
-else if (priceRange === '50-100') priceMatch = item.price >= 300 && item.price <= 700;
-else if (priceRange === '100-200') priceMatch = item.price >= 700 && item.price <= 1000;
-else if (priceRange === 'over200') priceMatch = item.price > 1000;
+if (priceRange === 'under500') priceMatch = item.price < 500;
+else if (priceRange === '500-1000') priceMatch = item.price >= 500 && item.price <= 1000;
+else if (priceRange === '1000-5000') priceMatch = item.price >= 1000 && item.price <= 5000;
+else if (priceRange === 'over5000') priceMatch = item.price > 5000;
     return categoryMatch && priceMatch;
   });
 
@@ -171,6 +174,10 @@ else if (priceRange === 'over200') priceMatch = item.price > 1000;
     alert('Something went wrong while placing the order');
   }
 };
+  const handleAddToCart = (item) => {
+    addToCart(item);
+    alert(`${item.name} added to cart!`);
+  };
 
 
   return (
@@ -221,41 +228,41 @@ else if (priceRange === 'over200') priceMatch = item.price > 1000;
   <input
     type="radio"
     name="price"
-    value="under50"
-    checked={priceRange === 'under50'}
+    value="under500"
+    checked={priceRange === 'under500'}
     onChange={(e) => setPriceRange(e.target.value)}
   />
-  <span>Under Rs.300</span>
+  <span>Under Rs.500</span>
 </label>
 <label className="radio-label">
   <input
     type="radio"
     name="price"
-    value="50-100"
-    checked={priceRange === '50-100'}
+    value="500-1000"
+    checked={priceRange === '500-1000'}
     onChange={(e) => setPriceRange(e.target.value)}
   />
-  <span>Rs.300 - Rs.700</span>
+  <span>Rs.500 - Rs.1000</span>
 </label>
 <label className="radio-label">
   <input
     type="radio"
     name="price"
-    value="100-200"
-    checked={priceRange === '100-200'}
+    value="1000-5000"
+    checked={priceRange === '1000-5000'}
     onChange={(e) => setPriceRange(e.target.value)}
   />
-  <span>Rs.700 - Rs.1000</span>
+  <span>Rs.1000 - Rs.5000</span>
 </label>
 <label className="radio-label">
   <input
     type="radio"
     name="price"
-    value="over200"
-    checked={priceRange === 'over200'}
+    value="over5000"
+    checked={priceRange === 'over5000'}
     onChange={(e) => setPriceRange(e.target.value)}
   />
-  <span>Over Rs.1000</span>
+  <span>Over Rs.5000</span>
 </label>
               </div>
             </div>
@@ -270,34 +277,56 @@ else if (priceRange === 'over200') priceMatch = item.price > 1000;
               </h2>
             </div>
 
-            <div className="furniture-grid">
-              {filteredItems.map(item => (
-                <div key={item.id} className="furniture-card">
-                  <div className="card-image">
-                    <img src={item.image} alt={item.name} />
-                    <span className="condition-badge">{item.condition}</span>
-                  </div>
-                  <div className="card-content">
-                    <h3 className="item-name">{item.name}</h3>
-                    <p className="item-price">Rs.{item.price}</p>
-                    <div className="item-meta">
-                      <span className="seller">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                          <circle cx="12" cy="7" r="4"></circle>
-                        </svg>
-                        {item.seller}
-                      </span>
-                      <span className="location">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                          <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
-                        {item.location}
-                      </span>
-                    </div>
-                    <div className="card-actions">
-  <button className="btn-buy" onClick={()=>handleBuyClick(item)}>
+<div className="furniture-grid">
+  {filteredItems.map(item => (
+    <div key={item.id} className="furniture-card">
+      <div className="card-image">
+        <img src={item.image} alt={item.name} />
+        <span className="condition-badge">{item.condition}</span>
+      </div>
+      <div className="card-content">
+        <h3 className="item-name">{item.name}</h3>
+        <p className="item-price">Rs.{item.price}</p>
+        <div className="item-meta">
+          <span className="seller">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            {item.seller}
+          </span>
+          <span className="location">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            {item.location}
+          </span>
+        </div>
+        <div className="card-actions">
+          <button className="btn-buy" onClick={() => handleBuyClick(item)}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            Buy Now
+          </button>
+          <button className="btn-cart" onClick={() => handleAddToCart(item)} title="Add to Cart">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
+<div className="card-actions">
+  <button className="btn-buy" onClick={() => handleBuyClick(item)}>
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <circle cx="9" cy="21" r="1"></circle>
       <circle cx="20" cy="21" r="1"></circle>
@@ -305,18 +334,14 @@ else if (priceRange === 'over200') priceMatch = item.price > 1000;
     </svg>
     Buy Now
   </button>
-  <button className="btn-cart">
+  <button className="btn-cart" onClick={() => handleAddToCart(item)} title="Add to Cart">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <circle cx="9" cy="21" r="1"></circle>
       <circle cx="20" cy="21" r="1"></circle>
       <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
     </svg>
   </button>
-</div>
-                  </div>
-                </div>
-              ))}
-            </div>
+</div>      
 
             {filteredItems.length === 0 && (
               <div className="no-results">

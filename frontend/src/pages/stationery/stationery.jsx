@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
+import { useCart } from '../../context/CartContext';
+import { Link } from 'react-router-dom';
 import Navbar from '../../Components/Navbar/Navbar';
 import './stationery.css';
 
 const Stationery = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [priceRange, setPriceRange] = useState('all');
-
+  const { addToCart } = useCart();
   // Sample stationery data
   const stationeryItems = [
     {
-      id: 1,
+      id: 'stat-1',
       name: 'Engineering Drafter',
       price: 200,
       category: 'drafting',
@@ -19,7 +21,7 @@ const Stationery = () => {
       location: 'Buddha park,28 kilo'
     },
     {
-      id: 2,
+      id: 'stat-2',
       name: 'Scientific Calculator',
       price: 450,
       category: 'calculator',
@@ -52,8 +54,12 @@ const Stationery = () => {
     else if (priceRange === 'over200') priceMatch = item.price > 1000;
     return categoryMatch && priceMatch;
   });
-  
 
+   const handleAddToCart = (item) => {
+    addToCart(item);
+    alert(`${item.name} added to cart!`);
+  }; 
+  
   return (
     <>
       <Navbar />
@@ -177,8 +183,9 @@ const Stationery = () => {
                         {item.location}
                       </span>
                     </div>
-                    <div className="card-actions">
-                      <button className="btn-buy">
+                    
+<div className="card-actions">
+  <button className="btn-buy">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <circle cx="9" cy="21" r="1"></circle>
       <circle cx="20" cy="21" r="1"></circle>
@@ -186,15 +193,15 @@ const Stationery = () => {
     </svg>
     Buy Now
   </button>
-  <button className="btn-cart">
+  <button className="btn-cart" onClick={() => handleAddToCart(item)} title="Add to Cart">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <circle cx="9" cy="21" r="1"></circle>
       <circle cx="20" cy="21" r="1"></circle>
       <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
     </svg>
   </button>
-                    </div>
-                  </div>
+</div>
+                </div>
                 </div>
               ))}
             </div>
