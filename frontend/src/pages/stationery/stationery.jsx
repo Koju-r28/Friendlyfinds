@@ -166,7 +166,7 @@ const Stationery = () => {
                   </div>
                   <div className="card-content">
                     <h3 className="item-name">{item.name}</h3>
-                    <p className="item-price">₹{item.price}</p>
+                    <p className="item-price">Rs.{item.price}</p>
                     <div className="item-meta">
                       <span className="seller">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
