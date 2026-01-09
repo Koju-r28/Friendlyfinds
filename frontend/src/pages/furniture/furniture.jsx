@@ -323,27 +323,9 @@ else if (priceRange === 'over5000') priceMatch = item.price > 5000;
       </div>
     </div>
   ))}
-</div>
+</div>    
 
-<div className="card-actions">
-  <button className="btn-buy" onClick={() => handleBuyClick(item)}>
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <circle cx="9" cy="21" r="1"></circle>
-      <circle cx="20" cy="21" r="1"></circle>
-      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-    </svg>
-    Buy Now
-  </button>
-  <button className="btn-cart" onClick={() => handleAddToCart(item)} title="Add to Cart">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <circle cx="9" cy="21" r="1"></circle>
-      <circle cx="20" cy="21" r="1"></circle>
-      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-    </svg>
-  </button>
-</div>      
-
-            {filteredItems.length === 0 && (
+           {filteredItems.length === 0 && (
               <div className="no-results">
                 <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <circle cx="11" cy="11" r="8"></circle>

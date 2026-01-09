@@ -17,69 +17,53 @@ const Cart = () => {
     <>
       <Navbar />
       
-      <div className="cart-container">
-        <div className="cart-content">
+      <div className="cart-page">
+        <div className="cart-wrapper">
           {/* Cart Items Section */}
-          <div className="cart-items-section">
-            <h1 className="cart-title">Shopping Cart</h1>
+          <div className="cart-left">
+            <h1 className="cart-heading">Shopping Cart</h1>
 
             {cartItems.length === 0 ? (
-              <div className="empty-cart">
-                <div className="empty-cart-icon">🛒</div>
-                <p className="empty-cart-text">Your cart is empty</p>
-                <Link to="/furniture" className="continue-shopping-btn">
+              <div className="empty-cart-box">
+                <div className="empty-icon">🛒</div>
+                <p className="empty-text">Your cart is empty</p>
+                <Link to="/furniture" className="shop-btn">
                   Continue Shopping
                 </Link>
               </div>
             ) : (
-              <div className="cart-items-list">
+              <div className="items-list">
                 {cartItems.map(item => (
-                  <div key={item.id} className="cart-item">
-                    <div className="item-image">
+                  <div key={item.id} className="product-card">
+                    <div className="product-img-box">
                       <img src={item.image} alt={item.name} />
                     </div>
 
-                    <div className="item-details">
-                      <div className="item-header">
-                        <div className="item-info">
-                          <h3 className="item-name">{item.name}</h3>
-                          <p className="item-category">{item.category}</p>
-                          <p className="item-seller">Seller: {item.seller}</p>
+                    <div className="product-info">
+                      <div className="info-top">
+                        <div>
+                          <h3 className="product-title">{item.name}</h3>
+                          <p className="product-cat">{item.category}</p>
+                          <p className="product-seller">Seller: {item.seller}</p>
                         </div>
                         <button
                           onClick={() => removeFromCart(item.id)}
-                          className="remove-btn"
-                          aria-label="Remove item"
+                          className="delete-btn"
+                          title="Remove"
                         >
-                          🗑️
+                          ✕
                         </button>
                       </div>
 
-                      <div className="item-footer">
-                        <div className="quantity-controls">
-                          <button
-                            onClick={() => updateQuantity(item.id, -1)}
-                            className="quantity-btn"
-                            aria-label="Decrease quantity"
-                          >
-                            −
-                          </button>
-                          <span className="quantity-value">
-                            {item.quantity}
-                          </span>
-                          <button
-                            onClick={() => updateQuantity(item.id, 1)}
-                            className="quantity-btn"
-                            aria-label="Increase quantity"
-                          >
-                            +
-                          </button>
+                      <div className="info-bottom">
+                        <div className="qty-box">
+                          <button onClick={() => updateQuantity(item.id, -1)} className="qty-btn">−</button>
+                          <span className="qty-num">{item.quantity}</span>
+                          <button onClick={() => updateQuantity(item.id, 1)} className="qty-btn">+</button>
                         </div>
-                        <div className="item-price">
-                          <p className="price-total">
-                            Rs.{(item.price * item.quantity).toFixed(2)}
-                          </p>
-                          <p className="price-each">Rs.{item.price.toFixed(2)} each</p>
+                        <div className="price-box">
+                          <div className="main-price">Rs.{(item.price * item.quantity).toFixed(2)}</div>
+                          <div className="unit-price">Rs.{item.price.toFixed(2)} each</div>
                         </div>
                       </div>
                     </div>
@@ -90,11 +74,11 @@ const Cart = () => {
           </div>
 
           {/* Order Summary Section */}
-          <div className="order-summary-section">
-            <div className="order-summary">
-              <h2 className="summary-title">Order Summary</h2>
+          <div className="cart-right">
+            <div className="summary-box">
+              <h2 className="summary-heading">Order Summary</h2>
 
-              <div className="summary-details">
+              <div className="summary-rows">
                 <div className="summary-row">
                   <span>Subtotal ({getCartCount()} items)</span>
                   <span>Rs.{subtotal.toFixed(2)}</span>
@@ -103,27 +87,23 @@ const Cart = () => {
                   <span>Tax (8%)</span>
                   <span>Rs.{tax.toFixed(2)}</span>
                 </div>
-                <div className="summary-total">
+                <div className="summary-total-row">
                   <span>Total</span>
-                  <span className="total-amount">Rs.{total.toFixed(2)}</span>
+                  <span className="total-price">Rs.{total.toFixed(2)}</span>
                 </div>
               </div>
 
-              <button
-                disabled={cartItems.length === 0}
-                className="checkout-btn"
-              >
+              <button disabled={cartItems.length === 0} className="checkout-button">
                 Proceed to Checkout
               </button>
 
-              <Link to="/furniture" className="continue-btn">
+              <Link to="/furniture" className="continue-button">
                 Continue Shopping
               </Link>
 
-              <div className="campus-pickup-info">
+              <div className="pickup-box">
                 <p>
-                  <span className="info-highlight">Campus Pickup Available!</span>
-                  <br />
+                  <strong>Campus Pickup Available!</strong><br />
                   Meet sellers safely on campus locations.
                 </p>
               </div>
