@@ -15,6 +15,7 @@ const LoginSignup = () => {
   const [loading, setLoading] = useState(false);
   const { login, signup } = useAuth();
   const [termsChecked, setTermsChecked] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false);
 
   const isValidEmail = (email) => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -185,7 +186,7 @@ const LoginSignup = () => {
                   <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                 </svg>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
@@ -193,6 +194,14 @@ const LoginSignup = () => {
                   onKeyDown={(e) => e.key === 'Enter' && handleSubmit(e)}
                   disabled={loading}
                 />
+                 <button
+                  type="button"
+                  className="show-hide-btn"
+                  onClick={() => setShowPassword(!showPassword)}
+                  tabIndex={-1}
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </button>
               </div>
             </div>
 
