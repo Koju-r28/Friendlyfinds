@@ -3,7 +3,6 @@
   background: #f9fafb;
 }
 
-/* Header */
 .furniture-header {
   background: linear-gradient(135deg, #1a4d3a 0%, #2d5f4a  100%);
   color: white;
@@ -22,7 +21,6 @@
   opacity: 0.9;
 }
 
-/* Container */
 .furniture-container {
   max-width: 1400px;
   margin: 0 auto;
@@ -32,7 +30,6 @@
   gap: 2rem;
 }
 
-/* Sidebar */
 .furniture-sidebar {
   background: white;
   border-radius: 1rem;
@@ -55,10 +52,8 @@
   font-size: 1rem;
   font-weight: 700;
   color: #1f2937;
-  margin-bottom: 1rem;
-}
+  margin-bottom: 1rem;}
 
-/* Category Filters */
 .category-filters {
   display: flex;
   flex-direction: column;
@@ -97,7 +92,6 @@
   font-size: 1.25rem;
 }
 
-/* Price Filters */
 .price-filters {
   display: flex;
   flex-direction: column;
@@ -120,7 +114,6 @@
   accent-color: #10b981;
 }
 
-/* Main Content */
 .furniture-main {
   min-height: 600px;
 }
@@ -144,14 +137,12 @@
   color: #6b7280;
 }
 
-/* Furniture Grid */
 .furniture-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
 }
 
-/* Furniture Card */
 .furniture-card {
   background: white;
   border-radius: 1rem;
@@ -236,7 +227,6 @@
   flex-shrink: 0;
 }
 
-/* Card Actions - Buy Now and Add to Cart Buttons */
 .card-actions {
   display: flex;
   gap: 0.5rem;
@@ -334,7 +324,6 @@
   color: #dc2626;
 }
 
-/* No Results */
 .no-results {
   text-align: center;
   padding: 4rem 2rem;
@@ -353,7 +342,7 @@
   margin-bottom: 0.5rem;
 }
 
-/* Responsive */
+
 @media (max-width: 1024px) {
   .furniture-container {
     grid-template-columns: 1fr;
@@ -387,14 +376,14 @@
   }
 
 }
-/* Modal Overlay */
+
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(31, 41, 55, 0.7); /* soft dark overlay */
+  background: rgba(31, 41, 55, 0.7); 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -402,19 +391,19 @@
   animation: fadeIn 0.3s ease-in-out;
 }
 
-/* Modal Content */
+
 .modal-content {
-  background: #f9fafb; /* same as page background */
+  background: #f9fafb; 
   padding: 2rem;
   border-radius: 1rem;
   width: 90%;
   max-width: 450px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  border: 2px solid #10b981; /* main theme green border */
+  border: 2px solid #10b981; 
   animation: slideDown 0.3s ease-in-out;
 }
 
-/* Modal Title */
+
 .modal-content h2 {
   color: #1f2937;
   font-size: 1.5rem;
@@ -423,7 +412,7 @@
   text-align: center;
 }
 
-/* Form Labels */
+
 .modal-content label {
   display: flex;
   flex-direction: column;
@@ -433,7 +422,6 @@
   font-size: 0.95rem;
 }
 
-/* Form Inputs & Textarea */
 .modal-content input,
 .modal-content textarea {
   padding: 0.5rem 0.75rem;
@@ -447,11 +435,10 @@
 
 .modal-content input:focus,
 .modal-content textarea:focus {
-  border-color: #10b981; /* green focus */
+  border-color: #10b981;
   box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
 }
 
-/* Modal Actions Buttons */
 .modal-actions {
   display: flex;
   justify-content: flex-end;
@@ -474,7 +461,7 @@
 }
 
 .btn-cancel {
-  background: #ef4444; /* red */
+  background: #ef4444;
   color: white;
   padding: 0.6rem 1.2rem;
   border-radius: 0.5rem;
@@ -487,7 +474,6 @@
   background: #b91c1c;
 }
 
-/* Animations */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }

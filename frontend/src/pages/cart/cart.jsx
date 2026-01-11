@@ -11,16 +11,61 @@ const Cart = () => {
 
   const total = getCartTotal();
 
+  const handleCheckout = async () => {
+    if (cartItems.length === 0) return;
+
+    try {
+      // Prepare order data
+      const orderData = {
+        userId: user.id,
+        items: cartItems.map(item => ({
+          productId: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          seller: item.seller,
+          image: item.image
+        })),
+        totalAmount: total,
+        status: 'pending',
+        createdAt: new Date().toISOString()
+      };
+
+      const response = await fetch('http://localhost:5000/api/carts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}` 
+        },
+        body: JSON.stringify(orderData)
+      });
+
+      if (response.ok) {
+        const order = await response.json();
+        alert('Order placed successfully!');
+      } else {
+        alert('Failed to place order. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error placing order:', error);
+      alert('An error occurred. Please try again.');
+    }
+  };
+
   return (
     <>
       <Navbar />
       
       <div className="cart-page">
-        <div className="cart-wrapper">
-          {/* Cart Items Section */}
-          <div className="cart-left">
-            <h1 className="cart-heading">Shopping Cart</h1>
 
+        <div className="cart-hero">
+          <h1 className="cart-hero-title">Shopping Cart</h1>
+          <p className="cart-hero-subtitle">Review and manage your items</p>
+        </div>
+
+        <div className="cart-wrapper">
+
+          <div className="cart-left">
             {cartItems.length === 0 ? (
               <div className="empty-cart-box">
                 <div className="empty-icon">🛒</div>
@@ -71,7 +116,6 @@ const Cart = () => {
             )}
           </div>
 
-          {/* Order Summary Section */}
           <div className="cart-right">
             <div className="summary-box">
               <h2 className="summary-heading">Order Summary</h2>
@@ -87,7 +131,11 @@ const Cart = () => {
                 </div>
               </div>
 
-              <button disabled={cartItems.length === 0} className="checkout-button">
+              <button 
+                disabled={cartItems.length === 0} 
+                className="checkout-button"
+                onClick={handleCheckout}
+              >
                 Proceed to Checkout
               </button>
 
