@@ -1,15 +1,20 @@
 import { AuthProvider } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './context/protectedroutes';
 import Home from './pages/home/home'; 
 import Furniture from './pages/furniture/furniture';
 import Collections from './pages/collections/collection';
+import Stationery from './pages/stationery/stationery';
+import Cart from './pages/cart/cart';
+import Seller from './pages/seller/seller';
 
 import './App.css';
 
 function App() {
   return (
     <AuthProvider>
+      <CartProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={
@@ -29,8 +34,26 @@ function App() {
               <Collections />
             </ProtectedRoute>
              } />
+
+            <Route path="/stationery" element={
+            <ProtectedRoute>
+              <Stationery />
+            </ProtectedRoute>
+             } />
+
+            <Route path="/cart" element={
+              <ProtectedRoute>
+                <Cart />
+              </ProtectedRoute>
+            } />
+            <Route path="/seller" element={
+              <ProtectedRoute>
+                <Seller />
+              </ProtectedRoute>
+            } />
         </Routes>
       </BrowserRouter>
+    </CartProvider>  
     </AuthProvider>
   );
 }
