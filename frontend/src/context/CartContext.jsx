@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-
+const clearCart=( ) =>{
+  setCartItems([]);
+}
 const CartContext = createContext();
 
 export const useCart = () => {
@@ -11,7 +13,7 @@ export const useCart = () => {
 };
 
 export const CartProvider = ({ children }) => {
-  // Initialize cart from localStorage
+
   const [cartItems, setCartItems] = useState(() => {
     try {
       const savedCart = localStorage.getItem('friendlyfinds_cart');
@@ -22,7 +24,6 @@ export const CartProvider = ({ children }) => {
     }
   });
 
-  // Save cart to localStorage whenever it changes
   useEffect(() => {
     try {
       localStorage.setItem('friendlyfinds_cart', JSON.stringify(cartItems));
@@ -33,18 +34,18 @@ export const CartProvider = ({ children }) => {
 
   const addToCart = (product) => {
     setCartItems(prevItems => {
-      // Check if item already exists in cart
+
       const existingItem = prevItems.find(item => item.id === product.id);
       
       if (existingItem) {
-        // Increase quantity if item exists
+
         return prevItems.map(item =>
           item.id === product.id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       } else {
-        // Add new item with quantity 1
+
         return [...prevItems, { ...product, quantity: 1 }];
       }
     });

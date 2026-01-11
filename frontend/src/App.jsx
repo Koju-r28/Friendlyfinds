@@ -9,6 +9,8 @@ import Stationery from './pages/stationery/stationery';
 import Cart from './pages/cart/cart';
 import Seller from './pages/seller/seller';
 import Profile from'./pages/profile/profile';
+import Checkout from './pages/cart/Checkout';
+
 
 import './App.css';
 
@@ -57,6 +59,11 @@ function App() {
                 <Profile />
               </ProtectedRoute>
             } />
+            <Route path="/checkout" element={
+              <ProtectedRoute>
+                <Checkout />
+                </ProtectedRoute>
+                } />
         </Routes>
       </BrowserRouter>
     </CartProvider>  

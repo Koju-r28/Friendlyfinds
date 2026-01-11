@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
 import Navbar from '../../Components/Navbar/Navbar';
@@ -8,48 +8,14 @@ import './cart.css';
 const Cart = () => {
   const { logout, user } = useAuth();
   const { cartItems, removeFromCart, updateQuantity, getCartTotal, getCartCount } = useCart();
+  const navigate = useNavigate();
 
   const total = getCartTotal();
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
     if (cartItems.length === 0) return;
 
-    try {
-      // Prepare order data
-      const orderData = {
-        userId: user.id,
-        items: cartItems.map(item => ({
-          productId: item.id,
-          name: item.name,
-          price: item.price,
-          quantity: item.quantity,
-          seller: item.seller,
-          image: item.image
-        })),
-        totalAmount: total,
-        status: 'pending',
-        createdAt: new Date().toISOString()
-      };
-
-      const response = await fetch('http://localhost:5000/api/carts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.token}` 
-        },
-        body: JSON.stringify(orderData)
-      });
-
-      if (response.ok) {
-        const order = await response.json();
-        alert('Order placed successfully!');
-      } else {
-        alert('Failed to place order. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error placing order:', error);
-      alert('An error occurred. Please try again.');
-    }
+    navigate('/checkout');
   };
 
   return (
@@ -120,14 +86,40 @@ const Cart = () => {
             <div className="summary-box">
               <h2 className="summary-heading">Order Summary</h2>
 
+              {cartItems.length > 0 && (
+                <>
+                  <div className="summary-items">
+                    {cartItems.map(item => (
+                      <div key={item.id} className="summary-item">
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="summary-item-image"
+                        />
+                        <div className="summary-item-details">
+                          <div className="summary-item-name">{item.name}</div>
+                          <div className="summary-item-qty">Qty: {item.quantity}</div>
+                        </div>
+                        <div className="summary-item-price">
+                          Rs.{(item.price * item.quantity).toFixed(2)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="summary-divider"></div>
+                </>
+              )}
+
               <div className="summary-rows">
                 <div className="summary-row">
-                  <span>Subtotal ({getCartCount()} items)</span>
-                  <span>Rs.{total.toFixed(2)}</span>
+                  <span className="summary-label">Subtotal</span>
+                  <span className="summary-value">Rs.{total.toFixed(2)}</span>
                 </div>
-                <div className="summary-total-row">
-                  <span>Total</span>
-                  <span className="total-price">Rs.{total.toFixed(2)}</span>
+                
+                <div className="total-row">
+                  <span className="total-label">Total</span>
+                  <span className="total-amount">Rs.{total.toFixed(2)}</span>
                 </div>
               </div>
 
