@@ -165,7 +165,6 @@
   padding: 0;
 }
 
-
 /* Error Message */
 .error-message {
   display: flex;
@@ -358,7 +357,7 @@
   margin: 0;
 }
 
-/* Stats Section */
+
 .info-stats {
   display: flex;
   align-items: center;
