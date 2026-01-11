@@ -9,7 +9,6 @@ const Furniture = () => {
   const [priceRange, setPriceRange] = useState('all');
   const { addToCart } = useCart();
 
-  // Modal & buy form state
   const [showBuyModal, setShowBuyModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [buyForm, setBuyForm] = useState({
@@ -112,7 +111,6 @@ const Furniture = () => {
     { id: 'bed', name: 'Beds', icon: '🛏️' }
   ];
 
-  // Filter items
   const filteredItems = furnitureItems.filter(item => {
     const categoryMatch = selectedCategory === 'all' || item.category === selectedCategory;
     
@@ -154,7 +152,7 @@ else if (priceRange === 'over5000') priceMatch = item.price > 5000;
         email: buyForm.email,
         location: buyForm.location,
         message: buyForm.message,
-        productId: selectedItem.id // make sure this matches your backend Product._id
+        productId: selectedItem.id 
       })
     });
 
@@ -184,7 +182,7 @@ else if (priceRange === 'over5000') priceMatch = item.price > 5000;
     <>
       <Navbar />
       <div className="furniture-page">
-        {/* Header */}
+
         <div className="furniture-header">
           <div className="header-content">
             <h1>🪑 Furniture</h1>
@@ -193,7 +191,7 @@ else if (priceRange === 'over5000') priceMatch = item.price > 5000;
         </div>
 
         <div className="furniture-container">
-          {/* Sidebar Filters */}
+
           <aside className="furniture-sidebar">
             <div className="filter-section">
               <h3>Categories</h3>
@@ -338,7 +336,7 @@ else if (priceRange === 'over5000') priceMatch = item.price > 5000;
           </main>
         </div>
       </div>
-        {/* Buy Modal */}
+
       {showBuyModal && (
         <div className="modal-overlay">
           <div className="modal-content">
