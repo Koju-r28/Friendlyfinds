@@ -9,7 +9,6 @@ const Furniture = () => {
   const [priceRange, setPriceRange] = useState('all');
   const { addToCart } = useCart();
 
-  // Modal & buy form state
   const [showBuyModal, setShowBuyModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [buyForm, setBuyForm] = useState({
@@ -55,7 +54,7 @@ const Furniture = () => {
     id: 'furn-4',
     name: 'Table Lamp',
     price: 399,
-    category: 'Electronics',
+    category: 'electronics',
     condition: 'Like New',
     seller: 'Sudha Karki',
     image: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400&h=300&fit=crop',
@@ -75,7 +74,7 @@ const Furniture = () => {
     id:'furn-6',
     name: 'Study Table',
     price: 800,
-    category: 'Desk',
+    category: 'desk',
     condition: 'Good',
     seller: 'Kenij Manandhar',
     image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop',
@@ -85,7 +84,7 @@ const Furniture = () => {
     id: 'furn-7',
     name: 'Induction',
     price: 999,
-    category: 'Electronics',
+    category: 'electronics',
     condition: 'Excellent',
     seller: 'Riyaz Koju',
     image: 'https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=400&h=300&fit=crop',
@@ -95,7 +94,7 @@ const Furniture = () => {
     id: 'furn-8',
     name: 'Poartable Fan',
     price: 700,
-    category: 'Electronics',
+    category: 'electronics',
     condition: 'Like New',
     seller: 'Yurika Manandhar',
     image: 'https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=400&h=300&fit=crop',
@@ -108,11 +107,10 @@ const Furniture = () => {
     { id: 'desk', name: 'Desks', icon: '🪑' },
     { id: 'chair', name: 'Chairs', icon: '💺' },
     { id: 'storage', name: 'Storage', icon: '📦' },
-    { id: 'electrical', name: 'Electrical', icon: '💡' },
+    { id: 'electronics', name: 'Electronics', icon: '💡' },
     { id: 'bed', name: 'Beds', icon: '🛏️' }
   ];
 
-  // Filter items
   const filteredItems = furnitureItems.filter(item => {
     const categoryMatch = selectedCategory === 'all' || item.category === selectedCategory;
     
@@ -154,7 +152,7 @@ else if (priceRange === 'over5000') priceMatch = item.price > 5000;
         email: buyForm.email,
         location: buyForm.location,
         message: buyForm.message,
-        productId: selectedItem.id // make sure this matches your backend Product._id
+        productId: selectedItem.id 
       })
     });
 
@@ -184,7 +182,7 @@ else if (priceRange === 'over5000') priceMatch = item.price > 5000;
     <>
       <Navbar />
       <div className="furniture-page">
-        {/* Header */}
+
         <div className="furniture-header">
           <div className="header-content">
             <h1>🪑 Furniture</h1>
@@ -193,7 +191,7 @@ else if (priceRange === 'over5000') priceMatch = item.price > 5000;
         </div>
 
         <div className="furniture-container">
-          {/* Sidebar Filters */}
+
           <aside className="furniture-sidebar">
             <div className="filter-section">
               <h3>Categories</h3>
@@ -338,7 +336,7 @@ else if (priceRange === 'over5000') priceMatch = item.price > 5000;
           </main>
         </div>
       </div>
-        {/* Buy Modal */}
+
       {showBuyModal && (
         <div className="modal-overlay">
           <div className="modal-content">

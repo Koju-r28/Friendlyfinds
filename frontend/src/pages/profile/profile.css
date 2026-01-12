@@ -1,0 +1,470 @@
+/* Same CSS as before, with added styles for loading and empty states */
+
+.ff-profile-container {
+  min-height: 100vh;
+  background: #f0fdf4;
+  padding: 2rem;
+}
+
+.ff-loading,
+.ff-error {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.2rem;
+  color: #6b7280;
+}
+
+.ff-error {
+  color: #dc2626;
+}
+
+.ff-empty-message {
+  text-align: center;
+  padding: 3rem;
+  color: #6b7280;
+  font-size: 1.1rem;
+}
+
+.ff-profile-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 2rem;
+}
+
+.ff-profile-sidebar {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  height: fit-content;
+  position: sticky;
+  top: 2rem;
+}
+
+.ff-profile-avatar-section {
+  text-align: center;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.ff-profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: bold;
+  color: white;
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+.ff-profile-username {
+  font-size: 1.75rem;
+  color: #166534;
+  margin-bottom: 0.5rem;
+}
+
+.ff-profile-location {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.ff-edit-profile-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  background: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 1rem;
+}
+
+.ff-edit-profile-btn:hover {
+  background: #16a34a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.ff-profile-stats {
+  padding: 2rem 0;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.ff-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  background: #f0fdf4;
+  border-radius: 10px;
+}
+
+.ff-stat-icon {
+  font-size: 1.5rem;
+}
+
+.ff-stat-number {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #166534;
+}
+
+.ff-stat-label {
+  display: block;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.ff-profile-nav {
+  padding-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ff-nav-item {
+  padding: 1rem;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #6b7280;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ff-nav-item:hover {
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.ff-nav-item.ff-active {
+  background: #22c55e;
+  color: white;
+}
+
+.ff-profile-main {
+  background: white;
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  min-height: 600px;
+}
+
+.ff-section-title {
+  font-size: 2rem;
+  color: #166534;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid #22c55e;
+}
+
+.ff-about-card {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.ff-about-text {
+  color: #4b5563;
+  line-height: 1.8;
+  font-size: 1.05rem;
+  margin-bottom: 2rem;
+}
+
+.ff-contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ff-contact-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #374151;
+  font-size: 1rem;
+}
+
+.ff-contact-icon {
+  font-size: 1.25rem;
+}
+
+.ff-listings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.ff-listing-card {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 2px solid transparent;
+  transition: all 0.3s;
+}
+
+.ff-listing-card:hover {
+  border-color: #22c55e;
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.15);
+  transform: translateY(-4px);
+}
+
+.ff-listing-image {
+  font-size: 4rem;
+  text-align: center;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.ff-listing-info {
+  margin-bottom: 1rem;
+}
+
+.ff-listing-name {
+  font-size: 1.1rem;
+  color: #166534;
+  margin-bottom: 0.5rem;
+}
+
+.ff-listing-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #22c55e;
+  margin-bottom: 0.25rem;
+}
+
+.ff-listing-views {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.ff-listing-edit-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ff-listing-edit-btn:hover {
+  background: #16a34a;
+}
+
+.ff-saved-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ff-saved-item {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.ff-saved-item:hover {
+  border-color: #22c55e;
+}
+
+.ff-saved-image {
+  font-size: 3rem;
+  width: 80px;
+  height: 80px;
+  background: white;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ff-saved-details {
+  flex: 1;
+}
+
+.ff-saved-name {
+  font-size: 1.2rem;
+  color: #166534;
+  margin-bottom: 0.5rem;
+}
+
+.ff-saved-price {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #22c55e;
+  margin-bottom: 0.25rem;
+}
+
+.ff-saved-seller {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.ff-saved-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.ff-remove-btn {
+  padding: 0.75rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.ff-remove-btn:hover {
+  background: #fee2e2;
+}
+
+.ff-contact-seller-btn {
+  padding: 0.75rem 1.5rem;
+  background: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ff-contact-seller-btn:hover {
+  background: #16a34a;
+}
+
+.ff-reviews-summary {
+  text-align: center;
+  padding: 2rem;
+  background: #f0fdf4;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.ff-rating-large {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.ff-rating-star {
+  font-size: 3rem;
+}
+
+.ff-rating-number {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #166534;
+}
+
+.ff-rating-text {
+  color: #6b7280;
+  font-size: 1.1rem;
+}
+
+.ff-reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.ff-review-item {
+  padding: 1.5rem;
+  background: #f9fafb;
+  border-radius: 12px;
+  border-left: 4px solid #22c55e;
+}
+
+.ff-review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.ff-review-stars {
+  font-size: 1rem;
+}
+
+.ff-review-text {
+  color: #4b5563;
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+
+.ff-review-date {
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+@media (max-width: 1024px) {
+  .ff-profile-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .ff-profile-sidebar {
+    position: static;
+  }
+
+  .ff-listings-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .ff-profile-container {
+    padding: 1rem;
+  }
+
+  .ff-saved-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .ff-saved-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .ff-contact-seller-btn {
+    width: 100%;
+  }
+}

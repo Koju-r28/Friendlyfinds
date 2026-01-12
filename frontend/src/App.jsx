@@ -8,6 +8,9 @@ import Collections from './pages/collections/collection';
 import Stationery from './pages/stationery/stationery';
 import Cart from './pages/cart/cart';
 import Seller from './pages/seller/seller';
+import Profile from'./pages/profile/profile';
+import Checkout from './pages/cart/Checkout';
+
 
 import './App.css';
 
@@ -51,10 +54,16 @@ function App() {
                 <Seller />
               </ProtectedRoute>
             } />
-          
-
-        <Route path="/add-item" element={<AddItem />} />
-    
+             <Route path="/profile" element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            } />
+            <Route path="/checkout" element={
+              <ProtectedRoute>
+                <Checkout />
+                </ProtectedRoute>
+                } />
         </Routes>
       </BrowserRouter>
     </CartProvider>  

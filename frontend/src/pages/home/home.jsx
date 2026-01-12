@@ -21,15 +21,6 @@ const Home = () => {
               <h1>Student Gear for Less</h1>
               <p>Buy, Sell, & Swap stationary and furniture securely on University.</p>
               <p className="hero-subtitle">Turn your clutter into next semester's coffee budget.</p>
-              
-              <div className="search-bar">
-                <input 
-                  type="text" 
-                  placeholder="Search for drafter,Stationery..."
-                  className="search-input"
-                />
-                <button className="search-button">Search</button>
-              </div>
             </div>
             <img src={hero} className="hero-image" alt="Hero" />
           </div>
@@ -70,7 +61,7 @@ const Home = () => {
           </div>
           
           <div className="items-grid">
-            {/* Items will be added here later */}
+            
           </div>
         </section>
       </div>
