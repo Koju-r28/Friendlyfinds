@@ -51,6 +51,10 @@ function App() {
                 <Seller />
               </ProtectedRoute>
             } />
+          
+
+        <Route path="/add-item" element={<AddItem />} />
+    
         </Routes>
       </BrowserRouter>
     </CartProvider>  
