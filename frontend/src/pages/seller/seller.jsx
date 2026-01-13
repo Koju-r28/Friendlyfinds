@@ -6,7 +6,7 @@ import { useAuth } from '../../context/AuthContext';
 
 export default function Seller() {
   const { user } = useAuth();
-  const sellerId = user?.id; // fetch only items for this user
+  const sellerId = user?.id; // logged-in seller's id
 
   const [items, setItems] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -22,7 +22,7 @@ export default function Seller() {
     imagePreview: ''
   });
 
-  // Fetch this seller's items
+  // Fetch only this seller's items
   useEffect(() => {
     if (!sellerId) return;
 
@@ -30,7 +30,14 @@ export default function Seller() {
       try {
         const res = await fetch(`http://localhost:5000/api/products?sellerId=${sellerId}`);
         const data = await res.json();
-        setItems(data);
+
+        // Ensure _id exists for delete mapping
+        const mappedData = data.map(d => ({
+          ...d,
+          _id: d._id || d.id
+        }));
+
+        setItems(mappedData);
       } catch (err) {
         console.error(err);
       }
@@ -73,6 +80,7 @@ export default function Seller() {
     setShowModal(false);
   };
 
+  // Add new item
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!sellerId) return;
@@ -95,8 +103,13 @@ export default function Seller() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
+
       const data = await res.json();
-      setItems(prev => [...prev, data.product]);
+
+      // Map _id for frontend consistency
+      const newItem = { ...data, _id: data._id || data.id };
+
+      setItems(prev => [...prev, newItem]);
       resetForm();
     } catch (err) {
       console.error(err);
@@ -104,12 +117,24 @@ export default function Seller() {
     }
   };
 
+  // Delete item
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this item?')) return;
 
     try {
-      await fetch(`http://localhost:5000/api/products/${id}`, { method: 'DELETE' });
-      setItems(prev => prev.filter(item => item._id !== id));
+      if (!id) return alert('Invalid item ID');
+
+      const res = await fetch(`http://localhost:5000/api/products/${id}`, {
+        method: 'DELETE'
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setItems(prev => prev.filter(item => item._id !== id));
+      } else {
+        alert(data.message || 'Failed to delete item');
+      }
     } catch (err) {
       console.error(err);
       alert('Error deleting item');

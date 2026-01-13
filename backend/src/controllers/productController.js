@@ -2,12 +2,14 @@ const Product = require("../models/productModel");
 const User = require("../models/user"); 
 const getProductsByCategory = async (req, res) => {
   try {
-    const { category } = req.query;
-    const query = category ? { category } : {};
+    const { category, sellerId } = req.query; // <-- new sellerId query
+
+    const query = {};
+    if (category) query.category = category;
+    if (sellerId) query.sellerId = sellerId; // only fetch for this seller
 
     const products = await Product.find(query);
 
-    // Map sellerId → username
     const productsWithSeller = await Promise.all(
       products.map(async (p) => {
         const user = await User.findById(p.sellerId);
@@ -17,9 +19,10 @@ const getProductsByCategory = async (req, res) => {
           price: p.price,
           image: p.image,
           condition: p.condition,
-          seller: user ? user.username : "Unknown", // ✅ username instead of ID
+          seller: user ? user.username : "Unknown",
           location: p.address,
           category: p.category,
+          sellerId: p.sellerId, // send this too for frontend delete checks
         };
       })
     );
