@@ -122,7 +122,6 @@ export default function Seller() {
 
       <div className="seller-container">
         <div className="seller-header">
-          {/* ✅ Styled button like original */}
           <button className="btn-primary" onClick={() => setShowModal(true)}>
             <Plus size={20} /> Add New Item
           </button>
@@ -145,7 +144,7 @@ export default function Seller() {
                 </div>
                 <div className="item-content">
                   <h3>{item.title}</h3>
-                  <p className="item-price">${item.price}</p>
+                  <p className="item-price">Rs{item.price}</p>
                   <p className="item-description">{item.description}</p>
                   <div className="item-meta">
                     <span className="item-category">{item.category}</span>
@@ -163,7 +162,6 @@ export default function Seller() {
         </div>
       </div>
 
-      {/* 🔹 Modal with same design */}
       {showModal && (
         <div className="modal-overlay" onClick={resetForm}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>

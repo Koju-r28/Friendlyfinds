@@ -16,7 +16,7 @@ const createOrder = async (req, res) => {
       email,
       location,
       message,
-      productId: String(productId) //  force string
+      productId
     });
 
     await order.save();

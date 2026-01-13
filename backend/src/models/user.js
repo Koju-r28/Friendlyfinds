@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  profileImage: {        // 🔴 ADD THIS
+  profileImage: {        
     type: String,        // store filename like "image-12345.png"
     default: null,
   },

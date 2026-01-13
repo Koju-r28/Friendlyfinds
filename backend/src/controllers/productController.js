@@ -1,57 +1,34 @@
-// backend/src/controllers/productControllers.js
-const Product = require('../models/productModel');
-
-// Add new product
-exports.addProduct = async (req, res) => {
+const Product = require("../models/productModel");
+const User = require("../models/user"); 
+const getProductsByCategory = async (req, res) => {
   try {
-    const { title, price, address, category, sellerId, condition, description, stock, image } = req.body;
+    const { category } = req.query;
+    const query = category ? { category } : {};
 
-    if (!title || !price || !address || !category || !sellerId || !condition || !description || !stock) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
+    const products = await Product.find(query);
 
-    const newProduct = new Product({
-      title,
-      price,
-      address,
-      category,
-      sellerId,
-      condition,
-      description,
-      stock,
-      image: image || ""
-    });
+    // Map sellerId → username
+    const productsWithSeller = await Promise.all(
+      products.map(async (p) => {
+        const user = await User.findById(p.sellerId);
+        return {
+          id: p._id,
+          name: p.title,
+          price: p.price,
+          image: p.image,
+          condition: p.condition,
+          seller: user ? user.username : "Unknown", // ✅ username instead of ID
+          location: p.address,
+          category: p.category,
+        };
+      })
+    );
 
-    const savedProduct = await newProduct.save();
-    res.status(201).json({ message: "Product added successfully", product: savedProduct });
+    res.json(productsWithSeller);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server error", error: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
-// Get products for a seller
-exports.getProducts = async (req, res) => {
-  try {
-    const { sellerId } = req.query;
-    if (!sellerId) return res.status(400).json({ message: "sellerId required" });
-
-    const products = await Product.find({ sellerId }).sort({ createdAt: -1 });
-    res.status(200).json(products);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
-};
-
-// Delete a product
-exports.deleteProduct = async (req, res) => {
-  try {
-    const { id } = req.params;
-    await Product.findByIdAndDelete(id);
-    res.status(200).json({ message: "Product deleted successfully" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
-};
+module.exports = { getProductsByCategory };
