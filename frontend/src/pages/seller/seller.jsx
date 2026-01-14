@@ -6,7 +6,7 @@ import { useAuth } from '../../context/AuthContext';
 
 export default function Seller() {
   const { user } = useAuth();
-  const sellerId = user?.id;
+  const sellerId = user?.id; // logged-in seller's id
 
   const [items, setItems] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -22,7 +22,7 @@ export default function Seller() {
     imagePreview: ''
   });
 
-  // FETCH ITEMS
+  // Fetch this seller's items
   useEffect(() => {
     if (!sellerId) return;
 
@@ -31,13 +31,7 @@ export default function Seller() {
         const res = await fetch(`http://localhost:5000/api/products/seller/${sellerId}`);
         const data = await res.json();
 
-        const productsArray = Array.isArray(data)
-          ? data
-          : Array.isArray(data.products)
-          ? data.products
-          : [];
-
-        const mappedData = productsArray.map(d => ({
+        const mappedData = data.map(d => ({
           ...d,
           _id: d._id || d.id
         }));
@@ -52,7 +46,7 @@ export default function Seller() {
     fetchItems();
   }, [sellerId]);
 
-  // FORM HANDLERS
+  // Form handlers
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -83,6 +77,7 @@ export default function Seller() {
     setShowModal(false);
   };
 
+  // Add new item
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!sellerId) return;
@@ -118,6 +113,7 @@ export default function Seller() {
     }
   };
 
+  // Delete item
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this item?')) return;
 

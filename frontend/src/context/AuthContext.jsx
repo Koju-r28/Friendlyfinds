@@ -7,76 +7,66 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is already logged in
-    const savedUser = localStorage.getItem('user');
-    const savedToken = localStorage.getItem('token');
-    if (savedUser && savedToken) {
-      setUser(JSON.parse(savedUser));
+    const storedUser = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+
+    if (storedUser && token) {
+      setUser(JSON.parse(storedUser));
     }
     setLoading(false);
   }, []);
 
-  // Login function
   const login = async (email, password) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const res = await fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
       });
 
-      const data = await response.json();
+      const data = await res.json();
 
-      if (response.ok && data.success) {
-        // Store user data and token
-        setUser(data.user);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        localStorage.setItem('token', data.token);
-        return { success: true };
-      } else {
-        return { success: false, message: data.message || 'Login failed' };
+      if (!res.ok || !data.success) {
+        return { success: false, message: data.message };
       }
-    } catch (error) {
-      console.error('Login error:', error);
-      return { success: false, message: 'Network error. Please try again.' };
+
+      localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('token', data.token);
+      setUser(data.user);
+
+      return { success: true };
+    } catch {
+      return { success: false, message: 'Network error' };
     }
   };
 
-  // Signup function
   const signup = async (username, email, password) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const res = await fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, email, password }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password })
       });
 
-      const data = await response.json();
+      const data = await res.json();
 
-      if (response.ok && data.success) {
-        // Auto-login after successful signup
-        setUser(data.user);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        localStorage.setItem('token', data.token);
-        return { success: true };
-      } else {
-        return { success: false, message: data.message || 'Registration failed' };
+      if (!res.ok || !data.success) {
+        return { success: false, message: data.message };
       }
-    } catch (error) {
-      console.error('Registration error:', error);
-      return { success: false, message: 'Network error. Please try again.' };
+
+      localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('token', data.token);
+      setUser(data.user);
+
+      return { success: true };
+    } catch {
+      return { success: false, message: 'Network error' };
     }
   };
 
-  // Logout function
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    localStorage.clear();
   };
 
   return (
@@ -86,10 +76,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
-  }
-  return context;
-};
+export const useAuth = () => useContext(AuthContext);

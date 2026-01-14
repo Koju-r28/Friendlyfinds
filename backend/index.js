@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config(); // or use single quotes — both work
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -12,10 +12,12 @@ const orderRoutes = require("./src/routes/orderRoutes");
 const app = express();
 
 // Enable CORS
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true
+  })
+);
 
 // Body parser (no need for big limit now, Multer handles file size)
 app.use(express.json());
@@ -38,4 +40,6 @@ app.get("/", (req, res) => res.send("Backend is running"));
 
 // Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+app.listen(PORT, () =>
+  console.log(`🚀 Server running on http://localhost:${PORT}`)
+);

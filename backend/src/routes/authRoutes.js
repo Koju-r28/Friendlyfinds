@@ -1,9 +1,8 @@
-// backend/src/routes/authRoutes.js
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
 
-// ---------------- SIGNUP ----------------
+//signup
 router.post('/register', async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -29,7 +28,7 @@ router.post('/register', async (req, res) => {
         email: user.email,
         id: user._id
       },
-      token: 'temp-jwt-token-' + Date.now(), // You can replace with real JWT later
+      token: 'temp-jwt-token-' + Date.now(), //can replace with real JWT later
     });
 
   } catch (error) {
@@ -42,7 +41,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// ---------------- LOGIN ----------------
+//login
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;

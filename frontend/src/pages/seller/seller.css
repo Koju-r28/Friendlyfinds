@@ -385,3 +385,8 @@ body {
     grid-template-columns: 1fr;
   }
 }
+.error-message {
+  color: red;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
