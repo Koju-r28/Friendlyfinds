@@ -18,20 +18,19 @@ export default function Seller() {
     stock: '',
     address: '',
     condition: '',
-    image: '',
+    image: null, // store File object for Multer
     imagePreview: ''
   });
 
-  // Fetch only this seller's items
+  // Fetch this seller's items
   useEffect(() => {
     if (!sellerId) return;
 
     const fetchItems = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/products?sellerId=${sellerId}`);
+        const res = await fetch(`http://localhost:5000/api/products/seller/${sellerId}`);
         const data = await res.json();
 
-        // Ensure _id exists for delete mapping
         const mappedData = data.map(d => ({
           ...d,
           _id: d._id || d.id
@@ -40,12 +39,14 @@ export default function Seller() {
         setItems(mappedData);
       } catch (err) {
         console.error(err);
+        setItems([]);
       }
     };
 
     fetchItems();
   }, [sellerId]);
 
+  // Form handlers
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -54,15 +55,11 @@ export default function Seller() {
     const file = e.target.files[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setFormData(prev => ({
-        ...prev,
-        image: reader.result,
-        imagePreview: reader.result
-      }));
-    };
-    reader.readAsDataURL(file);
+    setFormData(prev => ({
+      ...prev,
+      image: file, // File object for Multer
+      imagePreview: URL.createObjectURL(file) // preview in UI
+    }));
   };
 
   const resetForm = () => {
@@ -74,7 +71,7 @@ export default function Seller() {
       stock: '',
       address: '',
       condition: '',
-      image: '',
+      image: null,
       imagePreview: ''
     });
     setShowModal(false);
@@ -85,28 +82,27 @@ export default function Seller() {
     e.preventDefault();
     if (!sellerId) return;
 
-    const payload = {
-      title: formData.name,
-      price: Number(formData.price),
-      description: formData.description,
-      category: formData.category,
-      stock: Number(formData.stock),
-      address: formData.address,
-      condition: formData.condition,
-      image: formData.image,
-      sellerId
-    };
+    const formPayload = new FormData();
+    formPayload.append('title', formData.name);
+    formPayload.append('price', formData.price);
+    formPayload.append('description', formData.description);
+    formPayload.append('category', formData.category);
+    formPayload.append('stock', formData.stock);
+    formPayload.append('address', formData.address);
+    formPayload.append('condition', formData.condition);
+    formPayload.append('sellerId', sellerId);
+
+    if (formData.image) {
+      formPayload.append('image', formData.image); // Multer handles this
+    }
 
     try {
-      const res = await fetch('http://localhost:5000/api/products', {
+      const res = await fetch('http://localhost:5000/api/products/add', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: formPayload
       });
 
       const data = await res.json();
-
-      // Map _id for frontend consistency
       const newItem = { ...data, _id: data._id || data.id };
 
       setItems(prev => [...prev, newItem]);
@@ -165,7 +161,11 @@ export default function Seller() {
             items.map(item => (
               <div key={item._id} className="item-card">
                 <div className="item-image">
-                  {item.image ? <img src={item.image} alt={item.title} /> : <div className="no-image"><Image size={48} /></div>}
+                  {item.image ? (
+                    <img src={`http://localhost:5000/uploads/${item.image}`} alt={item.title} />
+                  ) : (
+                    <div className="no-image"><Image size={48} /></div>
+                  )}
                 </div>
                 <div className="item-content">
                   <h3>{item.title}</h3>
