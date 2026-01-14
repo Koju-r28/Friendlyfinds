@@ -1,57 +1,59 @@
-// backend/src/controllers/productControllers.js
-const Product = require('../models/productModel');
+const Product = require("../models/productModel");
 
-// Add new product
+// ADD PRODUCT
 exports.addProduct = async (req, res) => {
   try {
-    const { title, price, address, category, sellerId, condition, description, stock, image } = req.body;
+    const { title, price, description, category, condition, sellerId, stock, address } = req.body;
 
-    if (!title || !price || !address || !category || !sellerId || !condition || !description || !stock) {
+    if (!title || !price || !description || !category || !condition || !sellerId) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    const newProduct = new Product({
+    let image = null;
+    if (req.file) {
+      image = req.file.filename; // filename saved by Multer
+    }
+
+    const product = new Product({
       title,
       price,
-      address,
-      category,
-      sellerId,
-      condition,
       description,
+      category,
+      condition,
       stock,
-      image: image || ""
+      address,
+      sellerId,
+      image
     });
 
-    const savedProduct = await newProduct.save();
-    res.status(201).json({ message: "Product added successfully", product: savedProduct });
+    const saved = await product.save();
+    res.status(201).json(saved);
   } catch (err) {
-    console.error(err);
+    console.error("Add product error:", err);
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
 
-// Get products for a seller
-exports.getProducts = async (req, res) => {
+// GET PRODUCTS BY SELLER
+exports.getProductsBySeller = async (req, res) => {
   try {
-    const { sellerId } = req.query;
-    if (!sellerId) return res.status(400).json({ message: "sellerId required" });
-
+    const { sellerId } = req.params;
     const products = await Product.find({ sellerId }).sort({ createdAt: -1 });
-    res.status(200).json(products);
+    res.json(products);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error", error: err.message });
+    console.error("Fetch seller products error:", err);
+    res.status(500).json([]);
   }
 };
 
-// Delete a product
+// DELETE PRODUCT
 exports.deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
     await Product.findByIdAndDelete(id);
-    res.status(200).json({ message: "Product deleted successfully" });
+    res.json({ success: true, message: "Deleted" });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error", error: err.message });
+    console.error("Delete error:", err);
+    res.status(500).json({ message: "Server error" });
   }
 };
