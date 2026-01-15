@@ -17,7 +17,7 @@ const Stationery = () => {
     const fetchStationery = async () => {
       try {
         const res = await fetch(
-          "http://localhost:5000/api/products?category=Stationery"
+          "http://localhost:5000/api/products/category?category=Stationery"
         );
         const data = await res.json();
         setItems(data);

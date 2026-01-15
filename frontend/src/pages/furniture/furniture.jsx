@@ -24,7 +24,7 @@ const Furniture = () => {
     const fetchFurniture = async () => {
       try {
         const res = await fetch(
-          "http://localhost:5000/api/products?category=Furniture"
+          "http://localhost:5000/api/products/category?category=Furniture"
         );
         const data = await res.json();
         setItems(data);
