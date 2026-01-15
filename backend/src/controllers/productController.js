@@ -12,8 +12,9 @@ exports.addProduct = async (req, res) => {
 
     let image = null;
     if (req.file) {
-      image = req.file.filename; // filename saved by Multer
+    image = `/uploads/${req.file.filename}`;
     }
+ 
 
     const product = new Product({
       title,
