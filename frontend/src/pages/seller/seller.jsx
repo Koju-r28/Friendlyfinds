@@ -162,7 +162,7 @@ export default function Seller() {
               <div key={item._id} className="item-card">
                 <div className="item-image">
                   {item.image ? (
-                    <img src={`http://localhost:5000/uploads/${item.image}`} alt={item.title} />
+                    <img src={`http://localhost:5000${item.image}`} alt={item.title} alt={item.title} />
                   ) : (
                     <div className="no-image"><Image size={48} /></div>
                   )}
