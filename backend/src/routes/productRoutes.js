@@ -1,29 +1,24 @@
 const express = require("express");
 const router = express.Router();
+const upload = require("../config/multer");
 
-// Import Multer
-const upload = require('../config/multer'); // Multer middleware
-
-// Import controller functions
 const {
   addProduct,
   getProductsBySeller,
-  deleteProduct,
-  getProductsByCategory
+  getProductsByCategory,
+  deleteProduct
 } = require("../controllers/productController");
 
-// ------------------ ROUTES ------------------
-
-// Add product (with Multer image upload)
+// ADD PRODUCT
 router.post("/add", upload.single("image"), addProduct);
 
-// Get all products by seller
+// GET COLLECTION PAGE PRODUCTS (MUST be ABOVE /seller)
+router.get("/", getProductsByCategory);
+
+// GET SELLER PRODUCTS
 router.get("/seller/:sellerId", getProductsBySeller);
 
-// Delete product
+// DELETE PRODUCT
 router.delete("/:id", deleteProduct);
-
-// Get products by category (optional seller filter)
-router.get("/category", getProductsByCategory);
 
 module.exports = router;

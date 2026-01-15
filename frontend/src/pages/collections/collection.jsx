@@ -20,23 +20,30 @@ export default function Collection() {
 
   const { addToCart } = useCart();
 
-  // Fetch all products
+  // FETCH PRODUCTS
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const res = await fetch("http://localhost:5000/api/products");
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch products");
+        }
+
         const data = await res.json();
-        setItems(data);
-        setLoading(false);
+        setItems(Array.isArray(data) ? data : []);
       } catch (err) {
-        console.error(err);
+        console.error("Fetch products error:", err);
+        setItems([]);
+      } finally {
         setLoading(false);
       }
     };
+
     fetchProducts();
   }, []);
 
-  // Filter products by price
+  // PRICE FILTER
   const filteredItems = items.filter((item) => {
     if (priceRange === "all") return true;
     if (priceRange === "under500") return item.price < 500;
@@ -62,9 +69,14 @@ export default function Collection() {
       const res = await fetch("http://localhost:5000/api/orders/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...buyForm, productId: selectedItem.id }),
+        body: JSON.stringify({
+          ...buyForm,
+          productId: selectedItem.id,
+        }),
       });
+
       const data = await res.json();
+
       if (data.success) {
         alert("Order placed successfully!");
         setShowBuyModal(false);
@@ -97,7 +109,7 @@ export default function Collection() {
         </header>
 
         <div className="furniture-container">
-          {/* Sidebar Filters */}
+          {/* SIDEBAR */}
           <aside className="furniture-sidebar">
             <div className="filter-section">
               <h3>Price Range</h3>
@@ -121,19 +133,22 @@ export default function Collection() {
             </div>
           </aside>
 
-          {/* Main Grid */}
+          {/* MAIN GRID */}
           <main className="furniture-main">
             {loading ? (
               <div className="no-results">Loading products...</div>
             ) : filteredItems.length === 0 ? (
-              <div className="no-results">No items found for this filter.</div>
+              <div className="no-results">No items found.</div>
             ) : (
               <div className="furniture-grid">
                 {filteredItems.map((item) => (
                   <div key={item.id} className="furniture-card">
                     <div className="card-image">
                       {item.image ? (
-                        <img src={item.image} alt={item.name} />
+                        <img
+                          src={`http://localhost:5000/uploads/${item.image}`}
+                          alt={item.name}
+                        />
                       ) : (
                         <div className="no-image">No Image</div>
                       )}
@@ -206,6 +221,7 @@ export default function Collection() {
                 value={buyForm.message}
                 onChange={handleBuyFormChange}
               />
+
               <div className="modal-actions">
                 <button type="submit" className="btn-confirm">
                   Submit
