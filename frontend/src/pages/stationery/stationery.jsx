@@ -118,7 +118,7 @@ const Stationery = () => {
         </div>
       </div>
 
-     showBuyModal && selectedItem && (
+    {showBuyModal && selectedItem &&(
   <div className="modal-overlay">
     <div className="modal-content buy-modal">
       <button 
@@ -243,7 +243,7 @@ const Stationery = () => {
       </div>
     </div>
   </div>
-)
+)}
     </>
   );
 };

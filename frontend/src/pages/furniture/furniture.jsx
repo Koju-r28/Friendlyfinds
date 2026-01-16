@@ -146,7 +146,7 @@ const Furniture = () => {
         </div>
       </div>
 
-      showBuyModal && selectedItem && (
+      {showBuyModal && selectedItem && (
   <div className="modal-overlay">
     <div className="modal-content buy-modal">
       <button 
@@ -271,7 +271,7 @@ const Furniture = () => {
       </div>
     </div>
   </div>
-)
+)}
     </>
   );
 };
