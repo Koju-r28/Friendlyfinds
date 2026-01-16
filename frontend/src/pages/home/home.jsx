@@ -84,6 +84,42 @@ const Home = () => {
               <p>Reduce waste by giving items a second life</p>
             </div>
           </div>
+           
+<footer className="footer">
+  <div className="footer-content">
+    <div className="footer-grid">
+      
+      <div className="footer-section">
+        <h3>Friendly Finds</h3>
+        <p>
+          Your trusted campus marketplace for student essentials. 
+          Buy and sell items safely within your university community.
+        </p>
+      </div>
+
+      
+      <div className="footer-section">
+        <h3>Quick Links</h3>
+        <ul className="footer-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/collections">Collections</a></li>
+          <li><a href="/seller">Sell Item</a></li>
+          <li><a href="/profile">Profile</a></li>
+        </ul>
+      </div>
+
+      
+
+      
+     
+    </div>
+
+    
+    <div className="footer-bottom">
+      <p>&copy; {new Date().getFullYear()} Friendly Finds. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
           
         
         </div>
