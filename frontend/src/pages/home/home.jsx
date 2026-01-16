@@ -53,17 +53,40 @@ const Home = () => {
             </Link>
           </div>
         </section>
-
-        <section className="recent-section">
-          <div className="section-header">
-            <h2>Recently Added</h2>
-            <a href="#" className="view-all">View All →</a>
+        <div className="info-section-bottom">
+          <div className="info-header">
+            <h2 className="info-main-title">Why Choose Friendly Finds?</h2>
+            <p className="info-subtitle">Your trusted campus marketplace for student essentials</p>
           </div>
           
-          <div className="items-grid">
+          <div className="info-cards">
+            <div className="info-card">
+              <div className="info-card-icon">🎓</div>
+              <h4>Student-Verified</h4>
+              <p>Exclusive community of verified university students only</p>
+            </div>
             
+            <div className="info-card">
+              <div className="info-card-icon">💰</div>
+              <h4>Zero Fees</h4>
+              <p>No hidden charges. Keep 100% of your earnings</p>
+            </div>
+            
+            <div className="info-card">
+              <div className="info-card-icon">🤝</div>
+              <h4>Safe Meetups</h4>
+              <p>Meet sellers on campus in secure, public locations</p>
+            </div>
+            
+            <div className="info-card">
+              <div className="info-card-icon">♻️</div>
+              <h4>Eco-Friendly</h4>
+              <p>Reduce waste by giving items a second life</p>
+            </div>
           </div>
-        </section>
+          
+        
+        </div>
       </div>
     </>
   );

@@ -7,7 +7,6 @@ const Furniture = () => {
   const [items, setItems] = useState([]);
   const [priceRange, setPriceRange] = useState("all");
 
-  // BUY MODAL STATES
   const [showBuyModal, setShowBuyModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [buyForm, setBuyForm] = useState({
@@ -19,7 +18,6 @@ const Furniture = () => {
 
   const { addToCart } = useCart();
 
-  // FETCH FURNITURE
   useEffect(() => {
     const fetchFurniture = async () => {
       try {
@@ -35,7 +33,7 @@ const Furniture = () => {
     fetchFurniture();
   }, []);
 
-  // PRICE FILTER
+  
   const filteredItems = items.filter((item) => {
     if (priceRange === "all") return true;
     if (priceRange === "under500") return item.price < 500;
@@ -45,7 +43,6 @@ const Furniture = () => {
     return true;
   });
 
-  // BUY HANDLERS
   const handleBuyClick = (item) => {
     setSelectedItem(item);
     setShowBuyModal(true);
@@ -75,7 +72,7 @@ const Furniture = () => {
     }
   };
 
-  // CART
+  
   const handleAddToCart = (item) => {
     addToCart(item);
     alert(`${item.name} added to cart!`);
@@ -85,8 +82,15 @@ const Furniture = () => {
     <>
       <Navbar />
       <div className="furniture-page">
+        <header className="furniture-header">
+          <div className="header-content">
+            <h1> Furniture Marketplace</h1>
+            <p>Find quality pre-owned furniture from fellow students</p>
+          </div>
+        </header>
+
         <div className="furniture-container">
-          {/* SIDEBAR */}
+          
           <aside className="furniture-sidebar">
             <div className="filter-section">
               <h3>Price Range</h3>
@@ -110,7 +114,7 @@ const Furniture = () => {
             </div>
           </aside>
 
-          {/* MAIN GRID */}
+         
           <main className="furniture-main">
             <div className="furniture-grid">
               {filteredItems.map((item) => (

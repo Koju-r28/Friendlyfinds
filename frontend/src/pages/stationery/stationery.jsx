@@ -61,6 +61,12 @@ const Stationery = () => {
     <>
       <Navbar />
       <div className="stationery-page">
+        <header className="stationery-header">
+          <div className="header-content">
+            <h1> Stationery Marketplace</h1>
+            <p>Find quality books, drafters, and stationery from fellow students</p>
+          </div>
+        </header>
         <div className="stationery-container">
           <aside className="stationery-sidebar">
             <div className="filter-section">

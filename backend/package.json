@@ -17,8 +17,9 @@
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
+    "mogoose": "^0.0.1-security",
     "mongodb": "^7.0.0",
-    "mongoose": "^9.1.2",
+    "mongoose": "^9.1.4",
     "multer": "^2.0.2",
     "streamifier": "^0.1.1"
   },
