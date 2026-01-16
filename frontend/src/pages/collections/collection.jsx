@@ -144,15 +144,13 @@ export default function Collection() {
                 {filteredItems.map((item) => (
                   <div key={item.id} className="furniture-card">
                     <div className="card-image">
-                      {item.image ? (
-                        <img
-                          src={`http://localhost:5000/uploads/${item.image}`}
-                          alt={item.name}
-                        />
-                      ) : (
-                        <div className="no-image">No Image</div>
-                      )}
-                    </div>
+  {item.image ? (
+    <img src={item.image} alt={item.name} />
+  ) : (
+    <div className="no-image">No Image</div>
+  )}
+</div>
+
 
                     <div className="card-content">
                       <h3 className="item-name">{item.name}</h3>

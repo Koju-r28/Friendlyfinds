@@ -103,6 +103,7 @@ export default function Seller() {
       });
 
       const data = await res.json();
+      
       const newItem = { ...data, _id: data._id || data.id };
 
       setItems(prev => [...prev, newItem]);
@@ -160,13 +161,13 @@ export default function Seller() {
           ) : (
             items.map(item => (
               <div key={item._id} className="item-card">
-                <div className="item-image">
-                  {item.image ? (
-                    <img src={`http://localhost:5000${item.image}`} alt={item.title} alt={item.title} />
-                  ) : (
-                    <div className="no-image"><Image size={48} /></div>
-                  )}
-                </div>
+               <div className="item-image">
+  {item.image ? (
+    <img src={item.image} alt={item.title} />
+  ) : (
+    <div className="no-image"><Image size={48} /></div>
+  )}
+</div>
                 <div className="item-content">
                   <h3>{item.title}</h3>
                   <p className="item-price">Rs{item.price}</p>

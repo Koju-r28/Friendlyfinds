@@ -12,7 +12,7 @@ const {
 // ADD PRODUCT
 router.post("/add", upload.single("image"), addProduct);
 
-// GET COLLECTION PAGE PRODUCTS (MUST be ABOVE /seller)
+// GET COLLECTION PAGE PRODUCTS
 router.get("/", getProductsByCategory);
 
 // GET SELLER PRODUCTS

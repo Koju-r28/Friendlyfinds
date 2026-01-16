@@ -1,9 +1,9 @@
-require("dotenv").config(); // or use single quotes — both work
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-
 const connectDB = require("./src/config/db");
+
 const authRoutes = require("./src/routes/authRoutes");
 const cartRoutes = require("./src/routes/cartRoutes");
 const productRoutes = require("./src/routes/productRoutes");
@@ -11,22 +11,14 @@ const orderRoutes = require("./src/routes/orderRoutes");
 
 const app = express();
 
-// Enable CORS
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true
-  })
-);
+// CORS
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
-// Body parser (no need for big limit now, Multer handles file size)
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: true, limit: '50mb', parameterLimit: 50000 }));
+// Body parser
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Serve uploaded images
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
-// Connect to MongoDB
+// Connect Mongo
 connectDB();
 
 // Routes
@@ -35,11 +27,9 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 
-// Test route
-app.get("/", (req, res) => res.send("Backend is running"));
+// Test
+app.get("/", (req, res) => res.send("Backend running"));
 
-// Start server
+// Start
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () =>
-  console.log(`🚀 Server running on http://localhost:${PORT}`)
-);
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

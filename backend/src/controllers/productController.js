@@ -1,5 +1,6 @@
 const Product = require("../models/productModel");
-const User = require("../models/user"); // needed for getProductsByCategory
+const User = require("../models/user"); // your user model
+const cloudinary = require("../config/cloudinary");
 
 // ADD PRODUCT
 exports.addProduct = async (req, res) => {
@@ -10,11 +11,27 @@ exports.addProduct = async (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    let image = null;
+    let imageUrl = null;
+
+    // Upload to Cloudinary if file exists
     if (req.file) {
-    image = `/uploads/${req.file.filename}`;
+      const result = await cloudinary.uploader.upload_stream(
+        { folder: "friendlyfinds" },
+        (error, result) => {
+          if (error) throw error;
+          return result;
+        }
+      );
+
+      // Using promise to handle the stream
+      imageUrl = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream({ folder: "friendlyfinds" }, (err, res) => {
+          if (err) reject(err);
+          else resolve(res.secure_url);
+        });
+        stream.end(req.file.buffer);
+      });
     }
- 
 
     const product = new Product({
       title,
@@ -25,7 +42,7 @@ exports.addProduct = async (req, res) => {
       stock,
       address,
       sellerId,
-      image
+      image: imageUrl,
     });
 
     const saved = await product.save();
@@ -60,14 +77,14 @@ exports.deleteProduct = async (req, res) => {
   }
 };
 
-// GET PRODUCTS BY CATEGORY (with optional seller filter)
+// GET PRODUCTS BY CATEGORY
 exports.getProductsByCategory = async (req, res) => {
   try {
-    const { category, sellerId } = req.query; // <-- optional sellerId
+    const { category, sellerId } = req.query;
 
     const query = {};
     if (category) query.category = category;
-    if (sellerId) query.sellerId = sellerId; // only fetch for this seller
+    if (sellerId) query.sellerId = sellerId;
 
     const products = await Product.find(query);
 
@@ -83,7 +100,7 @@ exports.getProductsByCategory = async (req, res) => {
           seller: user ? user.username : "Unknown",
           location: p.address,
           category: p.category,
-          sellerId: p.sellerId, // send this too for frontend delete checks
+          sellerId: p.sellerId,
         };
       })
     );
