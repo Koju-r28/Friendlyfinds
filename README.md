@@ -1,7 +1,40 @@
-# FRIENDLYFINDS
-Friendlyfinds is  built with a **Node.js/Express + MongoDB** backend and a **React + Vite ** frontend. 
-This project is designed so that anyone can **clone, install, run, and contribute** to it.
-Semester project of 3rd sem
+# 🌿 FriendlyFinds
+
+A modern, eco-friendly marketplace platform for buying and selling used items.It is a semester project for II year I sem.Made by using node.js ,React,MongoDB.
+
+## Features
+
+- 🔐 User authentication and profiles
+- 🛍️ Create and manage product listings
+- 🛒 Add items to the cart
+- 📱 Responsive design
+## Tech Stack
+
+- React 18
+- React Router
+- CSS3
+- LocalStorage
+- Mongodb
+
+## Installation
+
+1. Clone the repository
+```bash
+git clone https://github.com/yourusername/friendlyfinds.git
+cd friendlyfinds
+```
+
+2. Install dependencies
+```bash
+npm install
+```
+
+3. Start the development server
+```bash
+npm run dev
+```
+
+Made with 💚 by FriendlyFinds Team
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
