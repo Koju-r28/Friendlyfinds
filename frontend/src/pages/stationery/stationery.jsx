@@ -118,23 +118,132 @@ const Stationery = () => {
         </div>
       </div>
 
-      {showBuyModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>Buy {selectedItem.name}</h2>
-            <form onSubmit={handleBuySubmit}>
-              <input name="name" placeholder="Your Name" value={buyForm.name} onChange={handleBuyFormChange} required />
-              <input name="email" type="email" placeholder="Email" value={buyForm.email} onChange={handleBuyFormChange} required />
-              <input name="location" placeholder="Location" value={buyForm.location} onChange={handleBuyFormChange} required />
-              <textarea name="message" placeholder="Message (optional)" value={buyForm.message} onChange={handleBuyFormChange} />
-              <div className="modal-actions">
-                <button type="submit" className="btn-confirm">Submit</button>
-                <button type="button" className="btn-cancel" onClick={() => setShowBuyModal(false)}>Cancel</button>
+     showBuyModal && selectedItem && (
+  <div className="modal-overlay">
+    <div className="modal-content buy-modal">
+      <button 
+        className="modal-close"
+        onClick={() => setShowBuyModal(false)}
+        aria-label="Close modal"
+      >
+        ✕
+      </button>
+      
+      <div className="modal-layout">
+        
+        <div className="modal-product-preview">
+          <div className="product-image-container">
+            <img 
+              src={selectedItem.image} 
+              alt={selectedItem.name}
+              className="product-preview-image"
+            />
+            <div className="product-badge">{selectedItem.category}</div>
+          </div>
+          
+          <div className="product-details">
+            <h2 className="product-title">{selectedItem.name}</h2>
+            <p className="product-description">{selectedItem.description}</p>
+            
+            <div className="product-info-grid">
+              <div className="info-item">
+                <span className="info-label">Price</span>
+                <span className="info-value price">NPR {selectedItem.price.toLocaleString()}</span>
               </div>
-            </form>
+              
+              {selectedItem.location && (
+                <div className="info-item">
+                  <span className="info-label">Location</span>
+                  <span className="info-value">{selectedItem.location}</span>
+                </div>
+              )}
+              
+              {selectedItem.condition && (
+                <div className="info-item">
+                  <span className="info-label">Condition</span>
+                  <span className="info-value">{selectedItem.condition}</span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      )}
+
+      
+        <div className="modal-form-section">
+          <div className="form-header">
+            <h3>Contact Seller</h3>
+            <p className="form-subtitle">Fill in your details to express interest</p>
+          </div>
+          
+          <form onSubmit={handleBuySubmit} className="buy-form">
+            <div className="form-group">
+              <label htmlFor="buyer-name">Your Name *</label>
+              <input
+                id="buyer-name"
+                name="name"
+                placeholder="Enter your full name"
+                value={buyForm.name}
+                onChange={handleBuyFormChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="buyer-email">Email *</label>
+              <input
+                id="buyer-email"
+                name="email"
+                type="email"
+                placeholder="Enter your email address"
+                value={buyForm.email}
+                onChange={handleBuyFormChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="buyer-location">Your Location *</label>
+              <input
+                id="buyer-location"
+                name="location"
+                placeholder="place around university"
+                value={buyForm.location}
+                onChange={handleBuyFormChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="buyer-message">Message (Optional)</label>
+              <textarea
+                id="buyer-message"
+                name="message"
+                placeholder="Any questions or additional information..."
+                value={buyForm.message}
+                onChange={handleBuyFormChange}
+                rows="4"
+              />
+            </div>
+
+            <div className="modal-actions">
+              <button type="submit" className="btn-confirm">
+                <span className="btn-icon">💵</span>
+                Buy 
+              </button>
+              <button
+                type="button"
+                className="btn-cancel"
+                onClick={() => setShowBuyModal(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+)
     </>
   );
 };
