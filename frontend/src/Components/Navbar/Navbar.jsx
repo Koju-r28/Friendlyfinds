@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
+import Notifications from '../Notifications/Notifications'; 
 import './Navbar.css';
 import logo from '../Assets/logo.png';
 
@@ -73,7 +74,11 @@ const Navbar = () => {
             <span className="cart-badge"></span>
           </a>
         </div>
-<div className="user-menu">
+
+         {/* User menu + Notifications */}
+        <div className="navbar-user-notifications">
+          {user && <Notifications />} {/* 🔔 Bell */}
+          <div className="user-menu">
             <button className="user-avatar">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -101,6 +106,7 @@ const Navbar = () => {
                 </svg>
                 Logout
               </button>
+              </div>
             </div>
           </div>
       </div>
