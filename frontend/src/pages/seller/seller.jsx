@@ -142,7 +142,9 @@ export default function Seller() {
     <>
       <Navbar />
 
-      <div className="seller-container">
+      <div className="seller-page-bg">
+    
+
         <div className="seller-header">
           <button className="btn-primary" onClick={() => setShowModal(true)}>
             <Plus size={20} /> Add New Item
