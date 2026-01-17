@@ -9,12 +9,20 @@ A modern, eco-friendly marketplace platform for buying and selling used items.It
 - 🛒 Add items to the cart
 - 📱 Responsive design
 ## Tech Stack
-
+  Frontend
 - React 18
-- React Router
+- React Router DOM
 - CSS3
 - LocalStorage
-- Mongodb
+- Lucide Icons
+  
+  Backend
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- CORS
+- dotenv
 
 ## Installation
 
