@@ -2,7 +2,7 @@ const Product = require("../models/productModel");
 const User = require("../models/user"); // your user model
 const cloudinary = require("../config/cloudinary");
 
-// ADD PRODUCT
+
 exports.addProduct = async (req, res) => {
   try {
     const { title, price, description, category, condition, sellerId, stock, address } = req.body;
@@ -13,17 +13,8 @@ exports.addProduct = async (req, res) => {
 
     let imageUrl = null;
 
-    // Upload to Cloudinary if file exists
     if (req.file) {
-      const result = await cloudinary.uploader.upload_stream(
-        { folder: "friendlyfinds" },
-        (error, result) => {
-          if (error) throw error;
-          return result;
-        }
-      );
-
-      // Using promise to handle the stream
+      
       imageUrl = await new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream({ folder: "friendlyfinds" }, (err, res) => {
           if (err) reject(err);
@@ -77,7 +68,7 @@ exports.deleteProduct = async (req, res) => {
   }
 };
 
-// GET PRODUCTS BY CATEGORY
+
 exports.getProductsByCategory = async (req, res) => {
   try {
     const { category, sellerId } = req.query;
