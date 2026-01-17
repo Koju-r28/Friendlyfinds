@@ -11,25 +11,19 @@ const orderRoutes = require("./src/routes/orderRoutes");
 
 const app = express();
 
-// CORS
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
-// Body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Connect Mongo
 connectDB();
 
-// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 
-// Test
 app.get("/", (req, res) => res.send("Backend running"));
 
-// Start
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

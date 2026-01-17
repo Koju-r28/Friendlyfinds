@@ -131,7 +131,7 @@ const Cart = () => {
                 Proceed to Checkout
               </button>
 
-              <Link to="/furniture" className="continue-button">
+              <Link to="/collections" className="continue-button">
                 Continue Shopping
               </Link>
 

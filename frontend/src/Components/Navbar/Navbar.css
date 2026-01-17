@@ -49,6 +49,8 @@
   transition: color 0.2s;
   padding: 0.5rem 0;
   border-bottom: 2px solid transparent;
+  display:flex;
+  gap:0.5rem;
 }
 
 .nav-link:hover {
