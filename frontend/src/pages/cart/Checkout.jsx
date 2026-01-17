@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
 import Navbar from '../../Components/Navbar/Navbar';
@@ -11,14 +11,16 @@ const Checkout = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
+    fullName: user?.name || '',
+    email: user?.email || '',
+    phone: user?.phone || '',
     campus: '',
     pickupDate: '',
     pickupTime: '',
     notes: ''
   });
+
+  const [loading, setLoading] = useState(false);
 
   const total = getCartTotal();
 
@@ -43,42 +45,75 @@ const Checkout = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validate required fields
+    if (!formData.fullName || !formData.email || !formData.phone) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
     try {
-      const orderData = {
-        userId: user.id,
-        items: cartItems.map(item => ({
+      setLoading(true);
+
+      // Prepare sellers data grouped by seller
+      const sellers = Object.entries(groupedBySeller).map(([sellerName, items]) => ({
+        sellerId: items[0].sellerId || null,
+        sellerName: sellerName,
+        items: items.map(item => ({
           productId: item.id,
-          name: item.name,
-          price: item.price,
+          productName: item.title || item.name, // Changed: use title first
+          productImage: item.image,
           quantity: item.quantity,
-          seller: item.seller,
-          image: item.image
-        })),
+          price: item.price
+        }))
+      }));
+
+      // Prepare order data for cart checkout
+      const orderData = {
+        sellers: sellers,
         totalAmount: total,
-        buyerInfo: formData,
-        status: 'pending',
-        createdAt: new Date().toISOString()
+        buyerName: formData.fullName,
+        buyerEmail: formData.email,
+        buyerLocation: formData.campus || 'Campus',
+        buyerId: user?.id || null,
+        shippingAddress: {
+          fullName: formData.fullName,
+          phone: formData.phone,
+          addressLine1: formData.campus,
+          city: 'Campus',
+          country: 'Nepal'
+        },
+        paymentMethod: 'cash_on_delivery',
+        specialInstructions: `Pickup Date: ${formData.pickupDate}, Time: ${formData.pickupTime}. ${formData.notes}`
       };
 
-      const response = await fetch('http://localhost:5000/api/orders', {
+      // Make API call to cart checkout endpoint
+      const response = await fetch('http://localhost:5000/api/orders/cart-checkout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.token}`
+          ...(user?.token && { 'Authorization': `Bearer ${user.token}` })
         },
         body: JSON.stringify(orderData)
       });
 
-      if (response.ok) {
-        alert('Order placed successfully! The sellers will contact you shortly.');
+      const data = await response.json();
+
+      if (data.success) {
+        alert(`Order placed successfully! Order ID: ${data.data.orderId}`);
+        
+        // Clear the cart after successful order
         clearCart();
+        
+        // Redirect to furniture page
         navigate('/furniture');
       } else {
-        alert('Failed to place order. Please try again.');
+        alert(data.message || 'Failed to place order. Please try again.');
       }
     } catch (error) {
       console.error('Error placing order:', error);
       alert('An error occurred. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -224,8 +259,12 @@ const Checkout = () => {
                     </div>
                   </div>
 
-                  <button type="submit" className="confirm-button">
-                    Confirm Order - Rs.{total.toFixed(2)}
+                  <button 
+                    type="submit" 
+                    className="confirm-button"
+                    disabled={loading}
+                  >
+                    {loading ? 'Placing Order...' : `Confirm Order - Rs.${total.toFixed(2)}`}
                   </button>
                 </form>
               </div>

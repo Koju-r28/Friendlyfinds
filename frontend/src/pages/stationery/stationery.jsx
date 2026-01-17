@@ -9,7 +9,13 @@ const Stationery = () => {
 
   const [showBuyModal, setShowBuyModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [buyForm, setBuyForm] = useState({ name: "", email: "", location: "", message: "" });
+  const [buyForm, setBuyForm] = useState({ 
+    name: "", 
+    email: "", 
+    location: "", 
+    message: "" 
+  });
+  const [loading, setLoading] = useState(false);
 
   const { addToCart } = useCart();
 
@@ -37,36 +43,93 @@ const Stationery = () => {
     return true;
   });
 
-  const handleBuyClick = (item) => { setSelectedItem(item); setShowBuyModal(true); };
-  const handleBuyFormChange = (e) => { setBuyForm({ ...buyForm, [e.target.name]: e.target.value }); };
+  const handleBuyClick = (item) => { 
+    setSelectedItem(item); 
+    setShowBuyModal(true); 
+  };
+
+  const handleBuyFormChange = (e) => { 
+    setBuyForm({ ...buyForm, [e.target.name]: e.target.value }); 
+  };
+
   const handleBuySubmit = async (e) => {
     e.preventDefault();
+
+    // Validate form
+    if (!buyForm.name || !buyForm.email || !buyForm.location) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
     try {
-      const res = await fetch("http://localhost:5000/api/orders/create", {
+      setLoading(true);
+
+      // Prepare order data for direct purchase
+      const orderData = {
+        productId: selectedItem._id || selectedItem.id,
+        productName: selectedItem.title || selectedItem.name,
+        productImage: selectedItem.image,
+        price: parseFloat(selectedItem.price),
+        quantity: 1,
+        sellerId: selectedItem.sellerId || null,
+        sellerName: selectedItem.seller || 'Unknown Seller',
+        buyerName: buyForm.name,
+        buyerEmail: buyForm.email,
+        buyerLocation: buyForm.location,
+        message: buyForm.message || '',
+        buyerId: null
+      };
+
+      console.log('Sending order data:', orderData);
+
+      const res = await fetch("http://localhost:5000/api/orders/direct-purchase", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...buyForm, productId: selectedItem.id }),
+        body: JSON.stringify(orderData),
       });
+
+      console.log('Response status:', res.status);
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('Error response:', errorText);
+        throw new Error(`Server returned ${res.status}`);
+      }
+
       const data = await res.json();
+      console.log('Response data:', data);
+
       if (data.success) {
-        alert("Order placed successfully!");
+        alert(`Order placed successfully! Order ID: ${data.data.orderId}`);
+        
+        // Remove product from display
+        setItems(prevItems => prevItems.filter(item => 
+          (item._id || item.id) !== (selectedItem._id || selectedItem.id)
+        ));
+        
         setShowBuyModal(false);
         setBuyForm({ name: "", email: "", location: "", message: "" });
-      } else { alert("Failed: " + data.message); }
-    } catch (err) { console.error(err); alert("Failed to place order"); }
+        setSelectedItem(null);
+      } else { 
+        alert(data.message || "Failed to place order. Please try again."); 
+      }
+    } catch (err) { 
+      console.error('Direct purchase error:', err); 
+      alert(`Failed to place order: ${err.message}`); 
+    } finally {
+      setLoading(false);
+    }
   };
-  const handleAddToCart = (item) => { addToCart(item); alert(`${item.name} added to cart!`); };
+
+  const handleAddToCart = (item) => { 
+    addToCart(item); 
+    alert(`${item.name} added to cart!`); 
+  };
 
   return (
     <>
       <Navbar />
       <div className="stationery-page">
-        <header className="stationery-header">
-          <div className="header-content">
-            <h1> Stationery Marketplace</h1>
-            <p>Find quality books, drafters, and stationery from fellow students</p>
-          </div>
-        </header>
         <div className="stationery-container">
           <aside className="stationery-sidebar">
             <div className="filter-section">
@@ -107,8 +170,12 @@ const Stationery = () => {
                       <span>📍 {item.location}</span>
                     </div>
                     <div className="card-actions">
-                      <button className="btn-buy" onClick={() => handleBuyClick(item)}>Buy Now</button>
-                      <button className="btn-cart" onClick={() => handleAddToCart(item)}>🛒</button>
+                      <button className="btn-buy" onClick={() => handleBuyClick(item)}>
+                        Buy Now
+                      </button>
+                      <button className="btn-cart" onClick={() => handleAddToCart(item)}>
+                        🛒
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -118,132 +185,60 @@ const Stationery = () => {
         </div>
       </div>
 
-    {showBuyModal && selectedItem &&(
-  <div className="modal-overlay">
-    <div className="modal-content buy-modal">
-      <button 
-        className="modal-close"
-        onClick={() => setShowBuyModal(false)}
-        aria-label="Close modal"
-      >
-        ✕
-      </button>
-      
-      <div className="modal-layout">
-        
-        <div className="modal-product-preview">
-          <div className="product-image-container">
-            <img 
-              src={selectedItem.image} 
-              alt={selectedItem.name}
-              className="product-preview-image"
-            />
-            <div className="product-badge">{selectedItem.category}</div>
-          </div>
-          
-          <div className="product-details">
-            <h2 className="product-title">{selectedItem.name}</h2>
-            <p className="product-description">{selectedItem.description}</p>
-            
-            <div className="product-info-grid">
-              <div className="info-item">
-                <span className="info-label">Price</span>
-                <span className="info-value price">NPR {selectedItem.price.toLocaleString()}</span>
+      {showBuyModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Buy {selectedItem?.name}</h2>
+            <form onSubmit={handleBuySubmit}>
+              <input 
+                name="name" 
+                placeholder="Your Name" 
+                value={buyForm.name} 
+                onChange={handleBuyFormChange} 
+                required 
+              />
+              <input 
+                name="email" 
+                type="email" 
+                placeholder="Email" 
+                value={buyForm.email} 
+                onChange={handleBuyFormChange} 
+                required 
+              />
+              <input 
+                name="location" 
+                placeholder="Location" 
+                value={buyForm.location} 
+                onChange={handleBuyFormChange} 
+                required 
+              />
+              <textarea 
+                name="message" 
+                placeholder="Message (optional)" 
+                value={buyForm.message} 
+                onChange={handleBuyFormChange} 
+              />
+              <div className="modal-actions">
+                <button 
+                  type="submit" 
+                  className="btn-confirm"
+                  disabled={loading}
+                >
+                  {loading ? 'Placing Order...' : 'Submit'}
+                </button>
+                <button 
+                  type="button" 
+                  className="btn-cancel" 
+                  onClick={() => setShowBuyModal(false)}
+                  disabled={loading}
+                >
+                  Cancel
+                </button>
               </div>
-              
-              {selectedItem.location && (
-                <div className="info-item">
-                  <span className="info-label">Location</span>
-                  <span className="info-value">{selectedItem.location}</span>
-                </div>
-              )}
-              
-              {selectedItem.condition && (
-                <div className="info-item">
-                  <span className="info-label">Condition</span>
-                  <span className="info-value">{selectedItem.condition}</span>
-                </div>
-              )}
-            </div>
+            </form>
           </div>
         </div>
-
-      
-        <div className="modal-form-section">
-          <div className="form-header">
-            <h3>Contact Seller</h3>
-            <p className="form-subtitle">Fill in your details to express interest</p>
-          </div>
-          
-          <form onSubmit={handleBuySubmit} className="buy-form">
-            <div className="form-group">
-              <label htmlFor="buyer-name">Your Name *</label>
-              <input
-                id="buyer-name"
-                name="name"
-                placeholder="Enter your full name"
-                value={buyForm.name}
-                onChange={handleBuyFormChange}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="buyer-email">Email *</label>
-              <input
-                id="buyer-email"
-                name="email"
-                type="email"
-                placeholder="Enter your email address"
-                value={buyForm.email}
-                onChange={handleBuyFormChange}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="buyer-location">Your Location *</label>
-              <input
-                id="buyer-location"
-                name="location"
-                placeholder="place around university"
-                value={buyForm.location}
-                onChange={handleBuyFormChange}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="buyer-message">Message (Optional)</label>
-              <textarea
-                id="buyer-message"
-                name="message"
-                placeholder="Any questions or additional information..."
-                value={buyForm.message}
-                onChange={handleBuyFormChange}
-                rows="4"
-              />
-            </div>
-
-            <div className="modal-actions">
-              <button type="submit" className="btn-confirm">
-                <span className="btn-icon">💵</span>
-                Buy 
-              </button>
-              <button
-                type="button"
-                className="btn-cancel"
-                onClick={() => setShowBuyModal(false)}
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-)}
+      )}
     </>
   );
 };
