@@ -28,7 +28,7 @@ A modern, eco-friendly marketplace platform for buying and selling used items.It
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/friendlyfinds.git
+git clone https://github.com/Koju-r28/friendlyfinds.git
 cd friendlyfinds
 ```
 
