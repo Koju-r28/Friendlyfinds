@@ -2,21 +2,29 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
+import { useSearch } from '../../context/SearchContext';
 import Navbar from '../../Components/Navbar/Navbar';
 import './cart.css';
 
 const Cart = () => {
   const { logout, user } = useAuth();
   const { cartItems, removeFromCart, updateQuantity, getCartTotal, getCartCount } = useCart();
+  const { searchQuery } = useSearch(); // 🔹 Added search context
   const navigate = useNavigate();
 
   const total = getCartTotal();
 
   const handleCheckout = () => {
     if (cartItems.length === 0) return;
-
     navigate('/checkout');
   };
+
+  // 🔹 Filter cart items by search query
+  const filteredCartItems = cartItems.filter(item =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.category?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.seller?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <>
@@ -32,7 +40,7 @@ const Cart = () => {
         <div className="cart-wrapper">
 
           <div className="cart-left">
-            {cartItems.length === 0 ? (
+            {filteredCartItems.length === 0 ? (
               <div className="empty-cart-box">
                 <div className="empty-icon">🛒</div>
                 <p className="empty-text">Your cart is empty</p>
@@ -42,7 +50,7 @@ const Cart = () => {
               </div>
             ) : (
               <div className="items-list">
-                {cartItems.map(item => (
+                {filteredCartItems.map(item => (
                   <div key={item.id} className="product-card">
                     <div className="product-img-box">
                       <img src={item.image} alt={item.name} />
@@ -86,10 +94,10 @@ const Cart = () => {
             <div className="summary-box">
               <h2 className="summary-heading">Order Summary</h2>
 
-              {cartItems.length > 0 && (
+              {filteredCartItems.length > 0 && (
                 <>
                   <div className="summary-items">
-                    {cartItems.map(item => (
+                    {filteredCartItems.map(item => (
                       <div key={item.id} className="summary-item">
                         <img
                           src={item.image}
@@ -124,7 +132,7 @@ const Cart = () => {
               </div>
 
               <button 
-                disabled={cartItems.length === 0} 
+                disabled={filteredCartItems.length === 0} 
                 className="checkout-button"
                 onClick={handleCheckout}
               >

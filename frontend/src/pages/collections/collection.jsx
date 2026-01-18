@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
 import { useCart } from "../../context/CartContext";
+import { useSearch } from "../../context/SearchContext";
 import "./collection.css";
 
 export default function Collection() {
@@ -19,6 +20,7 @@ export default function Collection() {
   });
 
   const { addToCart } = useCart();
+  const { searchQuery } = useSearch(); // 🔹 Added search context
 
   // FETCH PRODUCTS
   useEffect(() => {
@@ -43,13 +45,23 @@ export default function Collection() {
     fetchProducts();
   }, []);
 
-  // PRICE FILTER
+  // PRICE & SEARCH FILTER
   const filteredItems = items.filter((item) => {
+    // 🔹 Search filter
+    const matchesSearch =
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.category?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.seller?.toLowerCase().includes(searchQuery.toLowerCase());
+
+    if (!matchesSearch) return false;
+
+    // 🔹 Price filter (your original logic untouched)
     if (priceRange === "all") return true;
     if (priceRange === "under500") return item.price < 500;
     if (priceRange === "500-1000") return item.price >= 500 && item.price <= 1000;
     if (priceRange === "1000-5000") return item.price >= 1000 && item.price <= 5000;
     if (priceRange === "over5000") return item.price > 5000;
+
     return true;
   });
 
@@ -133,7 +145,6 @@ export default function Collection() {
             </div>
           </aside>
 
-          
           <main className="furniture-main">
             {loading ? (
               <div className="no-results">Loading products...</div>
@@ -144,13 +155,12 @@ export default function Collection() {
                 {filteredItems.map((item) => (
                   <div key={item.id} className="furniture-card">
                     <div className="card-image">
-  {item.image ? (
-    <img src={item.image} alt={item.name} />
-  ) : (
-    <div className="no-image">No Image</div>
-  )}
-</div>
-
+                      {item.image ? (
+                        <img src={item.image} alt={item.name} />
+                      ) : (
+                        <div className="no-image">No Image</div>
+                      )}
+                    </div>
 
                     <div className="card-content">
                       <h3 className="item-name">{item.name}</h3>
@@ -185,133 +195,134 @@ export default function Collection() {
         </div>
       </div>
 
-{showBuyModal && selectedItem && (
-  <div className="modal-overlay">
-    <div className="modal-content buy-modal">
-      <button 
-        className="modal-close"
-        onClick={() => setShowBuyModal(false)}
-        aria-label="Close modal"
-      >
-        ✕
-      </button>
-      
-      <div className="modal-layout">
-       
-        <div className="modal-product-preview">
-          <div className="product-image-container">
-            <img 
-              src={selectedItem.image} 
-              alt={selectedItem.name}
-              className="product-preview-image"
-            />
-            <div className="product-badge">{selectedItem.category}</div>
-          </div>
-          
-          <div className="product-details">
-            <h2 className="product-title">{selectedItem.name}</h2>
-            <p className="product-description">{selectedItem.description}</p>
-            
-            <div className="product-info-grid">
-              <div className="info-item">
-                <span className="info-label">Price</span>
-                <span className="info-value price">NPR {selectedItem.price.toLocaleString()}</span>
+      {showBuyModal && selectedItem && (
+        <div className="modal-overlay">
+          <div className="modal-content buy-modal">
+            <button
+              className="modal-close"
+              onClick={() => setShowBuyModal(false)}
+              aria-label="Close modal"
+            >
+              ✕
+            </button>
+
+            <div className="modal-layout">
+
+              <div className="modal-product-preview">
+                <div className="product-image-container">
+                  <img
+                    src={selectedItem.image}
+                    alt={selectedItem.name}
+                    className="product-preview-image"
+                  />
+                  <div className="product-badge">{selectedItem.category}</div>
+                </div>
+
+                <div className="product-details">
+                  <h2 className="product-title">{selectedItem.name}</h2>
+                  <p className="product-description">{selectedItem.description}</p>
+
+                  <div className="product-info-grid">
+                    <div className="info-item">
+                      <span className="info-label">Price</span>
+                      <span className="info-value price">
+                        NPR {selectedItem.price.toLocaleString()}
+                      </span>
+                    </div>
+
+                    {selectedItem.location && (
+                      <div className="info-item">
+                        <span className="info-label">Location</span>
+                        <span className="info-value">{selectedItem.location}</span>
+                      </div>
+                    )}
+
+                    {selectedItem.condition && (
+                      <div className="info-item">
+                        <span className="info-label">Condition</span>
+                        <span className="info-value">{selectedItem.condition}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
-              
-              {selectedItem.location && (
-                <div className="info-item">
-                  <span className="info-label">Location</span>
-                  <span className="info-value">{selectedItem.location}</span>
+
+              <div className="modal-form-section">
+                <div className="form-header">
+                  <h3>Contact Seller</h3>
+                  <p className="form-subtitle">Fill in your details to express interest</p>
                 </div>
-              )}
-              
-              {selectedItem.condition && (
-                <div className="info-item">
-                  <span className="info-label">Condition</span>
-                  <span className="info-value">{selectedItem.condition}</span>
-                </div>
-              )}
+
+                <form onSubmit={handleBuySubmit} className="buy-form">
+                  <div className="form-group">
+                    <label htmlFor="buyer-name">Your Name *</label>
+                    <input
+                      id="buyer-name"
+                      name="name"
+                      placeholder="Enter your full name"
+                      value={buyForm.name}
+                      onChange={handleBuyFormChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="buyer-email">Contact Number *</label>
+                    <input
+                      id="buyer-email"
+                      name="email"
+                      type="email"
+                      placeholder="Enter your email address"
+                      value={buyForm.email}
+                      onChange={handleBuyFormChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="buyer-location">Your Location *</label>
+                    <input
+                      id="buyer-location"
+                      name="location"
+                      placeholder="Place around University"
+                      value={buyForm.location}
+                      onChange={handleBuyFormChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="buyer-message">Message (Optional)</label>
+                    <textarea
+                      id="buyer-message"
+                      name="message"
+                      placeholder="Any questions or additional information..."
+                      value={buyForm.message}
+                      onChange={handleBuyFormChange}
+                      rows="4"
+                    />
+                  </div>
+
+                  <div className="modal-actions">
+                    <button type="submit" className="btn-confirm">
+                      <span className="btn-icon">💵</span>
+                      Buy
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-cancel"
+                      onClick={() => setShowBuyModal(false)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
+      )}
 
-        
-        <div className="modal-form-section">
-          <div className="form-header">
-            <h3>Contact Seller</h3>
-            <p className="form-subtitle">Fill in your details to express interest</p>
-          </div>
-          
-          <form onSubmit={handleBuySubmit} className="buy-form">
-            <div className="form-group">
-              <label htmlFor="buyer-name">Your Name *</label>
-              <input
-                id="buyer-name"
-                name="name"
-                placeholder="Enter your full name"
-                value={buyForm.name}
-                onChange={handleBuyFormChange}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="buyer-email">Contact Number *</label>
-              <input
-                id="buyer-email"
-                name="email"
-                type="email"
-                placeholder="Enter your email address"
-                value={buyForm.email}
-                onChange={handleBuyFormChange}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="buyer-location">Your Location *</label>
-              <input
-                id="buyer-location"
-                name="location"
-                placeholder="Place around University"
-                value={buyForm.location}
-                onChange={handleBuyFormChange}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="buyer-message">Message (Optional)</label>
-              <textarea
-                id="buyer-message"
-                name="message"
-                placeholder="Any questions or additional information..."
-                value={buyForm.message}
-                onChange={handleBuyFormChange}
-                rows="4"
-              />
-            </div>
-
-            <div className="modal-actions">
-              <button type="submit" className="btn-confirm">
-                <span className="btn-icon">💵</span>
-                Buy 
-              </button>
-              <button
-                type="button"
-                className="btn-cancel"
-                onClick={() => setShowBuyModal(false)}
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-)}
-      
     </>
   );
 }

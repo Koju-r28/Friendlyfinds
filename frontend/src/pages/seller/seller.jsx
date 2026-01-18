@@ -3,6 +3,7 @@ import { Plus, Trash2, X, Upload, Image } from 'lucide-react';
 import './seller.css';
 import Navbar from '../../Components/Navbar/Navbar';
 import { useAuth } from '../../context/AuthContext';
+import { useSearch } from '../../context/SearchContext'; // 🔹 added
 
 export default function Seller() {
   const { user } = useAuth();
@@ -18,9 +19,11 @@ export default function Seller() {
     stock: '',
     address: '',
     condition: '',
-    image: null, // store File object for Multer
+    image: null,
     imagePreview: ''
   });
+
+  const { searchQuery } = useSearch(); // 🔹 Added search context
 
   // Fetch this seller's items
   useEffect(() => {
@@ -57,8 +60,8 @@ export default function Seller() {
 
     setFormData(prev => ({
       ...prev,
-      image: file, // File object for Multer
-      imagePreview: URL.createObjectURL(file) // preview in UI
+      image: file,
+      imagePreview: URL.createObjectURL(file)
     }));
   };
 
@@ -93,7 +96,7 @@ export default function Seller() {
     formPayload.append('sellerId', sellerId);
 
     if (formData.image) {
-      formPayload.append('image', formData.image); // Multer handles this
+      formPayload.append('image', formData.image);
     }
 
     try {
@@ -103,7 +106,6 @@ export default function Seller() {
       });
 
       const data = await res.json();
-      
       const newItem = { ...data, _id: data._id || data.id };
 
       setItems(prev => [...prev, newItem]);
@@ -138,6 +140,12 @@ export default function Seller() {
     }
   };
 
+  // 🔹 Filter seller items by search query
+  const filteredItems = items.filter(item =>
+    item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.category?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <>
       <Navbar />
@@ -152,22 +160,22 @@ export default function Seller() {
         </div>
 
         <div className="items-grid">
-          {items.length === 0 ? (
+          {filteredItems.length === 0 ? (
             <div className="empty-state">
               <Image size={64} />
-              <h3>No items yet</h3>
+              <h3>No items found</h3>
               <p>Start by adding your first item</p>
             </div>
           ) : (
-            items.map(item => (
+            filteredItems.map(item => (
               <div key={item._id} className="item-card">
-               <div className="item-image">
-  {item.image ? (
-    <img src={item.image} alt={item.title} />
-  ) : (
-    <div className="no-image"><Image size={48} /></div>
-  )}
-</div>
+                <div className="item-image">
+                  {item.image ? (
+                    <img src={item.image} alt={item.title} />
+                  ) : (
+                    <div className="no-image"><Image size={48} /></div>
+                  )}
+                </div>
                 <div className="item-content">
                   <h3>{item.title}</h3>
                   <p className="item-price">Rs{item.price}</p>
