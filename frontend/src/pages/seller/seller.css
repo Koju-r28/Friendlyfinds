@@ -209,7 +209,7 @@ body {
 
 .seller-page-bg {
   min-height: 100vh;
-  background: linear-gradient(180deg, #bcc8c1 0%);
+  background: white;
   padding-bottom: 3rem;
 }
 

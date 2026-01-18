@@ -1,50 +1,110 @@
 const bcrypt = require('bcrypt');
-const User = require('./userModel');
+const User = require('../models/user');
 
-// Signup function
-const signup = async (email, password) => {
+const signup = async (email, password, username) => {
   try {
-    // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return { success: false, message: 'User already exists' };
     }
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create new user
     const newUser = new User({
+      username: username || email.split('@')[0],
       email,
       password: hashedPassword
     });
 
     await newUser.save();
-    return { success: true, message: 'User created successfully', user: { email: newUser.email } };
+
+    const token = `temp-jwt-token-${newUser._id}-${Date.now()}`;
+
+    return { 
+      success: true, 
+      message: 'User created successfully', 
+      user: { 
+        id: newUser._id,
+        username: newUser.username,
+        email: newUser.email 
+      },
+      token: token
+    };
   } catch (error) {
     return { success: false, message: 'Error creating user', error: error.message };
   }
 };
 
-// Login function
 const login = async (email, password) => {
   try {
-    // Find user by email
     const user = await User.findOne({ email });
     if (!user) {
       return { success: false, message: 'User not found' };
     }
 
-    // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return { success: false, message: 'Invalid password' };
     }
 
-    return { success: true, message: 'Login successful', user: { email: user.email } };
+    const token = `temp-jwt-token-${user._id}-${Date.now()}`;
+
+    return { 
+      success: true, 
+      message: 'Login successful', 
+      user: { 
+        id: user._id,
+        username: user.username,
+        email: user.email 
+      },
+      token: token
+    };
   } catch (error) {
     return { success: false, message: 'Error logging in', error: error.message };
   }
 };
 
-module.exports = { signup, login };
+const authMiddleware = (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
+    
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ 
+        success: false, 
+        message: 'No token provided or invalid format' 
+      });
+    }
+
+    const token = authHeader.split(' ')[1];
+    
+    if (!token.startsWith('temp-jwt-token-')) {
+      return res.status(401).json({ 
+        success: false, 
+        message: 'Invalid token format' 
+      });
+    }
+
+    const tokenWithoutPrefix = token.replace('temp-jwt-token-', '');
+    const userId = tokenWithoutPrefix.split('-')[0];
+    
+    if (!userId || userId.length !== 24) {
+      return res.status(401).json({ 
+        success: false, 
+        message: 'Invalid user ID in token' 
+      });
+    }
+    
+    req.user = { id: userId };
+    next();
+    
+  } catch (error) {
+    console.error('Auth middleware error:', error);
+    return res.status(401).json({ 
+      success: false, 
+      message: 'Invalid token',
+      error: error.message 
+    });
+  }
+};
+
+module.exports = { signup, login, authMiddleware };
