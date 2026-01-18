@@ -18,20 +18,17 @@ export default function Collection() {
     location: "",
     message: "",
   });
+  const [submitting, setSubmitting] = useState(false);
 
   const { addToCart } = useCart();
-  const { searchQuery } = useSearch(); // 🔹 Added search context
+  const { searchQuery } = useSearch();
 
   // FETCH PRODUCTS
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const res = await fetch("http://localhost:5000/api/products");
-
-        if (!res.ok) {
-          throw new Error("Failed to fetch products");
-        }
-
+        if (!res.ok) throw new Error("Failed to fetch products");
         const data = await res.json();
         setItems(Array.isArray(data) ? data : []);
       } catch (err) {
@@ -41,13 +38,11 @@ export default function Collection() {
         setLoading(false);
       }
     };
-
     fetchProducts();
   }, []);
 
-  // PRICE & SEARCH FILTER
+  // FILTERED ITEMS BY SEARCH + PRICE
   const filteredItems = items.filter((item) => {
-    // 🔹 Search filter
     const matchesSearch =
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.category?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -55,7 +50,6 @@ export default function Collection() {
 
     if (!matchesSearch) return false;
 
-    // 🔹 Price filter (your original logic untouched)
     if (priceRange === "all") return true;
     if (priceRange === "under500") return item.price < 500;
     if (priceRange === "500-1000") return item.price >= 500 && item.price <= 1000;
@@ -77,35 +71,66 @@ export default function Collection() {
 
   const handleBuySubmit = async (e) => {
     e.preventDefault();
+
+    if (!buyForm.name || !buyForm.email || !buyForm.location) {
+      alert("Please fill in all required fields");
+      return;
+    }
+
     try {
-      const res = await fetch("http://localhost:5000/api/orders/create", {
+      setSubmitting(true);
+
+      const orderData = {
+        productId: selectedItem._id || selectedItem.id,
+        productName: selectedItem.title || selectedItem.name,
+        productImage: selectedItem.image,
+        price: parseFloat(selectedItem.price),
+        quantity: 1,
+        sellerId: selectedItem.sellerId || null,
+        sellerName: selectedItem.seller || "Unknown Seller",
+        buyerName: buyForm.name,
+        buyerEmail: buyForm.email,
+        buyerLocation: buyForm.location,
+        message: buyForm.message || "",
+        buyerId: null,
+      };
+
+      const res = await fetch("http://localhost:5000/api/orders/direct-purchase", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...buyForm,
-          productId: selectedItem.id,
-        }),
+        body: JSON.stringify(orderData),
       });
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`Server returned ${res.status}: ${errorText}`);
+      }
 
       const data = await res.json();
 
       if (data.success) {
-        alert("Order placed successfully!");
+        alert(`Order placed successfully! Order ID: ${data.data.orderId}`);
+        setItems((prevItems) =>
+          prevItems.filter((item) => (item._id || item.id) !== (selectedItem._id || selectedItem.id))
+        );
         setShowBuyModal(false);
         setBuyForm({ name: "", email: "", location: "", message: "" });
+        setSelectedItem(null);
       } else {
-        alert("Failed: " + data.message);
+        alert(data.message || "Failed to place order. Please try again.");
       }
     } catch (err) {
-      console.error(err);
-      alert("Failed to place order");
+      console.error("Direct purchase error:", err);
+      alert(`Failed to place order: ${err.message}`);
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  // CART
+  // ADD TO CART
   const handleAddToCart = (item) => {
     addToCart(item);
-    alert(`${item.name} added to cart!`);
+    alert(`${item.name || item.title} added to cart!`);
   };
 
   return (
@@ -145,6 +170,7 @@ export default function Collection() {
             </div>
           </aside>
 
+          {/* MAIN GRID */}
           <main className="furniture-main">
             {loading ? (
               <div className="no-results">Loading products...</div>
@@ -153,29 +179,28 @@ export default function Collection() {
             ) : (
               <div className="furniture-grid">
                 {filteredItems.map((item) => (
-                  <div key={item.id} className="furniture-card">
+                  <div key={item._id || item.id} className="furniture-card">
                     <div className="card-image">
                       {item.image ? (
-                        <img src={item.image} alt={item.name} />
+                        <img src={item.image} alt={item.title || item.name} />
                       ) : (
                         <div className="no-image">No Image</div>
+                      )}
+                      {item.condition && (
+                        <span className="condition-badge">{item.condition}</span>
                       )}
                     </div>
 
                     <div className="card-content">
-                      <h3 className="item-name">{item.name}</h3>
+                      <h3 className="item-name">{item.title || item.name}</h3>
                       <p className="item-price">Rs.{item.price}</p>
 
-                      {item.condition && (
-                        <span className={`condition-badge ${item.condition.toLowerCase()}`}>
-                          {item.condition}
-                        </span>
-                      )}
-
                       <div className="item-meta">
-                        <span>👤 {item.seller}</span>
-                        {item.location && <span>📍 {item.location}</span>}
-                        <span>📦 {item.category}</span>
+                        <span>👤 {item.seller || "Unknown"}</span>
+                        {(item.location || item.address) && (
+                          <span>📍 {item.location || item.address}</span>
+                        )}
+                        {item.category && <span>📦 {item.category}</span>}
                       </div>
 
                       <div className="card-actions">
@@ -195,6 +220,7 @@ export default function Collection() {
         </div>
       </div>
 
+      {/* BUY MODAL */}
       {showBuyModal && selectedItem && (
         <div className="modal-overlay">
           <div className="modal-content buy-modal">
@@ -207,19 +233,18 @@ export default function Collection() {
             </button>
 
             <div className="modal-layout">
-
               <div className="modal-product-preview">
                 <div className="product-image-container">
                   <img
                     src={selectedItem.image}
-                    alt={selectedItem.name}
+                    alt={selectedItem.title || selectedItem.name}
                     className="product-preview-image"
                   />
                   <div className="product-badge">{selectedItem.category}</div>
                 </div>
 
                 <div className="product-details">
-                  <h2 className="product-title">{selectedItem.name}</h2>
+                  <h2 className="product-title">{selectedItem.title || selectedItem.name}</h2>
                   <p className="product-description">{selectedItem.description}</p>
 
                   <div className="product-info-grid">
@@ -230,10 +255,10 @@ export default function Collection() {
                       </span>
                     </div>
 
-                    {selectedItem.location && (
+                    {(selectedItem.location || selectedItem.address) && (
                       <div className="info-item">
                         <span className="info-label">Location</span>
-                        <span className="info-value">{selectedItem.location}</span>
+                        <span className="info-value">{selectedItem.location || selectedItem.address}</span>
                       </div>
                     )}
 
@@ -267,7 +292,7 @@ export default function Collection() {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="buyer-email">Contact Number *</label>
+                    <label htmlFor="buyer-email">Email *</label>
                     <input
                       id="buyer-email"
                       name="email"
@@ -304,14 +329,15 @@ export default function Collection() {
                   </div>
 
                   <div className="modal-actions">
-                    <button type="submit" className="btn-confirm">
+                    <button type="submit" className="btn-confirm" disabled={submitting}>
                       <span className="btn-icon">💵</span>
-                      Buy
+                      {submitting ? "Processing..." : "Buy"}
                     </button>
                     <button
                       type="button"
                       className="btn-cancel"
                       onClick={() => setShowBuyModal(false)}
+                      disabled={submitting}
                     >
                       Cancel
                     </button>
@@ -322,7 +348,6 @@ export default function Collection() {
           </div>
         </div>
       )}
-
     </>
   );
 }

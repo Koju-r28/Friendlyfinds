@@ -5,29 +5,34 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   background-color: #f5f5f5;
 }
 
 .seller-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 2rem 1rem;
 }
 
 .seller-header {
-  background: linear-gradient(135deg,  #1a4d3a 0%, #2d5f4a  100%);
+  background: linear-gradient(135deg, #1a4d3a 0%, #2d5f4a 100%);
   color: white;
-  padding: 3rem 2rem;
+  padding: 3rem 1rem;
+  margin: -2rem -1rem 2rem -1rem;
   text-align: center;
 }
 
-
-.header-content h1 {
+.seller-header h1 {
   font-size: 2.5rem;
-  font-weight: 800;
+  font-weight: 700;
   margin-bottom: 0.5rem;
 }
+
+.seller-header p {
+  font-size: 1.125rem;
+  opacity: 0.9;
+}
+
 .btn-primary {
   display: flex;
   align-items: center;
@@ -196,77 +201,101 @@ body {
   background-color: #fecaca;
 }
 
+.error-message {
+  color: red;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
+
+.seller-page-bg {
+  min-height: 100vh;
+  background: white;
+  padding-bottom: 3rem;
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
   padding: 1rem;
+  backdrop-filter: blur(4px);
 }
 
 .modal-content {
   background: white;
   border-radius: 16px;
   width: 100%;
-  max-width: 600px;
+  max-width: 700px;
   max-height: 90vh;
   overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 1.5rem 2rem;
+  border-bottom: 2px solid #e5e7eb;
+  background: #f9fafb;
 }
 
 .modal-header h2 {
   font-size: 1.5rem;
+  font-weight: 700;
   color: #1f2937;
+  margin: 0;
 }
 
 .btn-close {
-  background: none;
-  border: none;
+  background: white;
+  border: 1px solid #e5e7eb;
   cursor: pointer;
   color: #6b7280;
-  padding: 0.25rem;
-  border-radius: 4px;
-  transition: background-color 0.2s;
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-close:hover {
   background-color: #f3f4f6;
+  border-color: #d1d5db;
 }
 
 .item-form {
-  padding: 1.5rem;
+  padding: 2rem;
 }
 
 .image-upload-section {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .image-upload-label {
   display: block;
   width: 100%;
-  height: 200px;
+  height: 220px;
   border: 2px dashed #d1d5db;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
   overflow: hidden;
-  transition: border-color 0.2s;
+  transition: all 0.3s;
+  background: #f9fafb;
 }
 
 .image-upload-label:hover {
   border-color: #3ba04d;
+  background: #f0fdf4;
+  border-style: solid;
 }
 
 .image-preview {
@@ -282,88 +311,114 @@ body {
   justify-content: center;
   height: 100%;
   color: #9ca3af;
+  gap: 0.75rem;
 }
 
 .upload-placeholder p {
-  margin-top: 0.5rem;
-  font-size: 0.875rem;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
 }
 
 .form-group label {
   display: block;
-  font-weight: 500;
+  font-weight: 600;
   color: #374151;
   margin-bottom: 0.5rem;
+  font-size: 0.875rem;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #d1d5db;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e5e7eb;
   border-radius: 8px;
-  font-size: 1rem;
-  transition: border-color 0.2s;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  background: white;
+  font-family: inherit;
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #3a7f4f;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  border-color: #3ba04d;
+  box-shadow: 0 0 0 3px rgba(59, 160, 77, 0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #9ca3af;
 }
 
 .form-group textarea {
   resize: vertical;
-  font-family: inherit;
+  min-height: 100px;
+  line-height: 1.5;
 }
 
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
 .form-actions {
   display: flex;
   gap: 1rem;
   margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #f3f4f6;
 }
 
 .btn-cancel,
 .btn-submit {
   flex: 1;
-  padding: 0.75rem;
+  padding: 0.875rem 1.5rem;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .btn-cancel {
   background-color: #f3f4f6;
   color: #374151;
+  border: 2px solid #e5e7eb;
 }
 
 .btn-cancel:hover {
   background-color: #e5e7eb;
+  border-color: #d1d5db;
 }
 
 .btn-submit {
-  background-color: #3ba04d;
+  background: linear-gradient(135deg, #3ba04d 0%, #237c4d 100%);
   color: white;
+  box-shadow: 0 4px 12px rgba(59, 160, 77, 0.3);
 }
 
 .btn-submit:hover {
-  background-color: #237c4d;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(59, 160, 77, 0.4);
+}
+
+.btn-submit:active {
+  transform: translateY(0);
 }
 
 @media (max-width: 768px) {
@@ -372,21 +427,71 @@ body {
   }
 
   .seller-header {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: stretch;
+    padding: 2rem 1rem;
+  }
+
+  .seller-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .seller-header p {
+    font-size: 1rem;
   }
 
   .items-grid {
     grid-template-columns: 1fr;
   }
 
+  .modal-content {
+    max-width: 95%;
+    margin: 1rem;
+  }
+
+  .item-form {
+    padding: 1.5rem;
+  }
+
+  .modal-header {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .modal-header h2 {
+    font-size: 1.25rem;
+  }
+
   .form-row {
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .image-upload-label {
+    height: 180px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .btn-cancel,
+  .btn-submit {
+    width: 100%;
   }
 }
-.error-message {
-  color: red;
-  margin-bottom: 10px;
-  font-size: 0.9rem;
+
+@media (max-width: 480px) {
+  .modal-overlay {
+    padding: 0.5rem;
+  }
+
+  .item-form {
+    padding: 1rem;
+  }
+
+  .modal-header {
+    padding: 1rem;
+  }
+
+  .image-upload-label {
+    height: 150px;
+  }
 }

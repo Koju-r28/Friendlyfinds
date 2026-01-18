@@ -9,18 +9,26 @@ A modern, eco-friendly marketplace platform for buying and selling used items.It
 - 🛒 Add items to the cart
 - 📱 Responsive design
 ## Tech Stack
-
+  Frontend
 - React 18
-- React Router
+- React Router DOM
 - CSS3
 - LocalStorage
-- Mongodb
+- Lucide Icons
+  
+  Backend
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- CORS
+- dotenv
 
 ## Installation
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/friendlyfinds.git
+git clone https://github.com/Koju-r28/friendlyfinds.git
 cd friendlyfinds
 ```
 

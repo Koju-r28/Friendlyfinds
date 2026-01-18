@@ -13,6 +13,8 @@ const Furniture = () => {
   const [items, setItems] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [priceRange, setPriceRange] = useState("all");
+
+  // BUY MODAL STATES
   const [showBuyModal, setShowBuyModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [buyForm, setBuyForm] = useState({
@@ -21,17 +23,18 @@ const Furniture = () => {
     location: "",
     message: "",
   });
+  const [loading, setLoading] = useState(false);
 
-  // Fetch all products for cross-page search
+  // FETCH PRODUCTS
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const res = await fetch("http://localhost:5000/api/products");
         const data = await res.json();
         setAllProducts(Array.isArray(data) ? data : []);
-        // Filter furniture items only
+
         const furnitureItems = (Array.isArray(data) ? data : []).filter(
-          (item) => item.category.toLowerCase() === "furniture"
+          (item) => item.category?.toLowerCase() === "furniture"
         );
         setItems(furnitureItems);
       } catch (err) {
@@ -75,6 +78,7 @@ const Furniture = () => {
     return matchesPrice && matchesSearch;
   });
 
+  // BUY HANDLERS
   const handleBuyClick = (item) => {
     setSelectedItem(item);
     setShowBuyModal(true);
@@ -86,29 +90,75 @@ const Furniture = () => {
 
   const handleBuySubmit = async (e) => {
     e.preventDefault();
+
+    if (!buyForm.name || !buyForm.email || !buyForm.location) {
+      alert("Please fill in all required fields");
+      return;
+    }
+
     try {
-      const res = await fetch("http://localhost:5000/api/orders/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...buyForm, productId: selectedItem._id }),
-      });
+      setLoading(true);
+
+      const orderData = {
+        productId: selectedItem._id || selectedItem.id,
+        productName: selectedItem.title || selectedItem.name,
+        productImage: selectedItem.image,
+        price: parseFloat(selectedItem.price),
+        quantity: 1,
+        sellerId: selectedItem.sellerId || null,
+        sellerName: selectedItem.seller || "Unknown Seller",
+        buyerName: buyForm.name,
+        buyerEmail: buyForm.email,
+        buyerLocation: buyForm.location,
+        message: buyForm.message || "",
+        buyerId: null,
+      };
+
+      const res = await fetch(
+        "http://localhost:5000/api/orders/direct-purchase",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(orderData),
+        }
+      );
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("Error response:", errorText);
+        throw new Error(`Server returned ${res.status}`);
+      }
+
       const data = await res.json();
+
       if (data.success) {
-        alert("Order placed successfully!");
+        alert(`Order placed successfully! Order ID: ${data.data.orderId}`);
+
+        // Remove product from display
+        setItems((prevItems) =>
+          prevItems.filter(
+            (item) => (item._id || item.id) !== (selectedItem._id || selectedItem.id)
+          )
+        );
+
         setShowBuyModal(false);
         setBuyForm({ name: "", email: "", location: "", message: "" });
+        setSelectedItem(null);
       } else {
-        alert("Failed: " + data.message);
+        alert(data.message || "Failed to place order. Please try again.");
       }
     } catch (err) {
-      console.error(err);
-      alert("Failed to place order");
+      console.error("Direct purchase error:", err);
+      alert(`Failed to place order: ${err.message}`);
+    } finally {
+      setLoading(false);
     }
   };
 
+  // CART HANDLER
   const handleAddToCart = (item) => {
     addToCart(item);
-    alert(`${item.name} added to cart!`);
+    alert(`${item.title || item.name} added to cart!`);
   };
 
   return (
@@ -154,19 +204,19 @@ const Furniture = () => {
             ) : (
               <div className="furniture-grid">
                 {filteredItems.map((item) => (
-                  <div key={item._id} className="furniture-card">
+                  <div key={item._id || item.id} className="furniture-card">
                     <div className="card-image">
-                      <img src={item.image} alt={item.name} />
+                      <img src={item.image} alt={item.title || item.name} />
                       {item.condition && (
                         <span className="condition-badge">{item.condition}</span>
                       )}
                     </div>
                     <div className="card-content">
-                      <h3 className="item-name">{item.name}</h3>
+                      <h3 className="item-name">{item.title || item.name}</h3>
                       <p className="item-price">Rs. {item.price}</p>
                       <div className="item-meta">
                         <span>👤 {item.seller}</span>
-                        <span>📍 {item.location}</span>
+                        <span>📍 {item.address || item.location}</span>
                       </div>
                       <div className="card-actions">
                         <button
@@ -191,53 +241,54 @@ const Furniture = () => {
         </div>
       </div>
 
+      {/* BUY MODAL */}
       {showBuyModal && selectedItem && (
         <div className="modal-overlay">
-          <div className="modal-content buy-modal">
-            <button
-              className="modal-close"
-              onClick={() => setShowBuyModal(false)}
-            >
-              ✕
-            </button>
-            <div className="modal-layout">
-              <div className="modal-product-preview">
-                <img src={selectedItem.image} alt={selectedItem.name} />
-                <h2>{selectedItem.name}</h2>
-                <p className="price">NPR {selectedItem.price.toLocaleString()}</p>
-                <p>{selectedItem.description}</p>
+          <div className="modal-content">
+            <h2>Buy {selectedItem.title || selectedItem.name}</h2>
+            <form onSubmit={handleBuySubmit}>
+              <input
+                name="name"
+                placeholder="Your Name"
+                value={buyForm.name}
+                onChange={handleBuyFormChange}
+                required
+              />
+              <input
+                name="email"
+                type="email"
+                placeholder="Email"
+                value={buyForm.email}
+                onChange={handleBuyFormChange}
+                required
+              />
+              <input
+                name="location"
+                placeholder="Location"
+                value={buyForm.location}
+                onChange={handleBuyFormChange}
+                required
+              />
+              <textarea
+                name="message"
+                placeholder="Message (optional)"
+                value={buyForm.message}
+                onChange={handleBuyFormChange}
+              />
+              <div className="modal-actions">
+                <button type="submit" className="btn-confirm" disabled={loading}>
+                  {loading ? "Placing Order..." : "Submit"}
+                </button>
+                <button
+                  type="button"
+                  className="btn-cancel"
+                  onClick={() => setShowBuyModal(false)}
+                  disabled={loading}
+                >
+                  Cancel
+                </button>
               </div>
-              <form onSubmit={handleBuySubmit} className="buy-form">
-                <input
-                  name="name"
-                  placeholder="Your Name"
-                  value={buyForm.name}
-                  onChange={handleBuyFormChange}
-                  required
-                />
-                <input
-                  name="email"
-                  placeholder="Email"
-                  value={buyForm.email}
-                  onChange={handleBuyFormChange}
-                  required
-                />
-                <input
-                  name="location"
-                  placeholder="Your Location"
-                  value={buyForm.location}
-                  onChange={handleBuyFormChange}
-                  required
-                />
-                <textarea
-                  name="message"
-                  placeholder="Message (optional)"
-                  value={buyForm.message}
-                  onChange={handleBuyFormChange}
-                />
-                <button type="submit">Confirm Purchase</button>
-              </form>
-            </div>
+            </form>
           </div>
         </div>
       )}

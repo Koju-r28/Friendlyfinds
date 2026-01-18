@@ -21,6 +21,7 @@ const Stationery = () => {
     location: "",
     message: "",
   });
+  const [loading, setLoading] = useState(false);
 
   // Fetch all products for cross-page search
   useEffect(() => {
@@ -29,9 +30,10 @@ const Stationery = () => {
         const res = await fetch("http://localhost:5000/api/products");
         const data = await res.json();
         setAllProducts(Array.isArray(data) ? data : []);
+
         // Filter stationery items only
         const stationeryItems = (Array.isArray(data) ? data : []).filter(
-          (item) => item.category.toLowerCase() === "stationery"
+          (item) => item.category?.toLowerCase() === "stationery"
         );
         setItems(stationeryItems);
       } catch (err) {
@@ -77,6 +79,7 @@ const Stationery = () => {
     return priceMatch && searchMatch;
   });
 
+  // BUY HANDLERS
   const handleBuyClick = (item) => {
     setSelectedItem(item);
     setShowBuyModal(true);
@@ -89,31 +92,67 @@ const Stationery = () => {
   const handleBuySubmit = async (e) => {
     e.preventDefault();
 
+    if (!buyForm.name || !buyForm.email || !buyForm.location) {
+      alert("Please fill in all required fields");
+      return;
+    }
+
     try {
-      const res = await fetch("http://localhost:5000/api/orders/create", {
+      setLoading(true);
+
+      const orderData = {
+        productId: selectedItem._id || selectedItem.id,
+        productName: selectedItem.title || selectedItem.name,
+        productImage: selectedItem.image,
+        price: parseFloat(selectedItem.price),
+        quantity: 1,
+        sellerId: selectedItem.sellerId || null,
+        sellerName: selectedItem.seller || "Unknown Seller",
+        buyerName: buyForm.name,
+        buyerEmail: buyForm.email,
+        buyerLocation: buyForm.location,
+        message: buyForm.message || "",
+        buyerId: null,
+      };
+
+      const res = await fetch("http://localhost:5000/api/orders/direct-purchase", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...buyForm, productId: selectedItem._id }),
+        body: JSON.stringify(orderData),
       });
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`Server returned ${res.status}: ${errorText}`);
+      }
 
       const data = await res.json();
 
       if (data.success) {
-        alert("Order placed successfully!");
+        alert(`Order placed successfully! Order ID: ${data.data.orderId}`);
+
+        setItems((prevItems) =>
+          prevItems.filter((item) => (item._id || item.id) !== (selectedItem._id || selectedItem.id))
+        );
+
         setShowBuyModal(false);
         setBuyForm({ name: "", email: "", location: "", message: "" });
+        setSelectedItem(null);
       } else {
-        alert("Failed: " + data.message);
+        alert(data.message || "Failed to place order. Please try again.");
       }
     } catch (err) {
-      console.error(err);
-      alert("Failed to place order");
+      console.error("Direct purchase error:", err);
+      alert(`Failed to place order: ${err.message}`);
+    } finally {
+      setLoading(false);
     }
   };
 
+  // CART
   const handleAddToCart = (item) => {
     addToCart(item);
-    alert(`${item.name} added to cart!`);
+    alert(`${item.name || item.title} added to cart!`);
   };
 
   return (
@@ -129,6 +168,7 @@ const Stationery = () => {
         </header>
 
         <div className="stationery-container">
+          {/* SIDEBAR */}
           <aside className="stationery-sidebar">
             <div className="filter-section">
               <h3>Price Range</h3>
@@ -152,34 +192,48 @@ const Stationery = () => {
             </div>
           </aside>
 
+          {/* MAIN GRID */}
           <main className="stationery-main">
-            <div className="stationery-grid">
-              {filteredItems.map((item) => (
-                <div key={item._id} className="stationery-card">
-                  <div className="card-image">
-                    <img src={item.image} alt={item.name} />
-                    {item.condition && <span className="condition-badge">{item.condition}</span>}
-                  </div>
-
-                  <div className="card-content">
-                    <h3 className="item-name">{item.name}</h3>
-                    <p className="item-price">Rs.{item.price}</p>
-
-                    <div className="item-meta">
-                      <span>👤 {item.seller}</span>
-                      <span>📍 {item.location}</span>
+            {filteredItems.length === 0 ? (
+              <p style={{ padding: "2rem" }}>No items found.</p>
+            ) : (
+              <div className="stationery-grid">
+                {filteredItems.map((item) => (
+                  <div key={item._id || item.id} className="stationery-card">
+                    <div className="card-image">
+                      {item.image ? (
+                        <img src={item.image} alt={item.name} />
+                      ) : (
+                        <div className="no-image">No Image</div>
+                      )}
+                      {item.condition && <span className="condition-badge">{item.condition}</span>}
                     </div>
 
-                    <div className="card-actions">
-                      <button className="btn-buy" onClick={() => handleBuyClick(item)}>Buy Now</button>
-                      <button className="btn-cart" onClick={() => handleAddToCart(item)}>🛒</button>
+                    <div className="card-content">
+                      <h3 className="item-name">{item.title || item.name}</h3>
+                      <p className="item-price">Rs.{item.price}</p>
+
+                      <div className="item-meta">
+                        <span>👤 {item.seller || "Unknown"}</span>
+                        {(item.location || item.address) && (
+                          <span>📍 {item.location || item.address}</span>
+                        )}
+                        {item.category && <span>📦 {item.category}</span>}
+                      </div>
+
+                      <div className="card-actions">
+                        <button className="btn-buy" onClick={() => handleBuyClick(item)}>
+                          Buy Now
+                        </button>
+                        <button className="btn-cart" onClick={() => handleAddToCart(item)}>
+                          🛒
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-
-              {filteredItems.length === 0 && <p style={{ padding: "2rem" }}>No items found.</p>}
-            </div>
+                ))}
+              </div>
+            )}
           </main>
         </div>
       </div>
@@ -188,21 +242,62 @@ const Stationery = () => {
       {showBuyModal && selectedItem && (
         <div className="modal-overlay">
           <div className="modal-content buy-modal">
-            <button className="modal-close" onClick={() => setShowBuyModal(false)}>✕</button>
+            <button
+              className="modal-close"
+              onClick={() => setShowBuyModal(false)}
+              aria-label="Close modal"
+            >
+              ✕
+            </button>
 
             <div className="modal-layout">
               <div className="modal-product-preview">
-                <img src={selectedItem.image} alt={selectedItem.name} />
-                <h2>{selectedItem.name}</h2>
+                <img
+                  src={selectedItem.image}
+                  alt={selectedItem.title || selectedItem.name}
+                  className="product-preview-image"
+                />
+                <h2>{selectedItem.title || selectedItem.name}</h2>
                 <p>NPR {selectedItem.price}</p>
               </div>
 
               <form onSubmit={handleBuySubmit} className="buy-form">
-                <input name="name" placeholder="Name" value={buyForm.name} onChange={handleBuyFormChange} required />
-                <input name="email" placeholder="Email" value={buyForm.email} onChange={handleBuyFormChange} required />
-                <input name="location" placeholder="Location" value={buyForm.location} onChange={handleBuyFormChange} required />
-                <textarea name="message" placeholder="Message (optional)" value={buyForm.message} onChange={handleBuyFormChange} />
-                <button type="submit">Buy</button>
+                <input
+                  name="name"
+                  placeholder="Your Name"
+                  value={buyForm.name}
+                  onChange={handleBuyFormChange}
+                  required
+                />
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="Email"
+                  value={buyForm.email}
+                  onChange={handleBuyFormChange}
+                  required
+                />
+                <input
+                  name="location"
+                  placeholder="Location"
+                  value={buyForm.location}
+                  onChange={handleBuyFormChange}
+                  required
+                />
+                <textarea
+                  name="message"
+                  placeholder="Message (optional)"
+                  value={buyForm.message}
+                  onChange={handleBuyFormChange}
+                />
+                <div className="modal-actions">
+                  <button type="submit" disabled={loading}>
+                    {loading ? "Placing Order..." : "Buy"}
+                  </button>
+                  <button type="button" onClick={() => setShowBuyModal(false)} disabled={loading}>
+                    Cancel
+                  </button>
+                </div>
               </form>
             </div>
           </div>

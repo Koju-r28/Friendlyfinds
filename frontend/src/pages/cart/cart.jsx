@@ -44,7 +44,7 @@ const Cart = () => {
               <div className="empty-cart-box">
                 <div className="empty-icon">🛒</div>
                 <p className="empty-text">Your cart is empty</p>
-                <Link to="/furniture" className="shop-btn">
+                <Link to="/collections" className="shop-btn">
                   Continue Shopping
                 </Link>
               </div>
