@@ -37,7 +37,7 @@ const LoginSignup = () => {
 
     try {
       if (isLogin) {
-        
+        // Login
         if (!formData.email || !formData.password) {
           setError('Please enter both email and password');
           setLoading(false);
@@ -59,7 +59,7 @@ const LoginSignup = () => {
           setError(result.message);
         }
       } else {
-        
+        // Signup
         if (!formData.username || !formData.email || !formData.password) {
           setError('Please fill in all fields');
           setLoading(false);
@@ -80,7 +80,7 @@ const LoginSignup = () => {
         
         if (result.success) {
           console.log('Registration successful');
-        
+          // User will be redirected automatically by ProtectedRoute
         } else {
           setError(result.message);
         }
@@ -105,6 +105,7 @@ const LoginSignup = () => {
   return (
     
      <div className="login-page">
+      {/* Green Hero Section at TOP */}
       <div className="login-hero">
         <div className="hero-content-center">
           <img src={logo} alt="Friendly Finds Logo" className="hero-logo" />
@@ -115,6 +116,7 @@ const LoginSignup = () => {
         </div>
       </div>
 
+      {/* Login Form Section */}
       <div className="login-container">
         <div className="auth-form-wrapper">
           <div className="form-header">

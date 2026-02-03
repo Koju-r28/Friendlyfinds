@@ -9,7 +9,7 @@ import './cart.css';
 const Cart = () => {
   const { logout, user } = useAuth();
   const { cartItems, removeFromCart, updateQuantity, getCartTotal, getCartCount } = useCart();
-  const { searchQuery } = useSearch(); 
+  const { searchQuery } = useSearch(); // 🔹 Added search context
   const navigate = useNavigate();
 
   const total = getCartTotal();
@@ -19,6 +19,7 @@ const Cart = () => {
     navigate('/checkout');
   };
 
+  // 🔹 Filter cart items by search query
   const filteredCartItems = cartItems.filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.category?.toLowerCase().includes(searchQuery.toLowerCase()) ||

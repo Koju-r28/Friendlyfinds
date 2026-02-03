@@ -34,6 +34,7 @@
   gap: 2rem;
 }
 
+/* Back Button */
 .back-button {
   display: inline-flex;
   align-items: center;
@@ -53,6 +54,7 @@
   gap: 12px;
 }
 
+/* Form Section */
 .checkout-form-section {
   width: 100%;
 }
@@ -127,6 +129,7 @@
   gap: 1rem;
 }
 
+/* Seller Info */
 .seller-info {
   background: #f9fafb;
   padding: 1rem;
@@ -157,6 +160,7 @@
   line-height: 1.5;
 }
 
+/* Confirm Button */
 .confirm-button {
   width: 100%;
   padding: 1rem;
@@ -175,6 +179,7 @@
   background: #047857;
 }
 
+/* Summary Section */
 .checkout-summary-section {
   width: 100%;
 }
@@ -195,6 +200,7 @@
   margin-bottom: 1.5rem;
 }
 
+/* Summary Items */
 .summary-items {
   display: flex;
   flex-direction: column;
@@ -294,6 +300,7 @@
   color: #059669;
 }
 
+/* Responsive Design */
 @media (max-width: 1024px) {
   .checkout-grid {
     grid-template-columns: 1fr;

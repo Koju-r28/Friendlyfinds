@@ -24,6 +24,7 @@ const Checkout = () => {
 
   const total = getCartTotal();
 
+  // Group items by seller
   const groupedBySeller = cartItems.reduce((acc, item) => {
     const seller = item.seller || 'Unknown Seller';
     if (!acc[seller]) {
@@ -44,6 +45,7 @@ const Checkout = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validate required fields
     if (!formData.fullName || !formData.email || !formData.phone) {
       alert('Please fill in all required fields');
       return;
@@ -52,18 +54,20 @@ const Checkout = () => {
     try {
       setLoading(true);
 
+      // Prepare sellers data grouped by seller
       const sellers = Object.entries(groupedBySeller).map(([sellerName, items]) => ({
         sellerId: items[0].sellerId || null,
         sellerName: sellerName,
         items: items.map(item => ({
           productId: item.id,
-          productName: item.title || item.name,
+          productName: item.title || item.name, // Changed: use title first
           productImage: item.image,
           quantity: item.quantity,
           price: item.price
         }))
       }));
 
+      // Prepare order data for cart checkout
       const orderData = {
         sellers: sellers,
         totalAmount: total,
@@ -82,6 +86,7 @@ const Checkout = () => {
         specialInstructions: `Pickup Date: ${formData.pickupDate}, Time: ${formData.pickupTime}. ${formData.notes}`
       };
 
+      // Make API call to cart checkout endpoint
       const response = await fetch('http://localhost:5000/api/orders/cart-checkout', {
         method: 'POST',
         headers: {
@@ -96,8 +101,10 @@ const Checkout = () => {
       if (data.success) {
         alert(`Order placed successfully! Order ID: ${data.data.orderId}`);
         
+        // Clear the cart after successful order
         clearCart();
         
+        // Redirect to furniture page
         navigate('/furniture');
       } else {
         alert(data.message || 'Failed to place order. Please try again.');
@@ -110,6 +117,7 @@ const Checkout = () => {
     }
   };
 
+  // Set minimum date to today
   const today = new Date().toISOString().split('T')[0];
 
   if (cartItems.length === 0) {
@@ -129,6 +137,7 @@ const Checkout = () => {
 
         <div className="checkout-container">
           <div className="checkout-grid">
+            {/* Buyer Information Form */}
             <div className="checkout-form-section">
               <button className="back-button" onClick={() => navigate('/cart')}>
                 <span>←</span> Back to Cart
@@ -261,6 +270,7 @@ const Checkout = () => {
               </div>
             </div>
 
+            {/* Order Summary Sidebar */}
             <div className="checkout-summary-section">
               <div className="checkout-summary-card">
                 <h2>Order Summary</h2>

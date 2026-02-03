@@ -3,11 +3,11 @@ import { Plus, Trash2, X, Upload, Image } from 'lucide-react';
 import './seller.css';
 import Navbar from '../../Components/Navbar/Navbar';
 import { useAuth } from '../../context/AuthContext';
-import { useSearch } from '../../context/SearchContext';
+import { useSearch } from '../../context/SearchContext'; // 🔹 added
 
 export default function Seller() {
   const { user } = useAuth();
-  const sellerId = user?.id; 
+  const sellerId = user?.id; // logged-in seller's id
 
   const [items, setItems] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -23,8 +23,9 @@ export default function Seller() {
     imagePreview: ''
   });
 
-  const { searchQuery } = useSearch();
+  const { searchQuery } = useSearch(); // 🔹 Added search context
 
+  // Fetch this seller's items
   useEffect(() => {
     if (!sellerId) return;
 
@@ -48,6 +49,7 @@ export default function Seller() {
     fetchItems();
   }, [sellerId]);
 
+  // Form handlers
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -78,6 +80,7 @@ export default function Seller() {
     setShowModal(false);
   };
 
+  // Add new item
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!sellerId) return;
@@ -113,6 +116,7 @@ export default function Seller() {
     }
   };
 
+  // Delete item
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this item?')) return;
 
@@ -136,6 +140,7 @@ export default function Seller() {
     }
   };
 
+  // 🔹 Filter seller items by search query
   const filteredItems = items.filter(item =>
     item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.category?.toLowerCase().includes(searchQuery.toLowerCase())

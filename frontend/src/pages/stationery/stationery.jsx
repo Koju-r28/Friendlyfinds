@@ -23,6 +23,7 @@ const Stationery = () => {
   });
   const [loading, setLoading] = useState(false);
 
+  // Fetch all products for cross-page search
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -30,6 +31,7 @@ const Stationery = () => {
         const data = await res.json();
         setAllProducts(Array.isArray(data) ? data : []);
 
+        // Filter stationery items only
         const stationeryItems = (Array.isArray(data) ? data : []).filter(
           (item) => item.category?.toLowerCase() === "stationery"
         );
@@ -41,6 +43,7 @@ const Stationery = () => {
     fetchProducts();
   }, []);
 
+  // Cross-page search redirection
   useEffect(() => {
     if (!searchQuery || searchQuery.length < 2) return;
 
@@ -58,6 +61,7 @@ const Stationery = () => {
     }
   }, [searchQuery, allProducts, navigate]);
 
+  // Filter by price + search query
   const filteredItems = items.filter((item) => {
     const price = Number(item.price);
 
@@ -75,6 +79,7 @@ const Stationery = () => {
     return priceMatch && searchMatch;
   });
 
+  // BUY HANDLERS
   const handleBuyClick = (item) => {
     setSelectedItem(item);
     setShowBuyModal(true);
@@ -144,6 +149,7 @@ const Stationery = () => {
     }
   };
 
+  // CART
   const handleAddToCart = (item) => {
     addToCart(item);
     alert(`${item.name || item.title} added to cart!`);
@@ -162,7 +168,7 @@ const Stationery = () => {
         </header>
 
         <div className="stationery-container">
-          
+          {/* SIDEBAR */}
           <aside className="stationery-sidebar">
             <div className="filter-section">
               <h3>Price Range</h3>
@@ -186,6 +192,7 @@ const Stationery = () => {
             </div>
           </aside>
 
+          {/* MAIN GRID */}
           <main className="stationery-main">
             {filteredItems.length === 0 ? (
               <p style={{ padding: "2rem" }}>No items found.</p>
@@ -231,6 +238,7 @@ const Stationery = () => {
         </div>
       </div>
 
+      {/* BUY MODAL */}
       {showBuyModal && selectedItem && (
         <div className="modal-overlay">
           <div className="modal-content buy-modal">

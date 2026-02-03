@@ -440,6 +440,7 @@
 .btn-cancel:hover {
   background: #b91c1c;
 }
+/* Modal Styles */
 .modal-overlay {
   position: fixed;
   top: 0;

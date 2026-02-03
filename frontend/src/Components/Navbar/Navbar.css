@@ -15,6 +15,7 @@
   justify-content: space-between;
 }
 
+/* Logo */
 .navbar-logo {
   display: flex;
   align-items: center;
@@ -33,6 +34,7 @@
   color: #1f2937;
 }
 
+/* Nav Links */
 .navbar-links {
   display: flex;
   align-items: center;
@@ -60,6 +62,7 @@
   border-bottom-color: #10b981;
 }
 
+/* Right Side */
 .navbar-right {
   display: flex;
   align-items: center;
@@ -86,6 +89,7 @@
   transform: translateY(-1px);
 }
 
+/* User Menu */
 .user-menu {
   position: relative;
 }
@@ -109,6 +113,7 @@
   color: #10b981;
 }
 
+/* Dropdown Menu */
 .dropdown-menu {
   position: absolute;
   top: calc(100% + 0.5rem);
@@ -195,6 +200,7 @@
   color: #dc2626;
 }
 
+/* Responsive */
 @media (max-width: 768px) {
   .navbar-links {
     display: none;

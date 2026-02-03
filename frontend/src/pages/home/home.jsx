@@ -13,8 +13,9 @@ const Home = () => {
 
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [allProducts, setAllProducts] = useState([]); 
+  const [allProducts, setAllProducts] = useState([]); // For cross-page search
 
+  // 🔹 Fetch all products for search
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -35,6 +36,7 @@ const Home = () => {
     fetchProducts();
   }, []);
 
+  // 🔹 Filter products based on search query
   const filteredItems = items.filter(
     (item) =>
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -42,6 +44,7 @@ const Home = () => {
       item.seller?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // 🔹 Redirect to category page if search query matches only that category
   useEffect(() => {
     if (!searchQuery || searchQuery.length < 2) return;
 
@@ -61,6 +64,7 @@ const Home = () => {
       <Navbar />
       <div className="home-container">
 
+        {/* Hero Section */}
         <section className="hero-section">
           <div className="hero-content">
             <div className="hero-text">
@@ -74,6 +78,7 @@ const Home = () => {
           </div>
         </section>
 
+        {/* 🔹 Search Results */}
         {searchQuery && (
           <section className="search-results-section">
             <h2>Search Results for "{searchQuery}"</h2>
@@ -103,6 +108,7 @@ const Home = () => {
           </section>
         )}
 
+        {/* Categories Section */}
         <section className="categories-section">
           <h2>Browse by Category</h2>
           <div className="categories-grid">
@@ -124,6 +130,7 @@ const Home = () => {
           </div>
         </section>
 
+        {/* Info Section */}
         <div className="info-section-bottom">
           <div className="info-header">
             <h2 className="info-main-title">Why Choose Friendly Finds?</h2>
@@ -137,6 +144,7 @@ const Home = () => {
             <div className="info-card"><div className="info-card-icon">♻️</div><h4>Eco-Friendly</h4><p>Reduce waste by giving items a second life</p></div>
           </div>
 
+          {/* Footer */}
           <footer className="footer">
             <div className="footer-content">
               <div className="footer-grid">

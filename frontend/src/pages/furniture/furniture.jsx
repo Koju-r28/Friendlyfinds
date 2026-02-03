@@ -14,6 +14,7 @@ const Furniture = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [priceRange, setPriceRange] = useState("all");
 
+  // BUY MODAL STATES
   const [showBuyModal, setShowBuyModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [buyForm, setBuyForm] = useState({
@@ -24,6 +25,7 @@ const Furniture = () => {
   });
   const [loading, setLoading] = useState(false);
 
+  // FETCH PRODUCTS
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -42,6 +44,7 @@ const Furniture = () => {
     fetchProducts();
   }, []);
 
+  // Cross-page search redirection
   useEffect(() => {
     if (!searchQuery || searchQuery.length < 2) return;
 
@@ -59,6 +62,7 @@ const Furniture = () => {
     }
   }, [searchQuery, allProducts, navigate]);
 
+  // Filter by price + search query
   const filteredItems = items.filter((item) => {
     const matchesPrice =
       priceRange === "all" ||
@@ -74,6 +78,7 @@ const Furniture = () => {
     return matchesPrice && matchesSearch;
   });
 
+  // BUY HANDLERS
   const handleBuyClick = (item) => {
     setSelectedItem(item);
     setShowBuyModal(true);
@@ -129,6 +134,7 @@ const Furniture = () => {
       if (data.success) {
         alert(`Order placed successfully! Order ID: ${data.data.orderId}`);
 
+        // Remove product from display
         setItems((prevItems) =>
           prevItems.filter(
             (item) => (item._id || item.id) !== (selectedItem._id || selectedItem.id)
@@ -149,6 +155,7 @@ const Furniture = () => {
     }
   };
 
+  // CART HANDLER
   const handleAddToCart = (item) => {
     addToCart(item);
     alert(`${item.title || item.name} added to cart!`);
@@ -234,6 +241,7 @@ const Furniture = () => {
         </div>
       </div>
 
+      {/* BUY MODAL */}
       {showBuyModal && selectedItem && (
         <div className="modal-overlay">
           <div className="modal-content">

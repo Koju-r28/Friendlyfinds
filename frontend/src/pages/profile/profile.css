@@ -1,9 +1,11 @@
+/* Profile Container */
 .ff-profile-container {
   min-height: 100vh;
   background: #f5f5f5;
   padding: 0;
 }
 
+/* Header Navigation */
 .ff-header-nav {
   background: #2d6a4f;
   padding: 1.5rem 3rem;
@@ -52,6 +54,7 @@
   transform: translateY(-1px);
 }
 
+/* Notification */
 .ff-notification {
   position: fixed;
   top: 20px;
@@ -91,6 +94,7 @@
   }
 }
 
+/* Loading Screen */
 .ff-loading-screen,
 .ff-error-screen {
   display: flex;
@@ -153,6 +157,7 @@
   box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
 }
 
+/* Profile Wrapper */
 .ff-profile-wrapper {
   max-width: 1400px;
   margin: 0 auto;
@@ -162,6 +167,7 @@
   gap: 2rem;
 }
 
+/* Sidebar */
 .ff-profile-sidebar {
   background: white;
   border-radius: 20px;
@@ -252,6 +258,7 @@
   margin-bottom: 1.5rem;
 }
 
+/* Profile Completeness */
 .ff-profile-completeness {
   background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
   padding: 1rem;
@@ -292,6 +299,7 @@
   transition: width 0.5s ease;
 }
 
+/* Edit Profile Button */
 .ff-edit-profile-btn {
   display: flex;
   align-items: center;
@@ -315,6 +323,57 @@
   box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
 }
 
+/* Stats */
+.ff-profile-stats {
+  padding: 2rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.ff-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.ff-stat-listings {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+}
+
+.ff-stat-rating {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+}
+
+.ff-stat-sold {
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+}
+
+.ff-stat-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.ff-stat-icon {
+  font-size: 2rem;
+}
+
+.ff-stat-number {
+  display: block;
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: #166534;
+}
+
+.ff-stat-label {
+  display: block;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* Navigation */
 .ff-profile-nav {
   padding: 1.5rem;
   display: flex;
@@ -355,6 +414,7 @@
   transform: scale(1.02);
 }
 
+/* Main Content */
 .ff-profile-main {
   background: white;
   border-radius: 20px;
@@ -372,6 +432,7 @@
   font-weight: bold;
 }
 
+/* About Section */
 .ff-about-bio-card {
   background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
   border-radius: 16px;
@@ -456,6 +517,7 @@
   margin: 0;
 }
 
+/* Empty State */
 .ff-empty-state {
   text-align: center;
   padding: 4rem 2rem;
@@ -496,6 +558,7 @@
   box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
 }
 
+/* Listings Grid */
 .ff-listings-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -576,6 +639,187 @@
   transform: translateY(-2px);
 }
 
+/* Saved Items */
+.ff-saved-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ff-saved-item {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.ff-saved-item:hover {
+  border-color: #22c55e;
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.1);
+}
+
+.ff-saved-image {
+  font-size: 3rem;
+  width: 100px;
+  height: 100px;
+  background: white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ff-saved-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.ff-saved-details {
+  flex: 1;
+}
+
+.ff-saved-name {
+  font-size: 1.25rem;
+  color: #166534;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.ff-saved-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #22c55e;
+  margin-bottom: 0.25rem;
+}
+
+.ff-saved-seller {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.ff-saved-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.ff-remove-btn {
+  padding: 0.75rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+
+.ff-remove-btn:hover {
+  background: #fee2e2;
+  transform: scale(1.1);
+}
+
+.ff-contact-seller-btn {
+  padding: 0.75rem 1.5rem;
+  background: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ff-contact-seller-btn:hover {
+  background: #16a34a;
+  transform: translateY(-2px);
+}
+
+/* Reviews */
+.ff-reviews-summary {
+  text-align: center;
+  padding: 2.5rem;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border-radius: 16px;
+  margin-bottom: 2rem;
+}
+
+.ff-rating-large {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.ff-rating-star {
+  font-size: 3.5rem;
+}
+
+.ff-rating-number {
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: #166534;
+}
+
+.ff-rating-text {
+  color: #6b7280;
+  font-size: 1.1rem;
+}
+
+.ff-reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.ff-review-item {
+  padding: 1.5rem;
+  background: #f9fafb;
+  border-radius: 16px;
+  border-left: 4px solid #22c55e;
+  transition: all 0.2s;
+}
+
+.ff-review-item:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  transform: translateX(4px);
+}
+
+.ff-review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.ff-review-header strong {
+  color: #1f2937;
+  font-size: 1.05rem;
+}
+
+.ff-review-stars {
+  font-size: 1rem;
+}
+
+.ff-review-text {
+  color: #4b5563;
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+
+.ff-review-date {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+/* Modal */
 .ff-modal-overlay {
   position: fixed;
   inset: 0;
@@ -660,6 +904,7 @@
   padding: 2rem;
 }
 
+/* Image Upload */
 .ff-image-upload-section {
   text-align: center;
   margin-bottom: 2rem;
@@ -723,6 +968,7 @@
   margin: 0;
 }
 
+/* Form */
 .ff-form-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -766,6 +1012,7 @@
   resize: none;
 }
 
+/* Modal Actions */
 .ff-modal-actions {
   display: flex;
   gap: 1rem;
@@ -824,6 +1071,7 @@
   animation: spin 0.6s linear infinite;
 }
 
+/* Responsive */
 @media (max-width: 1024px) {
   .ff-profile-wrapper {
     grid-template-columns: 1fr;
@@ -866,6 +1114,20 @@
 
   .ff-form-grid {
     grid-template-columns: 1fr;
+  }
+
+  .ff-saved-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .ff-saved-actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .ff-contact-seller-btn {
+    width: 100%;
   }
 
   .ff-modal-actions {
