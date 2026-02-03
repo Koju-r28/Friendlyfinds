@@ -1,4 +1,5 @@
 const Order = require('../models/orderModel');
+const Notification = require('../models/notificationModel');
 
 const createOrder = async (req, res) => {
   try {
@@ -20,6 +21,14 @@ const createOrder = async (req, res) => {
     });
 
     await order.save();
+
+    // 🔔 CREATE NOTIFICATION
+    await Notification.create({
+      title: 'New Order Placed',
+      message: `${name} placed an order`,
+      type: 'order',
+      isRead: false
+    });
 
     res.status(201).json({
       success: true,

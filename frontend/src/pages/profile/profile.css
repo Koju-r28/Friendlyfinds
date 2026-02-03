@@ -7,8 +7,8 @@
 
 /* Header Navigation */
 .ff-header-nav {
-  background: #2d6a4f;
-  padding: 1.5rem 3rem;
+  background: linear-gradient(135deg, #1a4d3a 0%, #2d5f4a  100%);
+  padding: 3rem 1rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
@@ -27,10 +27,10 @@
 }
 
 .ff-header-title {
-  font-size: 1.75rem;
+  font-size: 2.5rem;
   font-weight: bold;
   color: white;
-  margin: 0;
+  margin-bottom:0.5;
   text-align: center;
   flex: 1;
 }
@@ -323,7 +323,10 @@
   box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
 }
 
+<<<<<<< HEAD
 /* Stats */
+=======
+>>>>>>> 5c6365b3e00a08a93ca020e442d01419802d16fb
 .ff-profile-stats {
   padding: 2rem;
   border-bottom: 2px solid #f0f0f0;
@@ -373,7 +376,10 @@
   color: #6b7280;
 }
 
+<<<<<<< HEAD
 /* Navigation */
+=======
+>>>>>>> 5c6365b3e00a08a93ca020e442d01419802d16fb
 .ff-profile-nav {
   padding: 1.5rem;
   display: flex;
@@ -639,7 +645,10 @@
   transform: translateY(-2px);
 }
 
+<<<<<<< HEAD
 /* Saved Items */
+=======
+>>>>>>> 5c6365b3e00a08a93ca020e442d01419802d16fb
 .ff-saved-list {
   display: flex;
   flex-direction: column;
@@ -741,7 +750,10 @@
   transform: translateY(-2px);
 }
 
+<<<<<<< HEAD
 /* Reviews */
+=======
+>>>>>>> 5c6365b3e00a08a93ca020e442d01419802d16fb
 .ff-reviews-summary {
   text-align: center;
   padding: 2.5rem;
@@ -819,7 +831,10 @@
   color: #9ca3af;
 }
 
+<<<<<<< HEAD
 /* Modal */
+=======
+>>>>>>> 5c6365b3e00a08a93ca020e442d01419802d16fb
 .ff-modal-overlay {
   position: fixed;
   inset: 0;

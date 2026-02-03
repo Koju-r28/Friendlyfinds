@@ -1,6 +1,13 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5c6365b3e00a08a93ca020e442d01419802d16fb
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const { createNotification } = require('../controllers/notificationController');
+const { authMiddleware } = require('../middleware/auth');
+const User = require('../models/user');
 
 const orderSchema = new mongoose.Schema({
   orderId: {
@@ -101,7 +108,12 @@ const orderSchema = new mongoose.Schema({
 
 const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);
 
+<<<<<<< HEAD
 router.post('/direct-purchase', async (req, res) => {
+=======
+// POST: Direct Purchase
+router.post('/direct-purchase', authMiddleware, async (req, res) => {
+>>>>>>> 5c6365b3e00a08a93ca020e442d01419802d16fb
   try {
     const { 
       productId, productName, productImage, price, quantity = 1,
@@ -123,7 +135,7 @@ router.post('/direct-purchase', async (req, res) => {
       orderId,
       orderType: 'direct_purchase',
       buyerInfo: { name: buyerName, email: buyerEmail, location: buyerLocation },
-      buyerId: buyerId || null,
+      buyerId: req.user.id,
       totalAmount: subtotal,
       sellers: [{
         sellerId: sellerId || null,
@@ -142,6 +154,27 @@ router.post('/direct-purchase', async (req, res) => {
     });
 
     const savedOrder = await newOrder.save();
+    const buyerUser = await User.findById(req.user.id);
+    const sellerUser = sellerId ? await User.findById(sellerId) : null;
+    const buyerPhone = buyerUser?.phone || 'Not provided';
+    const sellerPhone = sellerUser?.phone || 'Not provided';
+
+    // SELLER notification
+await createNotification({
+  userId: sellerId,
+  title: 'New Order Received',
+   message: `A buyer from ${buyerLocation} ordered "${productName}".\nBuyer Phone: ${buyerPhone}`,
+  type: 'order'
+});
+
+// BUYER notification
+await createNotification({
+  userId: req.user.id,
+  title: 'Order Placed Successfully',
+    message: `Your order for "${productName}" will be delivered to ${buyerLocation}.\nSeller Phone: ${sellerPhone}`,
+      type: 'order'
+});
+
 
     try {
       const Product = mongoose.model('Product');
@@ -180,30 +213,26 @@ router.post('/direct-purchase', async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
 router.post('/cart-checkout', async (req, res) => {
+=======
+// POST: Cart Checkout
+router.post('/cart-checkout', authMiddleware, async (req, res) => {
+>>>>>>> 5c6365b3e00a08a93ca020e442d01419802d16fb
   try {
-    const { 
-      sellers, totalAmount, buyerName, buyerEmail, buyerLocation,
-      buyerId, shippingAddress, paymentMethod, specialInstructions 
-    } = req.body;
+    const { sellers, totalAmount, buyerName, buyerEmail, buyerLocation, shippingAddress, paymentMethod, specialInstructions } = req.body;
 
     if (!sellers || !totalAmount || !buyerName || !buyerEmail || !buyerLocation) {
-      return res.status(400).json({
-        success: false,
-        message: 'Missing required fields'
-      });
+      return res.status(400).json({ success: false, message: 'Missing required fields' });
     }
 
     if (!Array.isArray(sellers) || sellers.length === 0) {
-      return res.status(400).json({
-        success: false,
-        message: 'At least one seller with items is required'
-      });
+      return res.status(400).json({ success: false, message: 'At least one seller with items is required' });
     }
 
     const orderId = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
-
     const productIdsToDelete = [];
+
     const processedSellers = sellers.map(seller => {
       const sellerSubtotal = seller.items.reduce((sum, item) => {
         productIdsToDelete.push(item.productId);
@@ -230,7 +259,7 @@ router.post('/cart-checkout', async (req, res) => {
       orderId,
       orderType: 'cart_checkout',
       buyerInfo: { name: buyerName, email: buyerEmail, location: buyerLocation },
-      buyerId: buyerId || null,
+      buyerId: req.user.id,
       totalAmount: parseFloat(totalAmount),
       sellers: processedSellers,
       shippingAddress: shippingAddress || {},
@@ -242,6 +271,37 @@ router.post('/cart-checkout', async (req, res) => {
 
     const savedOrder = await newOrder.save();
 
+<<<<<<< HEAD
+=======
+    // 🔹 Fetch buyer phone
+    const buyerUser = await User.findById(req.user.id);
+    const buyerPhone = buyerUser?.phone || 'Not provided';
+
+    // 🔔 Notifications
+    for (const seller of processedSellers) {
+      if (!seller.sellerId) continue; // skip if sellerId missing
+      const sellerUser = await User.findById(seller.sellerId);
+      const sellerPhone = sellerUser?.phone || 'Not provided';
+
+      // Seller notification
+      await createNotification({
+        userId: seller.sellerId,
+        title: 'New Order Received',
+        message: `You received an order with ${seller.items.length} item(s).\nBuyer Phone: ${buyerPhone}`,
+        type: 'order'
+      });
+
+      // Buyer notification for this seller
+      await createNotification({
+        userId: req.user.id,
+        title: 'Order Placed Successfully',
+        message: `Your order will be shipped to ${buyerLocation}.\nSeller Phone: ${sellerPhone}`,
+        type: 'order'
+      });
+    }
+
+    // Delete all purchased products
+>>>>>>> 5c6365b3e00a08a93ca020e442d01419802d16fb
     try {
       const Product = mongoose.model('Product');
       await Product.deleteMany({ _id: { $in: productIdsToDelete } });
@@ -263,18 +323,7 @@ router.post('/cart-checkout', async (req, res) => {
 
   } catch (error) {
     console.error('Cart checkout error:', error.message);
-    
-    if (error.name === 'ValidationError') {
-      return res.status(400).json({
-        success: false,
-        message: 'Validation error'
-      });
-    }
-
-    return res.status(500).json({
-      success: false,
-      message: 'Failed to place order. Please try again.'
-    });
+    return res.status(500).json({ success: false, message: 'Failed to place order. Please try again.' });
   }
 });
 

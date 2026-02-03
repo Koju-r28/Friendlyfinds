@@ -1,9 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { SearchProvider } from './context/SearchContext';
+import { NotificationProvider } from './context/NotificationContext';
 
 import Home from './pages/home/home';
 import Furniture from './pages/furniture/furniture';
@@ -22,23 +23,26 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <CartProvider>
-          <SearchProvider>
-            <Routes>
-          
-              <Route path="/login" element={<LoginSignup />} />
-              
-              <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-              <Route path="/furniture" element={<ProtectedRoute><Furniture /></ProtectedRoute>} />
-              <Route path="/collections" element={<ProtectedRoute><Collections /></ProtectedRoute>} />
-              <Route path="/stationery" element={<ProtectedRoute><Stationery /></ProtectedRoute>} />
-              <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
-              <Route path="/seller" element={<ProtectedRoute><Seller /></ProtectedRoute>} />
-              <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-              <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
-            </Routes>
-          </SearchProvider>
-        </CartProvider>
+        <NotificationProvider>
+          <CartProvider>
+            <SearchProvider>
+              <Routes>
+
+                <Route path="/login" element={<LoginSignup />} />
+
+                <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+                <Route path="/furniture" element={<ProtectedRoute><Furniture /></ProtectedRoute>} />
+                <Route path="/collections" element={<ProtectedRoute><Collections /></ProtectedRoute>} />
+                <Route path="/stationery" element={<ProtectedRoute><Stationery /></ProtectedRoute>} />
+                <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
+                <Route path="/seller" element={<ProtectedRoute><Seller /></ProtectedRoute>} />
+                <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+
+              </Routes>
+            </SearchProvider>
+          </CartProvider>
+        </NotificationProvider>
       </AuthProvider>
     </Router>
   );

@@ -21,17 +21,17 @@ const signup = async (email, password, username) => {
     const token = `temp-jwt-token-${newUser._id}-${Date.now()}`;
 
     return { 
-      success: true, 
-      message: 'User created successfully', 
-      user: { 
+      success: true,
+      message: 'User created successfully',
+      user: {
         id: newUser._id,
         username: newUser.username,
-        email: newUser.email 
+        email: newUser.email
       },
-      token: token
+      token
     };
   } catch (error) {
-    return { success: false, message: 'Error creating user', error: error.message };
+    return { success: false, message: 'Error creating user' };
   }
 };
 
@@ -50,61 +50,50 @@ const login = async (email, password) => {
     const token = `temp-jwt-token-${user._id}-${Date.now()}`;
 
     return { 
-      success: true, 
-      message: 'Login successful', 
-      user: { 
+      success: true,
+      message: 'Login successful',
+      user: {
         id: user._id,
         username: user.username,
-        email: user.email 
+        email: user.email
       },
-      token: token
+      token
     };
   } catch (error) {
-    return { success: false, message: 'Error logging in', error: error.message };
+    return { success: false, message: 'Error logging in' };
   }
 };
 
 const authMiddleware = (req, res, next) => {
-  try {
-    const authHeader = req.headers.authorization;
-    
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ 
-        success: false, 
-        message: 'No token provided or invalid format' 
-      });
-    }
+  const authHeader = req.headers.authorization;
 
-    const token = authHeader.split(' ')[1];
-    
-    if (!token.startsWith('temp-jwt-token-')) {
-      return res.status(401).json({ 
-        success: false, 
-        message: 'Invalid token format' 
-      });
-    }
-
-    const tokenWithoutPrefix = token.replace('temp-jwt-token-', '');
-    const userId = tokenWithoutPrefix.split('-')[0];
-    
-    if (!userId || userId.length !== 24) {
-      return res.status(401).json({ 
-        success: false, 
-        message: 'Invalid user ID in token' 
-      });
-    }
-    
-    req.user = { id: userId };
-    next();
-    
-  } catch (error) {
-    console.error('Auth middleware error:', error);
-    return res.status(401).json({ 
-      success: false, 
-      message: 'Invalid token',
-      error: error.message 
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({
+      success: false,
+      message: 'No token provided or invalid format'
     });
   }
+
+  const token = authHeader.split(' ')[1];
+
+  if (!token.startsWith('temp-jwt-token-')) {
+    return res.status(401).json({
+      success: false,
+      message: 'Invalid token format'
+    });
+  }
+
+  const userId = token.replace('temp-jwt-token-', '').split('-')[0];
+
+  if (!userId || userId.length !== 24) {
+    return res.status(401).json({
+      success: false,
+      message: 'Invalid user ID in token'
+    });
+  }
+
+  req.user = { id: userId };
+  next();
 };
 
 module.exports = { signup, login, authMiddleware };

@@ -161,7 +161,9 @@ export default function Seller() {
           <p>Add your items to be sold</p>
         </div>
 
-        <div className="items-grid">
+        <div className="seller-container">
+         <div className="items-grid">
+
           {filteredItems.length === 0 ? (
             <div className="empty-state">
               <Image size={64} />
@@ -195,6 +197,7 @@ export default function Seller() {
               </div>
             ))
           )}
+        </div>
         </div>
       </div>
 

@@ -5,17 +5,32 @@ import { useAuth } from '../../context/AuthContext';
 import { useSearch } from '../../context/SearchContext';
 import './Navbar.css';
 import logo from '../Assets/logo.png';
+import { useNotifications } from '../../context/NotificationContext';
+import { useState, useRef, useEffect } from 'react';
+
 
 const Navbar = () => {
   const { getCartCount } = useCart();
   const cartCount = getCartCount()
   const { user, logout } = useAuth();
   const { searchQuery, setSearchQuery } = useSearch();
+const { unreadCount, notifications, markAsRead} = useNotifications();
+const [showNotifications, setShowNotifications] = useState(false);
+const notificationRef = useRef(null);
 
   const handleLogout = () => {
     logout();
     window.location.reload();
   };
+
+
+const formatTime = (date) => {
+  const diff = Math.floor((Date.now() - new Date(date)) / 60000);
+  if (diff < 1) return 'Just now';
+  if (diff < 60) return `${diff} min ago`;
+  if (diff < 1440) return `${Math.floor(diff / 60)} hrs ago`;
+  return new Date(date).toLocaleDateString();
+};
 
   return (
     <nav className="navbar">
@@ -58,6 +73,52 @@ const Navbar = () => {
             <span className="cart-badge">{getCartCount()}</span>
           </a>
         </div>
+       <div
+  className="notification-bell"
+  ref={notificationRef}
+  onClick={() => setShowNotifications(prev => !prev)}
+>
+  <svg
+  width="22"
+  height="22"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  strokeWidth="2"
+  strokeLinecap="round"
+  strokeLinejoin="round"
+>
+  <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path>
+  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+</svg>
+
+  {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
+
+  {showNotifications && (
+    <div className="notification-dropdown">
+      {notifications.length === 0 && (
+        <p className="empty">You're all caught up 🎉</p>
+      )}
+
+      {notifications.map(n => (
+        <div
+          key={n._id}
+          className={`notification-item ${!n.isRead ? 'unread' : ''}`}
+          onClick={(e) => {
+            e.stopPropagation(); 
+            markAsRead(n._id);
+            setShowNotifications(false); 
+          }}
+        >
+          <strong>{n.title}</strong>
+          <p>{n.message}</p>
+          <small>{formatTime(n.createdAt)}</small>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
 
         {/* User Menu */}
            <div className="user-menu">

@@ -1,6 +1,6 @@
 # 🌿 FriendlyFinds
 
-A modern, eco-friendly marketplace platform for buying and selling used items.It is a semester project for II year I sem.Made by using node.js ,React,MongoDB.
+A modern, eco-friendly marketplace platform for buying and selling used items.It is a semester project for II Year I Semester.
 
 ## Features
 
@@ -10,13 +10,13 @@ A modern, eco-friendly marketplace platform for buying and selling used items.It
 - 📱 Responsive design
 ## Tech Stack
   Frontend
-- React 18
+- React 
 - React Router DOM
 - CSS3
 - LocalStorage
 - Lucide Icons
   
-  Backend
+Backend
 - Node.js
 - Express.js
 - MongoDB
