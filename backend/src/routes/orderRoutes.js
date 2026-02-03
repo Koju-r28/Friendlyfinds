@@ -1,11 +1,7 @@
-// File: src/routes/orderRoutes.js
-// Clean version with minimal logging
-
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 
-// Order Schema
 const orderSchema = new mongoose.Schema({
   orderId: {
     type: String,
@@ -105,7 +101,6 @@ const orderSchema = new mongoose.Schema({
 
 const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);
 
-// POST: Direct Purchase
 router.post('/direct-purchase', async (req, res) => {
   try {
     const { 
@@ -148,7 +143,6 @@ router.post('/direct-purchase', async (req, res) => {
 
     const savedOrder = await newOrder.save();
 
-    // Delete product from database
     try {
       const Product = mongoose.model('Product');
       await Product.findByIdAndDelete(productId);
@@ -186,7 +180,6 @@ router.post('/direct-purchase', async (req, res) => {
   }
 });
 
-// POST: Cart Checkout
 router.post('/cart-checkout', async (req, res) => {
   try {
     const { 
@@ -249,7 +242,6 @@ router.post('/cart-checkout', async (req, res) => {
 
     const savedOrder = await newOrder.save();
 
-    // Delete all purchased products
     try {
       const Product = mongoose.model('Product');
       await Product.deleteMany({ _id: { $in: productIdsToDelete } });
@@ -286,7 +278,6 @@ router.post('/cart-checkout', async (req, res) => {
   }
 });
 
-// GET: Fetch order by ID
 router.get('/order/:orderId', async (req, res) => {
   try {
     const order = await Order.findOne({ orderId: req.params.orderId })
@@ -312,7 +303,6 @@ router.get('/order/:orderId', async (req, res) => {
   }
 });
 
-// GET: Fetch orders by buyer
 router.get('/buyer/orders', async (req, res) => {
   try {
     const { email, buyerId, page = 1, limit = 10 } = req.query;
@@ -351,7 +341,6 @@ router.get('/buyer/orders', async (req, res) => {
   }
 });
 
-// GET: Fetch orders by seller
 router.get('/seller/:sellerId/orders', async (req, res) => {
   try {
     const { page = 1, limit = 10 } = req.query;
@@ -378,7 +367,6 @@ router.get('/seller/:sellerId/orders', async (req, res) => {
   }
 });
 
-// GET: All orders (admin)
 router.get('/all', async (req, res) => {
   try {
     const { page = 1, limit = 20 } = req.query;

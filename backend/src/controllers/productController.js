@@ -1,5 +1,5 @@
 const Product = require("../models/productModel");
-const User = require("../models/user"); // your user model
+const User = require("../models/user"); 
 const cloudinary = require("../config/cloudinary");
 
 
@@ -44,7 +44,6 @@ exports.addProduct = async (req, res) => {
   }
 };
 
-// GET PRODUCTS BY SELLER
 exports.getProductsBySeller = async (req, res) => {
   try {
     const { sellerId } = req.params;
@@ -56,7 +55,6 @@ exports.getProductsBySeller = async (req, res) => {
   }
 };
 
-// DELETE PRODUCT
 exports.deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;

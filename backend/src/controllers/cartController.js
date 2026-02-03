@@ -94,10 +94,10 @@ const updateCartItem = async (userId, productId, quantity) => {
     }
 
     if (quantity <= 0) {
-      // Remove item if quantity is 0 or less
+    
       cart.items.splice(itemIndex, 1);
     } else {
-      // Update quantity
+     
       cart.items[itemIndex].quantity = quantity;
     }
 
@@ -118,7 +118,6 @@ const updateCartItem = async (userId, productId, quantity) => {
   }
 };
 
-// Remove item from cart
 const removeFromCart = async (userId, productId) => {
   try {
     const cart = await Cart.findOne({ userId });
@@ -151,7 +150,6 @@ const removeFromCart = async (userId, productId) => {
   }
 };
 
-// Clear entire cart
 const clearCart = async (userId) => {
   try {
     const cart = await Cart.findOne({ userId });

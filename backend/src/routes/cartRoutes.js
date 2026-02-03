@@ -8,7 +8,6 @@ const {
   clearCart
 } = require('../controllers/cartController');
 
-// Add item to cart
 router.post('/add', async (req, res) => {
   try {
     const { userId, productId, quantity } = req.body;
@@ -35,7 +34,6 @@ router.post('/add', async (req, res) => {
   }
 });
 
-// Get user's cart
 router.get('/:userId', async (req, res) => {
   try {
     const { userId } = req.params;
@@ -49,7 +47,6 @@ router.get('/:userId', async (req, res) => {
   }
 });
 
-// Update item quantity
 router.patch('/update', async (req, res) => {
   try {
     const { userId, productId, quantity } = req.body;
@@ -71,7 +68,6 @@ router.patch('/update', async (req, res) => {
   }
 });
 
-// Remove item from cart
 router.delete('/remove', async (req, res) => {
   try {
     const { userId, productId } = req.body;
@@ -93,7 +89,6 @@ router.delete('/remove', async (req, res) => {
   }
 });
 
-// Clear cart
 router.delete('/clear/:userId', async (req, res) => {
   try {
     const { userId } = req.params;

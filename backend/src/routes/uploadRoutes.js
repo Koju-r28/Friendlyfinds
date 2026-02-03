@@ -1,5 +1,5 @@
 const express = require("express");
-const upload = require("../middlewares/multer"); // adjust path
+const upload = require("../middlewares/multer"); 
 
 const router = express.Router();
 

@@ -6,7 +6,7 @@ const orderSchema = new mongoose.Schema({
   location: { type: String, required: true },
   message: { type: String },
   productId: {
-    type: String, // <-- changed from ObjectId to String
+    type: String, 
     required: true
   },
   status: {

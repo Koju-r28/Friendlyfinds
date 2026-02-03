@@ -19,7 +19,7 @@ const cartSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
-    unique: true  // Each user has one cart
+    unique: true 
   },
   items: [cartItemSchema],
   createdAt: {
@@ -32,7 +32,6 @@ const cartSchema = new mongoose.Schema({
   }
 });
 
-// Update the updatedAt field before saving
 cartSchema.pre('save', function(next) {
   this.updatedAt = Date.now();
   next();

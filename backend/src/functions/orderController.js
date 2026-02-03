@@ -1,7 +1,6 @@
 const Order = require('./orderModel');
 const { markProductAsSold } = require('./productFunctions');
 
-// Create order (when someone buys a product)
 const createOrder = async (buyerId, sellerId, productId, price) => {
   try {
     const newOrder = new Order({
@@ -14,7 +13,6 @@ const createOrder = async (buyerId, sellerId, productId, price) => {
 
     await newOrder.save();
     
-    // Mark the product as sold
     await markProductAsSold(productId);
     
     return { success: true, message: 'Order created successfully', order: newOrder };
@@ -23,13 +21,12 @@ const createOrder = async (buyerId, sellerId, productId, price) => {
   }
 };
 
-// Get purchase history (what user bought)
 const getPurchaseHistory = async (buyerId) => {
   try {
     const orders = await Order.find({ buyerId })
       .populate('productId', 'title price category')
       .populate('sellerId', 'email')
-      .sort({ orderDate: -1 });  // Most recent first
+      .sort({ orderDate: -1 });
     
     return { success: true, orders };
   } catch (error) {
@@ -37,13 +34,12 @@ const getPurchaseHistory = async (buyerId) => {
   }
 };
 
-// Get selling history (what user sold)
 const getSellingHistory = async (sellerId) => {
   try {
     const orders = await Order.find({ sellerId })
       .populate('productId', 'title price category')
       .populate('buyerId', 'email')
-      .sort({ orderDate: -1 });  // Most recent first
+      .sort({ orderDate: -1 });  
     
     return { success: true, orders };
   } catch (error) {
@@ -51,7 +47,6 @@ const getSellingHistory = async (sellerId) => {
   }
 };
 
-// Cancel order
 const cancelOrder = async (orderId) => {
   try {
     const order = await Order.findByIdAndUpdate(
